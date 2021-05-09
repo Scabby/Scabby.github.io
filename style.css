@@ -26,6 +26,7 @@ html {
 hr {
   height: 2px;
   border: 0;  
+  border-radius: 2px;
   background-color: #beb7a014;
   color: #00000000;
   width: calc(100% + 20px);
@@ -34,7 +35,7 @@ hr {
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0; 
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 h1          { color: #beb7a0ff; font-size: 36px; }
@@ -45,7 +46,7 @@ h5          { color: #beb7a044; font-size: 19px; }
 h6          { color: #beb7a033; font-size: 16px; }
 
 p           { color: #beb7a0; font-size: 13.5px; }
-pre         { color: #9b9583; font-size: 11.2px; }
+pre         { color: #9b9583; font-size: 11.5px; }
 
 pre {
   font-family: "DejaVu Sans Mono",
@@ -57,11 +58,11 @@ pre {
                "Courier New",
                monospace, monospace;
   
-  background-color: #282625;
-  padding: 1em;
-  border-radius: 0.5em;
-  margin-left: -0.5em;
-  margin-right: -0.5em;
+  background-color: #282625aa;
+  padding: 10px;
+  border-radius: 4px;
+  margin-left: -10px;
+  margin-right: -10px;;
   
   overflow: auto;
 }
