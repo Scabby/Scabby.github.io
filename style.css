@@ -9,8 +9,10 @@
                Helvetica,
                Arial,
                sans-serif;
-  
-  -webkit-text-size-adjust: 100%; */
+}
+
+@media (max-width: 420px) {
+  -webkit-text-size-adjust: 100%;
 }
 
 html {
