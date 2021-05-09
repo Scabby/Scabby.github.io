@@ -24,6 +24,7 @@ html {
 }
 
 hr {
+  background-color: #5b5550;
   color: #5b5550;
   width: calc(100% + 1em);
   margin-left: -0.5em;
