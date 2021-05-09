@@ -26,7 +26,7 @@ html {
 hr {
   height: 2px;
   border: 0;  
-  background-color: #3e3c39;
+  background-color: #beb7a014;
   color: #00000000;
   width: calc(100% + 20px);
   margin-left: -10px;
@@ -37,14 +37,15 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 15px;
 }
 
-h1          { color: #beb7a0; font-size: 36px; }
-h2          { color: #9b9583; font-size: 30px; }
-h3          { color: #7a7169; font-size: 26px; }
-h4          { color: #5b5550; font-size: 22px; }
-h5, h6      { color: #c89dbe; font-size: 16px; } /* purple, not intended for use atm */
+h1          { color: #beb7a0ff; font-size: 36px; }
+h2          { color: #beb7a0bb; font-size: 30px; }
+h3          { color: #beb7a088; font-size: 26px; }
+h4          { color: #beb7a066; font-size: 22px; }
+h5          { color: #beb7a044; font-size: 19px; }
+h6          { color: #beb7a033; font-size: 16px; }
 
-p           { color: #beb7a0; font-size: 16px; }
-pre         { color: #9b9583; font-size: 14px; }
+p           { color: #beb7a0; font-size: 12px; }
+pre         { color: #9b9583; font-size: 10.5px; }
 
 pre {
   font-family: "DejaVu Sans Mono",
