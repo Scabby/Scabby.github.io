@@ -9,9 +9,8 @@
                Helvetica,
                Arial,
                sans-serif;
-}
-
-@media (max-width: 420px) {
+  
+  -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -25,10 +24,12 @@ html {
 }
 
 hr {
+  height: 2px;
+  border: 0;  
   background-color: #3e3c39;
   color: #00000000;
-  width: calc(100% + 1em);
-  margin-left: -0.5em;
+  width: calc(100% + 20px);
+  margin-left: -10px;
 }
 
 h1, h2, h3, h4, h5, h6 {
