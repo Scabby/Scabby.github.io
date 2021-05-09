@@ -15,26 +15,34 @@
 }
 
 html {
-  display: block;
   background-color: #302e2c;
   color: #beb7a0;
-  width: calc(min(100vw, 1000px) - 10px);
+  width: calc(min(100vw, 1000px) - 60px);
+  margin: 30px;
   margin-left: auto;
   margin-right: auto;
 }
 
 hr {
-  background-color: #5b5550;
-  color: #5b5550;
+  background-color: #3e3c39;
+  color: #00000000;
   width: calc(100% + 1em);
   margin-left: -0.5em;
 }
 
-h1          { color: #beb7a0; }
-h2          { color: #9b9583; }
-h3          { color: #7a7169; }
-h4          { color: #5b5550; }
-h5, h6      { color: #c89dbe; } /* purple, not intended for use atm */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0; 
+  margin-bottom: 15px;
+}
+
+h1          { color: #beb7a0; font-size: 36px; }
+h2          { color: #9b9583; font-size: 30px; }
+h3          { color: #7a7169; font-size: 26px; }
+h4          { color: #5b5550; font-size: 22px; }
+h5, h6      { color: #c89dbe; font-size: 16px; } /* purple, not intended for use atm */
+
+p           { color: #beb7a0; font-size: 16px; }
+pre         { color: #9b9583; font-size: 14px; }
 
 pre {
   font-family: "DejaVu Sans Mono",
@@ -46,7 +54,6 @@ pre {
                "Courier New",
                monospace, monospace;
   
-  color: #9b9583;
   background-color: #282625;
   padding: 1em;
   border-radius: 0.5em;
