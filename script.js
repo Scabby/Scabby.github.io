@@ -42,21 +42,18 @@ function generateBoard() {
     let height  = getCharHeight()
     let width   = getCharWidth()
 
-    let y = getCharWidth() / 2 //Math.floor(Math.random() * height - margin * 2) + margin
+    let y = getCharWidth() / 2 // Math.floor(Math.random() * height - margin * 2) + margin
 
-    let x = getCharHeight() / 2//Math.floor(Math.random() * width - margin * 2) + margin
+    let x = getCharHeight() / 2// Math.floor(Math.random() * width - margin * 2) + margin
 
 
     for(let h = 0; h < height; h++) {
         for(let w = 0; w < width; w++) {
-            if(h == x && w == y) {
-                out += "@"
-            } else if(Math.pow((h - x), 2) + Math.pow((w - y), 2) <= radius*radius) {
-                out += " "
-            } else {
-                out += genChar()
-            }
-
+            if(Math.pow((h - x), 2) + Math.pow((w - y), 2) <= radius*radius) {
+                if(w == y && h == x)    { out += "@" }
+                else                    { out += " " }
+            } else                      { out += genChar() }
+            
             if(w < width - 1)   { out += " " }
             else                { out += "\n" }
         }
@@ -70,10 +67,8 @@ function dispGen() {
 }
 
 window.onkeydown = function(k) {
-    if(k.keyCode == 32) { // spacebar
-        dispGen()
-    }
+    if(k.keyCode == 32) { dispGen() } // spacebar
 }
 
-window.onclick  = dispGen
+onclick         = dispGen
 window.onload   = dispGen
