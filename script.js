@@ -71,4 +71,6 @@ window.onkeydown = function(k) {
     }
 }
 
-displayBoard(generateBoard())
+window.onload = function() {
+    displayBoard(generateBoard())
+}
