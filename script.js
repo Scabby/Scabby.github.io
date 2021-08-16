@@ -11,8 +11,6 @@ function displayBoard(boardStr) {
     document.getElementById("board").innerHTML = boardStr
 }
 
-
-
 // bad usage of font size
 function getCharWidth() {
     return Math.floor(window.innerWidth / getFontSize()); // count for two characters' worth of width
@@ -45,7 +43,6 @@ function generateBoard() {
     let y = getCharWidth() / 2 // Math.floor(Math.random() * height - margin * 2) + margin
 
     let x = getCharHeight() / 2// Math.floor(Math.random() * width - margin * 2) + margin
-
 
     for(let h = 0; h < height; h++) {
         for(let w = 0; w < width; w++) {
