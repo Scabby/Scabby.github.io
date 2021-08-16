@@ -40,9 +40,9 @@ function generateBoard() {
     let height  = getCharHeight()
     let width   = getCharWidth()
 
-    let y = getCharWidth() / 2 // Math.floor(Math.random() * height - margin * 2) + margin
+    let y = Math.floor(getCharWidth() / 2) // Math.floor(Math.random() * height - margin * 2) + margin
 
-    let x = getCharHeight() / 2// Math.floor(Math.random() * width - margin * 2) + margin
+    let x = Math.floor(getCharHeight() / 2) // Math.floor(Math.random() * width - margin * 2) + margin
 
     for(let h = 0; h < height; h++) {
         for(let w = 0; w < width; w++) {
