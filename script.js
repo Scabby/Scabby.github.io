@@ -65,12 +65,15 @@ function generateBoard() {
     return out
 }
 
+function dispGen() {
+    displayBoard(generateBoard())
+}
+
 window.onkeydown = function(k) {
     if(k.keyCode == 32) { // spacebar
-        displayBoard(generateBoard())
+        dispGen()
     }
 }
 
-window.onload = function() {
-    displayBoard(generateBoard())
-}
+window.onclick  = dispGen
+window.onload   = dispGen
