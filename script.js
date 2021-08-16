@@ -50,7 +50,7 @@ function generateBoard() {
                 if(w == y && h == x)    { out += "@" }
                 else                    { out += " " }
             } else                      { out += genChar() }
-            
+
             if(w < width - 1)   { out += " " }
             else                { out += "\n" }
         }
@@ -63,10 +63,19 @@ function dispGen() {
     displayBoard(generateBoard())
 }
 
-window.onkeydown = function(k) {
-    if(k.keyCode == 32) { dispGen() } // spacebar
+function debounceForLast(func, timeout = 100) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer)
+        timer = setTimeout(
+            () => { func.apply(this, args) },
+            timeout
+        )
+    }
 }
 
+onresize        = debounceForLast(dispGen)
+onkeydown       = dispGen
 onclick         = dispGen
 ontouchstart    = dispGen
-window.onload   = dispGen
+onload          = dispGen
