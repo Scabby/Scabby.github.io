@@ -7,6 +7,12 @@ function getFontSize() {
     )
 }
 
+function displayBoard(boardStr) {
+    document.getElementById("board").innerHTML = boardStr
+}
+
+
+
 // bad usage of font size
 function getCharWidth() {
     return Math.floor(window.innerWidth / getFontSize()); // count for two characters' worth of width
@@ -18,66 +24,51 @@ function getCharHeight() {
 }
 
 function genChar() {
-    let random = Math.floor(Math.random() * 3)
+    let random = Math.floor(Math.random() * 100) + 1
 
-    switch(random) {
-        case 0:     return " "
-        case 1:     return "#"
-        case 2:     return "/"
-    }
+    if(random > 99)     return "!"
+    if(random > 97)     return ";"
+    if(random > 89)     return ":"
+    if(random > 80)     return ","
+    if(random > 69)     return "."
+    if(random > 0)      return " "
 }
 
-function generateBoard(charHeight, charWidth) {
-    let out = Array(charHeight)
-    for(let i = 0; i < out.length; i++) {
-        out[i] = Array(charWidth)
-    }
+let margin = 10
+let radius = 5.5
 
-    for(let h = 0; h < out.length; h++) {
-        for(let w = 0; w < out[h].length; w++) {
-            out[h][w] = genChar()
+function generateBoard() {
+    let out     = ""
+    let height  = getCharHeight()
+    let width   = getCharWidth()
+
+    let y = getCharWidth() / 2 //Math.floor(Math.random() * height - margin * 2) + margin
+
+    let x = getCharHeight() / 2//Math.floor(Math.random() * width - margin * 2) + margin
+
+
+    for(let h = 0; h < height; h++) {
+        for(let w = 0; w < width; w++) {
+            if(h == x && w == y) {
+                out += "@"
+            } else if(Math.pow((h - x), 2) + Math.pow((w - y), 2) <= radius*radius) {
+                out += " "
+            } else {
+                out += genChar()
+            }
+
+            if(w < width - 1)   { out += " " }
+            else                { out += "\n" }
         }
     }
 
     return out
 }
 
-function boardToStr(board) {
-    let out = ""
-
-    for(let h = 0; h < board.length; h++) {
-        for(let w = 0; w < board[h].length; w++) {
-            out += board[h][w]
-          
-            if(w < board[h].length - 1) { out += " " }
-            else                        { out += "\n" }
-        }
+window.onkeydown = function(k) {
+    if(k.keyCode == 32) { // spacebar
+        displayBoard(generateBoard())
     }
-
-    return out
 }
 
-function displayBoard(boardStr) {
-    document.getElementById("board").innerHTML = boardStr
-}
-
-function nextFrame() {
-    setTimeout(frame, 500)
-}
-
-
-
-let lastCharHeight  = 0
-let lastCharWidth   = 0
-
-function frame() {
-    let charHeight  = getCharHeight()
-    let charWidth   = getCharWidth()
-    
-    board = generateBoard(charHeight, charWidth)
-    displayBoard(boardToStr(board))
-
-    nextFrame()
-}
-
-nextFrame()
+displayBoard(generateBoard())
