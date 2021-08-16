@@ -71,4 +71,5 @@ window.onkeydown = function(k) {
 }
 
 onclick         = dispGen
+ontouchstart    = dispGen
 window.onload   = dispGen
