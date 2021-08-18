@@ -1,3 +1,63 @@
+function get(id)    { return document.getElementById(id) }
+function make(type) { return document.createElement(type) }
+
+function genChar() {
+    let r = Math.floor(Math.random() * 100) + 1
+
+    if(r > 99) { return "!" }
+    if(r > 95) { return ";" }
+    if(r > 87) { return ":" }
+    if(r > 79) { return "," }
+    if(r > 69) { return "." }
+    else       { return " " }
+}
+
+let board = get("board")
+
+function gen() {
+    let height  = Math.floor(window.innerHeight / 10)
+    let width   = Math.floor(window.innerWidth / 10)
+
+    for(let h = 0; h < height; h++) {
+        let row = make("div")
+        row.className = "row"
+
+        for(let w = 0; w < width; w++) {
+            let block = make("div")
+            block.className = "block"
+
+            row.appendChild(block)
+            block.textContent = genChar()
+        }
+
+        board.appendChild(row)
+    }
+}
+
+function regen() {
+    board.replaceChildren()
+    gen()
+}
+
+function debounceForLast(func, timeout = 100) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer)
+        timer = setTimeout(
+            () => { func.apply(this, args) },
+            timeout
+        )
+    }
+}
+
+
+onresize        = debounceForLast(regen)
+onclick         = regen
+onkeydown       = regen
+ontouchstart    = regen
+onload          = regen
+
+/*
 function getFontSize() {
     return parseFloat(
         window.getComputedStyle(
@@ -79,3 +139,4 @@ onkeydown       = dispGen
 onclick         = dispGen
 ontouchstart    = dispGen
 onload          = dispGen
+*/
