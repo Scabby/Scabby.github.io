@@ -8,19 +8,12 @@
                 "Courier New",
                 monospace, monospace;
 
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 
   margin: 0;
 
-  font-size: 10px;
-  color: #beb7a0;
+  color: #e3dabe;
   overflow: hidden;
 }
 
@@ -28,9 +21,26 @@ body {
   background-color: #302e2c;
 }
 
+@keyframes fadein {
+    from    { color: #302e2c }
+    to      { color: #e3dabe }
+}
 
-pre {
-  top: 0;
-  left: 0;
-  position: fixed;
+div .row {
+    display:flex;
+}
+
+div .block {
+    animation-name: fadein;2
+    animation-duration: 5s;
+
+    box-sizing: content-box;
+    display: inline-table;
+
+    width: 10px;
+    height: 10px;
+}
+
+p {
+    font-size: 9px;
 }
