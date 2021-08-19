@@ -50,10 +50,10 @@ function debounceForLast(func, timeout = 100) {
     }
 }
 
-window.addEventListener("resize",       debounceForLast(regen))
-window.addEventListener("click",        regen)
-window.addEventListener("keydown",      regen)
-window.addEventListener("touchstart",   regen)
+resize      = debounceForLast(regen)
+click       = regen
+keydown     = regen
+otouchstart = regen
 window.addEventListener("load",         regen)
 
 /*
