@@ -54,6 +54,12 @@ function throttle(func, timeout = 200) {
     }
 }
 
+document.ontouchmove = function (e) {
+  e.preventDefault();
+  
+  // player movement?? 
+}
+
 onclick         = throttle(regen)
 onkeydown       = throttle(regen)
 ontouchstart    = throttle(regen)
