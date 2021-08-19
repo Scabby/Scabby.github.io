@@ -50,11 +50,11 @@ function debounceForLast(func, timeout = 100) {
     }
 }
 
-onresize        = debounceForLast(regen)
-onclick         = regen
-onkeydown       = regen
-ontouchstart    = regen
-window.onload   = regen
+window.addEventListener("resize",       debounceForLast(regen))
+window.addEventListener("click",        regen)
+window.addEventListener("kwydown",      regen)
+window.addEventListener("touchstart",   regen)
+window.addEventListener("load",         regen)
 
 /*
 function getFontSize() {
