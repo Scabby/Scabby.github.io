@@ -28,12 +28,12 @@ function gen() {
             block.textContent = genChar()
         }
 
-        board.appendChild(row)
+        this.board.appendChild(row)
     }
 }
 
 function regen() {
-    board.replaceChildren()
+    this.board.replaceChildren()
     gen()
 }
 
