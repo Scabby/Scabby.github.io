@@ -28,7 +28,7 @@ body {
   to      { color: #e3dabe }
 }
 
-div .row {
+.row {
   display:flex;
   height: 10px;
 }
