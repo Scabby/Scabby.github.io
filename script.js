@@ -12,9 +12,8 @@ function genChar() {
     else       { return " " }
 }
 
-board = get("board")
-
 function gen() {
+    let board   = get("board")
     let height  = Math.floor(window.innerHeight / 10)
     let width   = Math.floor(window.innerWidth / 10)
 
@@ -35,6 +34,7 @@ function gen() {
 }
 
 function regen() {
+    let board = get("board")
     this.board.replaceChildren()
     gen()
 }
@@ -52,7 +52,7 @@ function debounceForLast(func, timeout = 100) {
 
 window.addEventListener("resize",       debounceForLast(regen))
 window.addEventListener("click",        regen)
-window.addEventListener("kwydown",      regen)
+window.addEventListener("keydown",      regen)
 window.addEventListener("touchstart",   regen)
 window.addEventListener("load",         regen)
 
