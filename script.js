@@ -13,6 +13,7 @@ function genChar() {
 }
 
 function gen() {
+    let radius  = 7.5
     let board   = get("board")
     let height  = Math.floor(window.innerHeight / 10 - 1.5)
     let width   = Math.floor(window.innerWidth / 10 - 1)
@@ -24,9 +25,15 @@ function gen() {
         for(let w = 0; w < width; w++) {
             let block = make("div")
             block.className = "block"
-
             row.appendChild(block)
-            block.textContent = genChar()
+
+            if(Math.pow(w - x, 2) + Math.pow(h - y, 2) >= radius * radius) {
+                if(w == x && h == y) {
+                    block.textContent = "@"
+                }
+            } else {
+                block.textContent = genChar()
+            }
         }
 
         board.appendChild(row)
