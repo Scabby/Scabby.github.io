@@ -43,7 +43,7 @@ body {
   height: 10px;
   
   justify-content: center;
-  margin-left: 5px;
+  margin-left: 7.5px; /* no idea why this value centers */
   width: calc(100vw - 10px);
 }
 
