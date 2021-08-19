@@ -59,3 +59,10 @@ body {
   height: inherit;
   font-size: 8px;
 }
+
+.white { color: #beb7a0; }
+.light_grey { color: #beb7a0b0; }
+.grey { color: #beb7a090; }
+.dark_grey { color: #beb7a050; }
+.red { color: #d18383; }
+.blue { color: #8383d1; }
