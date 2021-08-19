@@ -1,15 +1,20 @@
 function get(id)    { return document.getElementById(id) }
 function make(type) { return document.createElement(type) }
 
-function genChar() {
+function genBlock(block) {
     let r = Math.floor(Math.random() * 100) + 1
+    let text
+    let color
 
-    if(r < 70)  { return " " }
-    if(r < 75)  { return "." }
-    if(r < 85)  { return "," }
-    if(r < 95)  { return ":" }
-    if(r < 97)  { return ";" }
-    else        { return "!" }
+    if(r < 70)  { return }
+    if(r < 75)  { text = "."; color = "dark_grey" }
+    if(r < 85)  { text = ","; color = "grey" }
+    if(r < 95)  { text = ":"; color = "light_grey" }
+    if(r < 97)  { text = ";"; color = "white" }
+    else        { text = "!"; color = "red" }
+
+    block.textContent   = text
+    block.className     = color
 }
 
 function gen() {
@@ -25,16 +30,17 @@ function gen() {
         row.className = "row"
 
         for(let w = 0; w < width; w++) {
-            let block = make("span")
+            let block       = make("span")
             block.className = "block"
             row.appendChild(block)
 
             if(Math.pow(w - x, 2) + Math.pow(h - y, 2) <= radius * radius) {
                 if(w == x && h == y) {
-                    block.textContent = "@"
+                    block.textContent   = "@"
+                    block.className     = "blue"
                 }
             } else {
-                block.textContent = genChar()
+                genBlock(block)
             }
         }
 
