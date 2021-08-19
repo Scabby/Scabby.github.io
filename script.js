@@ -17,7 +17,6 @@ function gen() {
     let board   = get("board")
     let height  = Math.floor(window.innerHeight / 10 - 1.5)
     let width   = Math.floor(window.innerWidth / 10 - 1)
-
     let x       = Math.floor(width / 2)
     let y       = Math.floor(height / 2)
 
