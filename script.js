@@ -54,7 +54,7 @@ onresize        = debounceForLast(regen)
 onclick         = regen
 onkeydown       = regen
 ontouchstart    = regen
-windiw.onload   = regen
+window.onload   = regen
 
 /*
 function getFontSize() {
