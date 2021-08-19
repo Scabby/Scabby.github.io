@@ -12,8 +12,6 @@ function genChar() {
     else       { return " " }
 }
 
-board = get("board")
-
 function gen() {
     let height  = Math.floor(window.innerHeight / 10)
     let width   = Math.floor(window.innerWidth / 10)
@@ -50,6 +48,7 @@ function debounceForLast(func, timeout = 100) {
     }
 }
 
+board = get("board")
 
 onresize        = debounceForLast(regen)
 onclick         = regen
