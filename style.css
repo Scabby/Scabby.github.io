@@ -24,22 +24,23 @@ body {
 }
 
 @keyframes fadein {
-    from    { color: #302e2c }
-    to      { color: #e3dabe }
+  from    { color: #302e2c }
+  to      { color: #e3dabe }
 }
 
 div .row {
-    display:flex;
+  display:flex;
+  height: 10px;
 }
 
 .block {
-    animation-name: fadein;
-    animation-duration: 2s;
+  animation-name: fadein;
+  animation-duration: 2s;
 
-    box-sizing: content-box;
-    display: inline-table;
+  box-sizing: content-box;
+  display: inline-table;
 
-    width: 10px;
-    height: 10px;
-    font-size: 8px;
+  width: 10px;
+  height: inherit;
+  font-size: 8px;
 }
