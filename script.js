@@ -27,11 +27,11 @@ function gen() {
 
     for(let h = 0; h < height; h++) {
         let row = make("div")
-        row.className = "row"
+        row.className = "row " + h
 
         for(let w = 0; w < width; w++) {
             let block       = make("span")
-            block.className = "block"
+            block.className = "block " + w
             row.appendChild(block)
 
             if(Math.pow(w - x, 2) + Math.pow(h - y, 2) <= radius * radius) {
