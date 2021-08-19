@@ -40,7 +40,8 @@ function regen() {
 }
 
 function debounceForLast(func, timeout = 200) {
-    let timer;
+    let timer
+    
     return (...args) => {
         clearTimeout(timer)
         timer = setTimeout(
@@ -50,11 +51,26 @@ function debounceForLast(func, timeout = 200) {
     }
 }
 
-//onresize        = debounceForLast(regen)
-onclick         = debounceForLast(regen)
-onkeydown       = debounceForLast(regen)
-ontouchstart    = debounceForLast(regen)
-window.addEventListener("load",         regen)
+function throttle(func, timeout = 200) {
+    let shouldWait = false
+    
+    return (... args) => {
+        if(!shouldWait) {
+            func.apply(this, args)
+            shouldWait = true
+
+            setTimeout(
+                () => shouldWait = false, timeout
+            )
+        }
+    }
+}
+
+onresize        = debounceForLast(regen)
+onclick         = throttle(regen)
+onkeydown       = throttle(regen)
+ontouchstart    = throttle(regen)
+window.addEventListener("load", regen)
 
 /*
 function getFontSize() {
