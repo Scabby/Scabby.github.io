@@ -28,9 +28,18 @@ body {
   to      { color: #e3dabe }
 }
 
+#board {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 .row {
   display:flex;
   height: 10px;
+  
+  margin-left: 5x;
+  width: calc(100vw - 10px);
 }
 
 .block {
