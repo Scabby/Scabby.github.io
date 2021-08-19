@@ -4,12 +4,12 @@ function make(type) { return document.createElement(type) }
 function genChar() {
     let r = Math.floor(Math.random() * 100) + 1
 
-    if(r > 99) { return "!" }
-    if(r > 95) { return ";" }
-    if(r > 87) { return ":" }
-    if(r > 79) { return "," }
-    if(r > 69) { return "." }
-    else       { return " " }
+    if(r < 70)  { return " " }
+    if(r < 75)  { return "." }
+    if(r < 85)  { return "," }
+    if(r < 95)  { return ":" }
+    if(r < 97)  { return ";" }
+    else        { return "!" }
 }
 
 function gen() {
