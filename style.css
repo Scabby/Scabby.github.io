@@ -32,7 +32,7 @@ div .row {
 
 div .block {
     animation-name: fadein;
-    animation-duration: 5s;
+    animation-duration: 2s;
 
     box-sizing: content-box;
     display: inline-table;
