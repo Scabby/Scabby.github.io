@@ -16,7 +16,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  
+
   margin: 0;
 
   color: #e3dabe;
@@ -29,22 +29,28 @@ body {
 
 @keyframes fadein {
   from    { color: #302e2c }
-  to      { color: #e3dabe }
+  to      { color: #e3dabe70 }
 }
 
 #board {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: calc(100vw - 10px);
+  height:calc(100vh - 10px);
+
+  max-width: 1000px;
+  max-height: 1000px;
 }
 
 .row {
-  display:flex;
+  display: flex;
   height: 10px;
-  
+
   justify-content: center;
-  margin-left: 7.5px; /* no idea why this value centers */
-  width: calc(100vw - 10px);
+  width: 100%;
 }
 
 span {
@@ -53,6 +59,7 @@ span {
 
   box-sizing: content-box;
   display: inline-table;
+  text-align: center;
 
   width: 10px;
   min-width: 10px;
@@ -60,9 +67,9 @@ span {
   font-size: 8px;
 }
 
-.white { color: #beb7a0; }
-.light_grey { color: #beb7a0b0; }
-.grey { color: #beb7a090; }
-.dark_grey { color: #beb7a050; }
-.red { color: #d18383; }
-.blue { color: #8383d1; }
+.white      { color: #e3dabe; }
+.light_grey { color: #e3dabeb0; }
+.grey       { color: #e3dabe70; }
+.dark_grey  { color: #e3dabe50; }
+.red        { color: #ffa3a3; }
+.blue       { color: #a9ddfa; }
