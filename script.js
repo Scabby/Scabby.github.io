@@ -29,13 +29,13 @@ function gen() {
             block.textContent = genChar()
         }
 
-        this.board.appendChild(row)
+        board.appendChild(row)
     }
 }
 
 function regen() {
     let board = get("board")
-    this.board.replaceChildren()
+    board.replaceChildren()
     gen()
 }
 
