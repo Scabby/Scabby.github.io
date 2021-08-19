@@ -39,7 +39,7 @@ function regen() {
     gen()
 }
 
-function debounceForLast(func, timeout = 100) {
+function debounceForLast(func, timeout = 200) {
     let timer;
     return (...args) => {
         clearTimeout(timer)
@@ -50,10 +50,10 @@ function debounceForLast(func, timeout = 100) {
     }
 }
 
-onresize        = debounceForLast(regen)
-onclick         = regen
-onkeydown       = regen
-ontouchstart    = regen
+//onresize        = debounceForLast(regen)
+onclick         = debounceForLast(regen)
+onkeydown       = debounceForLast(regen)
+ontouchstart    = debounceForLast(regen)
 window.addEventListener("load",         regen)
 
 /*
