@@ -32,6 +32,11 @@ body {
   to      { color: #e3dabe70 }
 }
 
+#helper_block {
+  width: 10px;
+  height: 10px;
+}
+
 #board {
   position: absolute;
   top: 50%;
