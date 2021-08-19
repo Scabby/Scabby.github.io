@@ -29,7 +29,7 @@ function gen() {
             block.className = "block"
             row.appendChild(block)
 
-            if(Math.pow(w - x, 2) + Math.pow(h - y, 2) >= radius * radius) {
+            if(Math.pow(w - x, 2) + Math.pow(h - y, 2) <= radius * radius) {
                 if(w == x && h == y) {
                     block.textContent = "@"
                 }
