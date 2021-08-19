@@ -25,7 +25,7 @@ function gen() {
         row.className = "row"
 
         for(let w = 0; w < width; w++) {
-            let block = make("div")
+            let block = make("span")
             block.className = "block"
             row.appendChild(block)
 
