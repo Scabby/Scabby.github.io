@@ -18,6 +18,8 @@
 }
 
 body {
+  margin-left: 5px;
+  mergin-top: 5px;
   background-color: #302e2c;
 }
 
@@ -30,7 +32,7 @@ div .row {
     display:flex;
 }
 
-div .block {
+.block {
     animation-name: fadein;
     animation-duration: 2s;
 
