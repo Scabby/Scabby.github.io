@@ -31,7 +31,7 @@ div .row {
 }
 
 div .block {
-    animation-name: fadein;2
+    animation-name: fadein;
     animation-duration: 5s;
 
     box-sizing: content-box;
