@@ -12,7 +12,7 @@ function genChar() {
     else       { return " " }
 }
 
-let board = get("board")
+board = get("board")
 
 function gen() {
     let height  = Math.floor(window.innerHeight / 10)
