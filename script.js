@@ -18,12 +18,13 @@ function genBlock(block) {
 }
 
 function gen() {
-    let radius  = 7.5
-    let board   = get("board")
-    let height  = Math.floor(window.innerHeight / 10 - 1.5)
-    let width   = Math.floor(window.innerWidth / 10 - 1)
-    let x       = Math.floor(width / 2)
-    let y       = Math.floor(height / 2)
+    let radius      = 7.5
+    let board       = get("board")
+    let helperBlock = get("helper_block")
+    let height      = Math.floor(board.offsetHeight / helperBlock.offsetHeight)
+    let width       = Math.floor(board.offsetWidth / helperBlock.offsetWidth)
+    let x           = Math.floor(width / 2)
+    let y           = Math.floor(height / 2)
 
     for(let h = 0; h < height; h++) {
         let row = make("div")
