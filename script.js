@@ -6,12 +6,12 @@ function genBlock(block) {
     let text
     let color
 
-    if(r < 70)  { return }
-    if(r < 75)  { text = "."; color = "dark_grey" }
-    if(r < 85)  { text = ","; color = "grey" }
-    if(r < 95)  { text = ":"; color = "light_grey" }
-    if(r < 97)  { text = ";"; color = "white" }
-    else        { text = "!"; color = "red" }
+    if(r < 70)      { return }
+    else if(r < 75) { text = "."; color = "dark_grey" }
+    else if(r < 85) { text = ","; color = "grey" }
+    else if(r < 95) { text = ":"; color = "light_grey" }
+    else if(r < 97) { text = ";"; color = "white" }
+    else            { text = "!"; color = "red" }
 
     block.textContent   = text
     block.className     = color
