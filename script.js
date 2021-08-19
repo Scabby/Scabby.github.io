@@ -39,7 +39,7 @@ function regen() {
     gen()
 }
 
-function throttle(func, timeout = 200) {
+function throttle(func, timeout = 300) {
     let shouldWait = false
     
     return (... args) => {
