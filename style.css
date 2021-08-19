@@ -36,7 +36,7 @@ body {
   display:flex;
   height: 10px;
   
-  margin-left: 5x;
+  margin-left: 10px;
   width: calc(100vw - 10px);
 }
 
