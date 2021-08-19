@@ -39,18 +39,6 @@ function regen() {
     gen()
 }
 
-function debounceForLast(func, timeout = 200) {
-    let timer
-    
-    return (...args) => {
-        clearTimeout(timer)
-        timer = setTimeout(
-            () => { func.apply(this, args) },
-            timeout
-        )
-    }
-}
-
 function throttle(func, timeout = 200) {
     let shouldWait = false
     
@@ -66,7 +54,6 @@ function throttle(func, timeout = 200) {
     }
 }
 
-onresize        = debounceForLast(regen)
 onclick         = throttle(regen)
 onkeydown       = throttle(regen)
 ontouchstart    = throttle(regen)
