@@ -14,7 +14,7 @@ function genChar() {
 
 function gen() {
     let board   = get("board")
-    let height  = Math.floor(window.innerHeight / 10 - 1.2)
+    let height  = Math.floor(window.innerHeight / 10 - 1.5)
     let width   = Math.floor(window.innerWidth / 10 - 1)
 
     for(let h = 0; h < height; h++) {
