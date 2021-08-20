@@ -39,12 +39,14 @@ body {
 
 #board {
   position: absolute;
+  overflow: visible;
+  
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 
-  width: calc(100vw - 10px);
-  height:calc(100vh - 10px);
+  width: 90vw;
+  height: 90vw;
 
   max-width: 1000px;
   max-height: 1000px;
@@ -52,10 +54,12 @@ body {
 
 .row {
   display: flex;
+  overflow: visible;
+  
   height: 10px;
 
   justify-content: center;
-  width: 100%;
+  width: 100vw;
 }
 
 span {
