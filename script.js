@@ -70,6 +70,11 @@ function throttle(func, timeout = 300) {
     }
 }
 
+function calc_vh() {
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
 document.ontouchmove = function (e) {
   e.preventDefault();
   
@@ -80,6 +85,9 @@ onclick         = throttle(regen)
 onkeydown       = throttle(regen)
 ontouchstart    = throttle(regen)
 window.addEventListener("load", regen)
+window.addEventListener("resize", calc_vh)
+
+calc_vh
 
 /*
 function getFontSize() {
