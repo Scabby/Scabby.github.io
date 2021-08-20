@@ -25,10 +25,14 @@
 
 body {
   background-color: #302e2c;
-  
-  /* to handle mobile viewport weirdness */
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
+  height: 100vh;
+}
+
+/* to specifically target safari */
+@supports (-webkit-touch-callout: none) {
+  body {
+    height: -webkit-fill-available;
+  }
 }
 
 @keyframes fadein {
