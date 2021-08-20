@@ -87,7 +87,7 @@ ontouchstart    = throttle(regen)
 window.addEventListener("load", regen)
 window.addEventListener("resize", calc_vh)
 
-calc_vh
+calc_vh()
 
 /*
 function getFontSize() {
