@@ -28,7 +28,7 @@ body {
 }
 
 @keyframes fadein {
-  from    { color: #302e2c }
+  from { color: #00000000; }
 }
 
 #helper_block {
