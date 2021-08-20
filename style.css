@@ -25,6 +25,10 @@
 
 body {
   background-color: #302e2c;
+  
+  /* to handle mobile viewport weirdness */
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
 }
 
 @keyframes fadein {
@@ -46,7 +50,6 @@ body {
 
   width: 90vw;
   height 90vh;
-  height: calc(var(--vh, 1vh) * 90); /* essentially 90vh */
 
   max-width: 1000px;
   max-height: 1000px;
