@@ -77,7 +77,6 @@ document.ontouchmove = function (e) {
 }
 
 onclick         = throttle(regen)
-onkeydown       = throttle(regen)
 ontouchstart    = throttle(regen)
 window.addEventListener("load", regen)
 
