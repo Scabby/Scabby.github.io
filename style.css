@@ -25,14 +25,6 @@
 
 body {
   background-color: #302e2c;
-  height: 100vh;
-}
-
-/* to specifically target safari */
-@supports (-webkit-touch-callout: none) {
-  body {
-    height: -webkit-fill-available;
-  }
 }
 
 @keyframes fadein {
@@ -57,6 +49,12 @@ body {
 
   max-width: 1000px;
   max-height: 1000px;
+}
+
+@media and (orientation: portrait) {
+  #board {
+    height: 80vh;
+  }
 }
 
 .row {
