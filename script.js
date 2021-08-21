@@ -147,7 +147,7 @@ ontouchstart    = throttle(regen)
 ontouchmove = (e) => {
     e.preventDefault()
     throttle(parseSwipe, 100, e)
-})
+}
 
 onkeydown = (e) => {
     let key = e.code
@@ -164,7 +164,7 @@ onload = () => {
     board          = get("board")
     helperBlock    = get("helper_block")
     regen()
-})
+}
 
 radius         = 7.5
 margin         = 15 
