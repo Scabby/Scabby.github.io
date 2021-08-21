@@ -93,7 +93,7 @@ function regen() {
     board.className     = "generated"
 }
 
-function throttle(func, timeout = 300) {
+function throttle(func, timeout = 500) {
     let shouldWait = false
     
     return (... args) => {
