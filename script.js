@@ -83,23 +83,46 @@ function gen() {
 function regen() {
     let board = get("board")
     board.replaceChildren()
-
     board.className = "generating"
-    window.setTimeout(
-        () => {
-            let helperBlock     = get("helper_block")
-            board.style.height  = getBlockHeight() * helperBlock.offsetHeight
-            board.style.width   = getBlockWidth() * helperBlock.offsetWidth
-            
-            gen()
-            
-            board.className = "generated"
-        },
-        100
-    )
+
+    let helperBlock     = get("helper_block")
+    board.style.height  = getBlockHeight() * helperBlock.offsetHeight
+    board.style.width   = getBlockWidth() * helperBlock.offsetWidth
+
+    gen()
+
+    board.className = "generated"
 }
 
-function throttle(func, timeout = 500) {
+function parseSwipe(e) {
+    let lastY
+    let lastX
+
+    let touch       = e.originalEvent.touches[0]
+    let currentY    = touch.clientY
+    let currentX    = touch.clientX
+    let deltaX      = currentX - lastX
+    let deltaY      = currentY - lastY
+    
+    let isYSwipe    = Math.abs(deltaY) > Math.abs(deltaX)
+
+    if(isYSwipe) {
+        let isUp = currentY < lastY
+        
+        if(isUp)    {}
+        else        {}
+    } else {
+        let isLeft = currentX < lastX
+        
+        if(isLeft)  {}
+        else        {}
+    }
+    
+    lastY = currentY
+    lastX = currentX
+}
+
+function throttle(func, wait = 500) {
     let shouldWait = false
     
     return (... args) => {
@@ -107,18 +130,15 @@ function throttle(func, timeout = 500) {
             func.apply(this, args)
             shouldWait = true
 
-            setTimeout(
-                () => shouldWait = false, timeout
-            )
+            setTimeout(() => { shouldWait = false }, wait)
         }
     }
 }
 
-document.ontouchmove = (e) => {
-  e.preventDefault();
-  
-  // player movement??
-}
+document.addEventListener("touchmove", (e) => {
+    e.preventDefault()
+    throttle(parseSwipe, 100, e)
+})
 
 onclick         = throttle(regen)
 ontouchstart    = throttle(regen)
