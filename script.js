@@ -18,15 +18,15 @@ function genBlock(block) {
 }
 
 function gen() {
+    let board       = get("board")    
+    board.className = "generating"
+    
     let radius      = 7.5
-    let board       = get("board")
     let helperBlock = get("helper_block")
     let height      = Math.floor(board.offsetHeight / helperBlock.offsetHeight)
     let width       = Math.floor(board.offsetWidth / helperBlock.offsetWidth)
     let x           = Math.floor(width / 2)
     let y           = Math.floor(height / 2)
-    
-    board.className = "generating"
 
     for(let h = 0; h < height; h++) {
         let row         = make("div")
