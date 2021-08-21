@@ -152,6 +152,7 @@ function throttle(func, wait = 500) {
 
 onclick = throttle(regen)
 
+/*
 function stopTouch(e) {
     e.preventDefault()
     e.stopImmediatePropagation()
@@ -164,9 +165,9 @@ window.addEventListener("touchstart", (e) => {
 window.addEventListener("touchend", (e) => {
     stopTouch(e)
 }, { passive: false })
-
+*/
 window.addEventListener("touchmove", (e) => {
-    stopTouch(e)
+    //stopTouch(e)
     
     parseSwipe = (e) => {
         let lastY, lastX
