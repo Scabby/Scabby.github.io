@@ -31,26 +31,24 @@ body {
   from { color: #00000000; }
 }
 
-/* defines dimensions used by all blocks */
 #helper_block {
   width: 10px;
   height: 10px;
 }
 
 #board {
-  overflow: visible;
   position: absolute;
+  overflow: visible;
   
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 
-  .generating {
-    width: 90vw;
-    height: 90vh;
-    max-width: 1000px;
-    max-height: 1000px;
-  }
+  width: 90vw;
+  height: 90vh;
+
+  max-width: 1000px;
+  max-height: 1000px;
 }
 
 @media (orientation: portrait) {
@@ -61,11 +59,12 @@ body {
 
 .row {
   display: flex;
-  justify-content: center;
-  overflow: inherit;
+  overflow: visible;
   
-  width:  100%;
-  height: 10px; /* overwritten by helper_block */
+  height: 10px;
+
+  justify-content: center;
+  width: 100%;
 }
 
 span {
@@ -74,14 +73,12 @@ span {
 
   box-sizing: content-box;
   display: inline-table;
-  font-size: 8px;
-  overflow: inherit;
   text-align: center;
 
-  /* overwritten by helper_block */
   width: 10px;
   min-width: 10px;
   height: 10px;
+  font-size: 8px;
 }
 
 .white      { color: #e3dabe; }
