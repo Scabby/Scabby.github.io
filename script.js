@@ -24,16 +24,20 @@ function genBlock(block) {
 }
 
 function getBlockHeight() {
+    let board, helperBlock
+    
     return Math.floor(
-        get("board").offsetHeight /
-        get("helper_block").offsetHeight
+        board.offsetHeight /
+        helperBlock.offsetHeight
     )
 }
 
 function getBlockWidth() {
+    let board, helperBlock
+    
     return Math.floor(
-        get("board").offsetWidth /
-        get("helper_block").offsetWidth
+        board.offsetWidth /
+        helperBlock.offsetWidth
     )
 }
 
@@ -49,10 +53,9 @@ function calcInMargin(size, margin) {
     }
 }
 
-function gen() {  
-    let radius      = 7.5
-    let margin      = 15
-    let board       = get("board")
+function gen() {
+    let radius, margin, board
+    
     let height      = getBlockHeight()
     let width       = getBlockWidth()
     let x           = calcInMargin(width, margin)
@@ -87,12 +90,12 @@ function gen() {
 }
 
 function regen() {
-    let board = get("board")
+    let board, helperBlock
+    
     board.replaceChildren()
     board.className = "generating"
     update()
 
-    let helperBlock     = get("helper_block")
     board.style.height  = getBlockHeight() * helperBlock.offsetHeight
     board.style.width   = getBlockWidth() * helperBlock.offsetWidth
 
@@ -107,8 +110,7 @@ function moveLeft() {}
 function moveRight() {}
 
 function parseSwipe(e) {
-    let lastY
-    let lastX
+    let lastY, lastX
 
     let touch       = e.originalEvent.touches[0]
     let currentY    = touch.clientY
@@ -135,7 +137,7 @@ function parseSwipe(e) {
 }
 
 function throttle(func, wait = 500) {
-    let shouldWait = false
+    let shouldWait
     
     return (... args) => {
         if(!shouldWait) {
@@ -166,3 +168,9 @@ onkeydown = (e) => {
 onclick         = throttle(regen)
 ontouchstart    = throttle(regen)
 window.addEventListener("load", regen)
+
+
+radius      = 7.5
+margin      = 15 
+board       = get("board")
+helperBlock = get("helperBlock")
