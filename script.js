@@ -17,20 +17,23 @@ function update(element) {
     element.style.display   = display
 }
 
-function genBlock(block) {
-    let r = Math.floor(Math.random() * 100) + 1
-    let text
-    let color
-
-    if(r < 70)      { return }
+function calcBlock(block, value) {
+    let text, color
+    
+    if(r < 70)      { text = ""; color = "" }
     else if(r < 75) { text = "."; color = "dark_grey" }
     else if(r < 85) { text = ","; color = "grey" }
     else if(r < 95) { text = ":"; color = "light_grey" }
     else if(r < 97) { text = ";"; color = "white" }
     else            { text = "!"; color = "red" }
-
+    
     block.textContent   = text
     block.className     = color
+}
+
+function genBlock(block) {
+    let r = Math.floor(Math.random() * 100) + 1
+    calcBlock(block, r)
 }
 
 function makePlayer(block) {
@@ -120,7 +123,8 @@ function move(y, x) {
     if(nextY >= 0 && nextY < boardHeight &&
        nextX >= 0 && nextX < boardWidth)
     {
-        playerBlock.remove()
+        calcBlock(playerBlock, 0)
+        
         playerY = nextY
         playerX = nextX
 
