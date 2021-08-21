@@ -20,12 +20,12 @@ function update(element) {
 function calcBlock(block, value) {
     let text, color
     
-    if(r < 70)      { text = ""; color = "" }
-    else if(r < 75) { text = "."; color = "dark_grey" }
-    else if(r < 85) { text = ","; color = "grey" }
-    else if(r < 95) { text = ":"; color = "light_grey" }
-    else if(r < 97) { text = ";"; color = "white" }
-    else            { text = "!"; color = "red" }
+    if(value < 70)      { text = ""; color = "" }
+    else if(value < 75) { text = "."; color = "dark_grey" }
+    else if(value < 85) { text = ","; color = "grey" }
+    else if(value < 95) { text = ":"; color = "light_grey" }
+    else if(value < 97) { text = ";"; color = "white" }
+    else                { text = "!"; color = "red" }
     
     block.textContent   = text
     block.className     = color
