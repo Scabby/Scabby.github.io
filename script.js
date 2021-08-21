@@ -5,7 +5,7 @@ function getBlock(y, x) {
     let blocks = get(rowPre + y).children
     
     for(let i = 0; i < blocks.length; i++) {
-        if(blocks[i].id = blockPre + x) {
+        if(blocks[i].id == blockPre + x) {
             return blocks[i]
         }
     }
@@ -128,7 +128,7 @@ function move(y, x) {
         playerY = nextY
         playerX = nextX
 
-        makePlayer(getBlock(PlayerY, playerX))
+        makePlayer(getBlock(playerY, playerX))
     }
 }
 
