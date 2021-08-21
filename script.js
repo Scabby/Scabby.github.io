@@ -58,9 +58,8 @@ function regen() {
 
     board.className     = "generated"
     
-    let helperBlock     = get("helper_block")
-    board.style.width   = (width * helperBlock.offsetWidth) + "px"
-    board.style.height  = (height * helperBlock.offsetHeight) + "px"
+    board.style.width   = board.offsetWidth
+    board.style.height  = board.offsetHeight
 }
 
 function throttle(func, timeout = 300) {
