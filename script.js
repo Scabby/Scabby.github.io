@@ -33,7 +33,7 @@ function getBlockWidth() {
 
 function calcInMargin(size, margin) {
     Math.floor(
-        (Math.random * size) -
+        (Math.random() * size) -
         (margin * 2)
     ) + margin
 }
