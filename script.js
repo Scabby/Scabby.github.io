@@ -83,8 +83,8 @@ function regen() {
     window.requestAnimationFrame(gen)
 
     let helperBlock     = get("helper_block")
-    board.style.height  = getBlockHeight() * helperBlock.offsetHeight()
-    board.style.width   = getBlockWidth() * helperBlock.offsetWidth()
+    board.style.height  = getBlockHeight() * helperBlock.offsetHeight
+    board.style.width   = getBlockWidth() * helperBlock.offsetWidth
     board.className     = "generated"
 }
 
