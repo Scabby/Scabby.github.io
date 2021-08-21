@@ -3,7 +3,7 @@ function make(type) { return document.createElement(type) }
 
 function update() {
     window.dispatchEvent(
-        new Event('resize')
+        new Event("resize")
     )
 }
 
@@ -24,8 +24,6 @@ function genBlock(block) {
 }
 
 function getBlockHeight() {
-    let board, helperBlock
-    
     return Math.floor(
         this.board.offsetHeight /
         this.helperBlock.offsetHeight
@@ -33,8 +31,6 @@ function getBlockHeight() {
 }
 
 function getBlockWidth() {
-    let board, helperBlock
-    
     return Math.floor(
         this.board.offsetWidth /
         this.helperBlock.offsetWidth
@@ -54,12 +50,10 @@ function calcInMargin(size, margin) {
 }
 
 function gen() {
-    let radius, margin, board
-    
-    let height      = getBlockHeight()
-    let width       = getBlockWidth()
-    let x           = calcInMargin(width, this.margin)
-    let y           = calcInMargin(height, this.margin)
+    let height  = getBlockHeight()
+    let width   = getBlockWidth()
+    let x       = calcInMargin(width, margin)
+    let y       = calcInMargin(height, margin)
 
     for(let h = 0; h < height; h++) {
         let row         = make("div")
@@ -74,7 +68,7 @@ function gen() {
             let isWithinRadius = (
                 Math.pow(w - x, 2) +
                 Math.pow(h - y, 2) <=
-                Math.pow(this.radius, 2)
+                Math.pow(radius, 2)
             )
 
             if(isWithinRadius) {
@@ -85,21 +79,21 @@ function gen() {
             } else { genBlock(block) }
         }
         
-        this.board.appendChild(row)
+        board.appendChild(row)
     }
 }
 
 function regen() {
-    this.board.replaceChildren()
-    this.board.className = "generating"
+    board.replaceChildren()
+    board.className = "generating"
     update()
 
-    this.board.style.height  = getBlockHeight() * this.helperBlock.offsetHeight
-    this.board.style.width   = getBlockWidth() * this.helperBlock.offsetWidth
+    board.style.height  = getBlockHeight() * helperBlock.offsetHeight
+    board.style.width   = getBlockWidth() * helperBlock.offsetWidth
 
     gen()
 
-    this.board.className = "generated"
+    board.className = "generated"
 }
 
 function moveUp() {}
@@ -167,7 +161,7 @@ onclick         = throttle(regen)
 ontouchstart    = throttle(regen)
 window.addEventListener("load", regen)
 
-this.radius         = 7.5
-this.margin         = 15 
-this.board          = get("board")
-this.helperBlock    = get("helperBlock")
+radius         = 7.5
+margin         = 15 
+board          = get("board")
+helperBlock    = get("helperBlock")
