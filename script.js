@@ -52,8 +52,9 @@ function calcInMargin(size, margin) {
 function gen() {
     let height  = getBlockHeight()
     let width   = getBlockWidth()
-    let x       = calcInMargin(width, margin)
-    let y       = calcInMargin(height, margin)
+    
+    playerX = calcInMargin(width, margin)
+    playerY = calcInMargin(height, margin)
 
     for(let h = 0; h < height; h++) {
         let row         = make("div")
@@ -66,13 +67,13 @@ function gen() {
             row.appendChild(block)
             
             let isWithinRadius = (
-                Math.pow(w - x, 2) +
-                Math.pow(h - y, 2) <=
+                Math.pow(w - playerX, 2) +
+                Math.pow(h - playerY, 2) <=
                 Math.pow(radius, 2)
             )
 
             if(isWithinRadius) {
-                if(w == x && h == y) {
+                if(w == playerX && h == playerY) {
                     block.textContent   = "@"
                     block.className     = "blue"
                 }
@@ -169,3 +170,5 @@ onload = () => {
 
 radius  = 7.5
 margin  = 15
+playerY = 0
+playerX = 0
