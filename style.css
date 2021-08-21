@@ -25,9 +25,11 @@
 :root { --size: 10px; }
 
 body {
+  overflow: hidden;
+  position: fixed;
+  left: 50%;
   background-color: #302e2c;
   height: 100%;
-  overflow: hidden;
 }
 
 @keyframes fadein {
