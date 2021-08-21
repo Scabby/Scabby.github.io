@@ -83,19 +83,17 @@ function gen() {
 function regen() {
     let board = get("board")
     board.replaceChildren()
-    
-    let writeSize = () => {
-        let helperBlock     = get("helper_block")
-        board.style.height  = getBlockHeight() * helperBlock.offsetHeight
-        board.style.width   = getBlockWidth() * helperBlock.offsetWidth
-        board.className     = "generated"
-    }
 
     board.className = "generating"
     window.requestAnimationFrame(
         () => {
-            writeSize()
+            let helperBlock     = get("helper_block")
+            board.style.height  = getBlockHeight() * helperBlock.offsetHeight
+            board.style.width   = getBlockWidth() * helperBlock.offsetWidth
+            
             gen()
+            
+            board.className = "generated"
         }
     )
 }
