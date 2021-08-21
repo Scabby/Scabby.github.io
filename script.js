@@ -56,10 +56,9 @@ function regen() {
 
     window.requestAnimationFrame(gen)
 
-    board.className     = "generated"
-    
     board.style.width   = board.offsetWidth
     board.style.height  = board.offsetHeight
+    board.className     = "generated"
 }
 
 function throttle(func, timeout = 300) {
