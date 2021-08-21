@@ -132,10 +132,10 @@ function move(y, x) {
     }
 }
 
-function moveUp()       { move(-1, 0) }
-function moveDown()     { move(1, 0) }
-function moveLeft()     { move(0, -1) }
-function moveRight()    { move(0, 1) }
+function moveUp()       { move(-1, 0);  console.log("up") }
+function moveDown()     { move(1, 0);   console.log("down") }
+function moveLeft()     { move(0, -1);  console.log("left") }
+function moveRight()    { move(0, 1);   console.log("right") }
 
 function throttle(func, wait = 500) {
     let shouldWait
