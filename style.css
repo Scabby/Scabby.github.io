@@ -27,9 +27,13 @@
 body {
   overflow: hidden;
   position: fixed;
-  left: 50%;
   background-color: #302e2c;
-  height: 100%;
+  
+  left: 50%;
+  top: 50%;
+  
+  height: 0px;
+  width: 0px;
 }
 
 @keyframes fadein {
