@@ -147,7 +147,7 @@ function throttle(func, wait = 500) {
 }
 
 onclick         = throttle(regen)
-ontouchstart    = throttle(regen)
+//ontouchstart    = throttle(regen)
 
 ontouchmove = (e) => {
     e.preventDefault()
