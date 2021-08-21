@@ -85,7 +85,7 @@ function regen() {
     board.replaceChildren()
 
     board.className = "generating"
-    window.requestAnimationFrame(
+    window.setTimeout(
         () => {
             let helperBlock     = get("helper_block")
             board.style.height  = getBlockHeight() * helperBlock.offsetHeight
@@ -94,7 +94,8 @@ function regen() {
             gen()
             
             board.className = "generated"
-        }
+        },
+        100
     )
 }
 
