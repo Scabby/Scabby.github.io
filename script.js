@@ -162,7 +162,7 @@ onkeydown = (e) => {
 
 onload = () => {
     board          = get("board")
-    helperBlock    = get("helperBlock")
+    helperBlock    = get("helper_block")
     regen()
 })
 
