@@ -20,13 +20,14 @@
   margin: 0;
 
   color: #e3dabe;
-  overflow: hidden;
 }
 
 :root { --size: 10px; }
 
 body {
   background-color: #302e2c;
+  height: 100%;
+  overflow: hidden;
 }
 
 @keyframes fadein {
@@ -39,7 +40,6 @@ body {
 }
 
 #board {
-  overflow: visible;
   position: absolute;
   
   top: 50%;
@@ -63,7 +63,6 @@ body {
 .row {
   display: flex;
   justify-content: center;
-  overflow: inherit;
   
   width:  100%;
   height: var(--size);
@@ -76,7 +75,6 @@ span {
   box-sizing: content-box;
   display: inline-table;
   font-size: 8px;
-  overflow: inherit;
   text-align: center;
 
   width: var(--size);
