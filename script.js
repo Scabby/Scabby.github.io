@@ -204,8 +204,8 @@ margin      = 15
 rowPre      = "row"
 blockPre    = "block"
 
-boardWidth
-boardHeight
-playerY
-playerX
-playerBlock
+let boardWidth,
+    boardHeight,
+    playerY,
+    playerX,
+    playerBlock
