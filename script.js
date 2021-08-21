@@ -1,6 +1,12 @@
 function get(id)    { return document.getElementById(id) }
 function make(type) { return document.createElement(type) }
 
+function update() {
+    window.dispatchEvent(
+        new Event('resize')
+    )
+}
+
 function genBlock(block) {
     let r = Math.floor(Math.random() * 100) + 1
     let text
@@ -84,6 +90,7 @@ function regen() {
     let board = get("board")
     board.replaceChildren()
     board.className = "generating"
+    update()
 
     let helperBlock     = get("helper_block")
     board.style.height  = getBlockHeight() * helperBlock.offsetHeight
@@ -93,6 +100,11 @@ function regen() {
 
     board.className = "generated"
 }
+
+function moveUp() {}
+function moveDown() {}
+function moveLeft() {}
+function moveRight() {}
 
 function parseSwipe(e) {
     let lastY
@@ -109,13 +121,13 @@ function parseSwipe(e) {
     if(isYSwipe) {
         let isUp = currentY < lastY
         
-        if(isUp)    {}
-        else        {}
+        if(isUp)    { moveUp() }
+        else        { moveDown() }
     } else {
         let isLeft = currentX < lastX
         
-        if(isLeft)  {}
-        else        {}
+        if(isLeft)  { moveLeft() }
+        else        { moveRight() }
     }
     
     lastY = currentY
@@ -139,6 +151,17 @@ document.addEventListener("touchmove", (e) => {
     e.preventDefault()
     throttle(parseSwipe, 100, e)
 })
+
+onkeydown = (e) => {
+    let key = e.code
+    
+    switch(key) {
+        case "w": moveUp();     break
+        case "a": moveLeft();   break
+        case "s": moveDown();   break
+        case "d": moveRight();  break
+    }
+}
 
 onclick         = throttle(regen)
 ontouchstart    = throttle(regen)
