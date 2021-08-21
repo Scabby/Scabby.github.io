@@ -148,12 +148,7 @@ function throttle(func, wait = 500) {
 
 onclick = throttle(regen)
 
-window.onscroll = () => {
-    window.scrollTo(
-        window.pageXOffset || document.documentElement.scrollLeft,
-        window.pageYOffset || document.documentElement.scrollTop
-    )
-}
+window.onscroll = null
 
 ontouchmove = (e) => {
     e.preventDefault()
