@@ -53,7 +53,7 @@ body {
 }
 
 @media (orientation: portrait) {
-  #board {
+  #board.generating {
     height: 80vh;
   }
 }
