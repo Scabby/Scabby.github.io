@@ -43,13 +43,13 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
 
-  .generating {
-    width: 90vw;
-    height: 90vh;
-    max-width: 1000px;
-    max-height: 1000px;
-  }
+#board.generating {
+  width: 90vw;
+  height: 90vh;
+  max-width: 1000px;
+  max-height: 1000px;
 }
 
 @media (orientation: portrait) {
