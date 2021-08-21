@@ -37,18 +37,19 @@ body {
 }
 
 #board {
-  position: absolute;
   overflow: visible;
+  position: absolute;
   
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 
-  width: 90vw;
-  height: 90vh;
-
-  max-width: 1000px;
-  max-height: 1000px;
+  .generating {
+    width: 90vw;
+    height: 90vh;
+    max-width: 1000px;
+    max-height: 1000px;
+  }
 }
 
 @media (orientation: portrait) {
@@ -59,12 +60,11 @@ body {
 
 .row {
   display: flex;
-  overflow: visible;
-  
-  height: 10px;
-
   justify-content: center;
-  width: 100%;
+  overflow: inherit;
+  
+  width:  100%;
+  height: 10px;
 }
 
 span {
@@ -73,12 +73,13 @@ span {
 
   box-sizing: content-box;
   display: inline-table;
+  font-size: 8px;
+  overflow: inherit;
   text-align: center;
 
   width: 10px;
   min-width: 10px;
   height: 10px;
-  font-size: 8px;
 }
 
 .white      { color: #e3dabe; }
