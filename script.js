@@ -167,5 +167,5 @@ onload = () => {
     regen()
 }
 
-radius         = 7.5
-margin         = 15
+radius  = 7.5
+margin  = 15
