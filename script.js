@@ -41,7 +41,7 @@ function calcInMargin(size, margin) {
 
 function gen() {  
     let radius      = 7.5
-    let margin      = 10
+    let margin      = 15
     let board       = get("board")
     let height      = getBlockHeight()
     let width       = getBlockWidth()
