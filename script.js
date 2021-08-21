@@ -17,11 +17,9 @@ function genBlock(block) {
     block.className     = color
 }
 
-function gen() {
-    let board       = get("board")    
-    board.className = "generating"
-    
+function gen() {  
     let radius      = 7.5
+    let board       = get("board")  
     let helperBlock = get("helper_block")
     let height      = Math.floor(board.offsetHeight / helperBlock.offsetHeight)
     let width       = Math.floor(board.offsetWidth / helperBlock.offsetWidth)
@@ -43,23 +41,24 @@ function gen() {
                     block.textContent   = "@"
                     block.className     = "blue"
                 }
-            } else {
-                genBlock(block)
-            }
+            } else { genBlock(block) }
         }
-
+        
         board.appendChild(row)
     }
-    
-    board.className     = "generated"
-    board.style.width   = (width * helperBlock.offsetWidth) + "px"
-    board.style.height  = (height * helperBlock.offsetHeight) + "px"
 }
 
 function regen() {
     let board = get("board")
     board.replaceChildren()
-    gen()
+    
+    board.className = "generating"
+
+    window.requestAnimationFrame(gen())
+
+    board.className     = "generated"
+    board.style.width   = (width * helperBlock.offsetWidth) + "px"
+    board.style.height  = (height * helperBlock.offsetHeight) + "px"
 }
 
 function throttle(func, timeout = 300) {
