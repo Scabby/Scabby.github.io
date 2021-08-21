@@ -32,11 +32,15 @@ function getBlockWidth() {
 }
 
 function calcInMargin(size, margin) {
-    return Math.round(
-        Math.random() *
-        (size - margin * 2) +
-        margin
-    )
+    if(size <= margin * 2) {
+        return Math.floor(size / 2)
+    } else {
+        return Math.round(
+            Math.random() *
+            (size - margin * 2) +
+            margin
+        )
+    }
 }
 
 function gen() {  
