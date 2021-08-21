@@ -101,33 +101,6 @@ function moveDown() {}
 function moveLeft() {}
 function moveRight() {}
 
-function parseSwipe(e) {
-    let lastY, lastX
-
-    let touch       = e.originalEvent.touches[0]
-    let currentY    = touch.clientY
-    let currentX    = touch.clientX
-    let deltaX      = currentX - lastX
-    let deltaY      = currentY - lastY
-    
-    let isYSwipe    = Math.abs(deltaY) > Math.abs(deltaX)
-
-    if(isYSwipe) {
-        let isUp = currentY < lastY
-        
-        if(isUp)    { moveUp() }
-        else        { moveDown() }
-    } else {
-        let isLeft = currentX < lastX
-        
-        if(isLeft)  { moveLeft() }
-        else        { moveRight() }
-    }
-    
-    lastY = currentY
-    lastX = currentX
-}
-
 function throttle(func, wait = 500) {
     let shouldWait
     
@@ -146,6 +119,34 @@ ontouchstart    = throttle(regen)
 
 ontouchmove = (e) => {
     e.preventDefault()
+    
+    parseSwipe = (e) => {
+        let lastY, lastX
+
+        let touch       = e.originalEvent.touches[0]
+        let currentY    = touch.clientY
+        let currentX    = touch.clientX
+        let deltaX      = currentX - lastX
+        let deltaY      = currentY - lastY
+        
+        let isYSwipe    = Math.abs(deltaY) > Math.abs(deltaX)
+        
+        if(isYSwipe) {
+            let isUp = currentY < lastY
+
+            if(isUp)    { moveUp() }
+            else        { moveDown() }
+        } else {
+            let isLeft = currentX < lastX
+
+            if(isLeft)  { moveLeft() }
+            else        { moveRight() }
+        }
+        
+        lastY = currentY
+        lastX = currentX
+    }
+    
     throttle(parseSwipe, 100, e)
 }
 
