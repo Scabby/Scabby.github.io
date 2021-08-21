@@ -17,14 +17,35 @@ function genBlock(block) {
     block.className     = color
 }
 
+function getBlockHeight() {
+    return Math.floor(
+        get("board").offsetHeight /
+        get("helper_block").offsetHeight
+    )
+}
+
+function getBlockWidth() {
+    return Math.floor(
+        get("board").offsetWidth /
+        get("helper_block").offsetWidth
+    )
+}
+
+function calcInMargin(size, margin) {
+    Math.floor(
+        (Math.random * size) -
+        (margin * 2)
+    ) + margin
+}
+
 function gen() {  
     let radius      = 7.5
-    let board       = get("board")  
-    let helperBlock = get("helper_block")
-    let height      = Math.floor(board.offsetHeight / helperBlock.offsetHeight)
-    let width       = Math.floor(board.offsetWidth / helperBlock.offsetWidth)
-    let x           = Math.floor(width / 2)
-    let y           = Math.floor(height / 2)
+    let margin      = 10
+    let board       = get("board")
+    let height      = getBlockHeight()
+    let width       = getBlockWidth()
+    let x           = calcInMargin(width, margin)
+    let y           = calcInMargin(height, margin)
 
     for(let h = 0; h < height; h++) {
         let row         = make("div")
@@ -35,8 +56,14 @@ function gen() {
             let block   = make("span")
             block.id    = "block " + w
             row.appendChild(block)
+            
+            let isWithinRadius = (
+                Math.pow(w - x, 2) +
+                Math.pow(h - y, 2) <=
+                radius * radius
+            )
 
-            if(Math.pow(w - x, 2) + Math.pow(h - y, 2) <= radius * radius) {
+            if(isWithinRadius) {
                 if(w == x && h == y) {
                     block.textContent   = "@"
                     block.className     = "blue"
@@ -51,13 +78,13 @@ function gen() {
 function regen() {
     let board = get("board")
     board.replaceChildren()
-    
-    board.className = "generating"
 
+    board.className = "generating"
     window.requestAnimationFrame(gen)
 
-    board.style.width   = board.offsetWidth
-    board.style.height  = board.offsetHeight
+    let helperBlock     = get("helper_block")
+    board.style.height  = getBlockHeight() * helperBlock.offsetHeight()
+    board.style.width   = getBlockWidth() * helperBlock.offsetWidth()
     board.className     = "generated"
 }
 
@@ -76,10 +103,10 @@ function throttle(func, timeout = 300) {
     }
 }
 
-document.ontouchmove = function (e) {
+document.ontouchmove = (e) => {
   e.preventDefault();
   
-  // player movement?? 
+  // player movement??
 }
 
 onclick         = throttle(regen)
