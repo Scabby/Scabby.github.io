@@ -107,7 +107,7 @@ function regen() {
 
         gen()
         
-        board.className = "generated
+        board.className = "generated"
     })
 }
 
