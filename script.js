@@ -159,9 +159,13 @@ onkeydown = (e) => {
 
 onclick         = throttle(regen)
 ontouchstart    = throttle(regen)
-window.addEventListener("load", regen)
+
+window.addEventListener("load", () => {
+    board          = get("board")
+    helperBlock    = get("helperBlock")
+    regen()
+})
 
 radius         = 7.5
 margin         = 15 
-board          = get("board")
-helperBlock    = get("helperBlock")
+
