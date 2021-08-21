@@ -168,5 +168,4 @@ onload = () => {
 }
 
 radius         = 7.5
-margin         = 15 
-
+margin         = 15
