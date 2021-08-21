@@ -11,10 +11,10 @@ function getBlock(y, x) {
     }
 }
 
-function update() {
-    window.dispatchEvent(
-        new Event("resize")
-    )
+function update(element) {
+    let display             = element.style.display
+    element.style.display   = "none"
+    element.style.display   = display
 }
 
 function genBlock(block) {
@@ -97,7 +97,7 @@ function gen() {
 function regen() {
     board.replaceChildren()
     board.className = "generating"
-    update()
+    update(board)
 
     board.style.height  = getBlockHeight() * helperBlock.offsetHeight
     board.style.width   = getBlockWidth() * helperBlock.offsetWidth
