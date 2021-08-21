@@ -141,7 +141,10 @@ function throttle(func, wait = 500) {
     }
 }
 
-document.addEventListener("touchmove", (e) => {
+onclick         = throttle(regen)
+ontouchstart    = throttle(regen)
+
+ontouchmove = (e) => {
     e.preventDefault()
     throttle(parseSwipe, 100, e)
 })
@@ -157,10 +160,7 @@ onkeydown = (e) => {
     }
 }
 
-onclick         = throttle(regen)
-ontouchstart    = throttle(regen)
-
-window.addEventListener("load", () => {
+onload = () => {
     board          = get("board")
     helperBlock    = get("helperBlock")
     regen()
