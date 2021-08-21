@@ -25,10 +25,13 @@ function gen() {
     let width       = Math.floor(board.offsetWidth / helperBlock.offsetWidth)
     let x           = Math.floor(width / 2)
     let y           = Math.floor(height / 2)
+    
+    board.className = "generating"
 
     for(let h = 0; h < height; h++) {
-        let row = make("div")
-        row.id  = "row " + h
+        let row         = make("div")
+        row.id          = "row " + h
+        row.className   = "row"
 
         for(let w = 0; w < width; w++) {
             let block   = make("span")
@@ -47,6 +50,10 @@ function gen() {
 
         board.appendChild(row)
     }
+    
+    board.className     = "generated"
+    board.style.width   = (width * helperBlock.offsetWidth) + "px"
+    board.style.height  = (height * helperBlock.offsetHeight) + "px"
 }
 
 function regen() {
