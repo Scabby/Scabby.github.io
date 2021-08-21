@@ -152,9 +152,15 @@ function throttle(func, wait = 500) {
 
 onclick = throttle(regen)
 
-window.onscroll = null
+window.addEventListener("touchstart", (e) => {
+    e.preventDefault()
+}, { passive: false })
 
-ontouchmove = (e) => {
+window.addEventListener("touchend", (e) => {
+    e.preventDefault()
+}, { passive: false })
+
+window.addEventListener("touchmove", (e) => {
     e.preventDefault()
     
     parseSwipe = (e) => {
@@ -185,7 +191,7 @@ ontouchmove = (e) => {
     }
     
     throttle(parseSwipe, 100, e)
-}
+}, { passive: false })
 
 onkeydown = (e) => {
     let key = e.code
