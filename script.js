@@ -27,8 +27,8 @@ function getBlockHeight() {
     let board, helperBlock
     
     return Math.floor(
-        board.offsetHeight /
-        helperBlock.offsetHeight
+        this.board.offsetHeight /
+        this.helperBlock.offsetHeight
     )
 }
 
@@ -36,8 +36,8 @@ function getBlockWidth() {
     let board, helperBlock
     
     return Math.floor(
-        board.offsetWidth /
-        helperBlock.offsetWidth
+        this.board.offsetWidth /
+        this.helperBlock.offsetWidth
     )
 }
 
@@ -58,8 +58,8 @@ function gen() {
     
     let height      = getBlockHeight()
     let width       = getBlockWidth()
-    let x           = calcInMargin(width, margin)
-    let y           = calcInMargin(height, margin)
+    let x           = calcInMargin(width, this.margin)
+    let y           = calcInMargin(height, this.margin)
 
     for(let h = 0; h < height; h++) {
         let row         = make("div")
@@ -74,7 +74,7 @@ function gen() {
             let isWithinRadius = (
                 Math.pow(w - x, 2) +
                 Math.pow(h - y, 2) <=
-                radius * radius
+                Math.pow(this.radius, 2)
             )
 
             if(isWithinRadius) {
@@ -85,23 +85,23 @@ function gen() {
             } else { genBlock(block) }
         }
         
-        board.appendChild(row)
+        this.board.appendChild(row)
     }
 }
 
 function regen() {
     let board, helperBlock
     
-    board.replaceChildren()
-    board.className = "generating"
+    this.board.replaceChildren()
+    this.board.className = "generating"
     update()
 
-    board.style.height  = getBlockHeight() * helperBlock.offsetHeight
-    board.style.width   = getBlockWidth() * helperBlock.offsetWidth
+    this.board.style.height  = getBlockHeight() * this.helperBlock.offsetHeight
+    this.board.style.width   = getBlockWidth() * this.helperBlock.offsetWidth
 
     gen()
 
-    board.className = "generated"
+    this.board.className = "generated"
 }
 
 function moveUp() {}
