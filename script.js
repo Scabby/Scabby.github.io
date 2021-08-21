@@ -1,6 +1,16 @@
 function get(id)    { return document.getElementById(id) }
 function make(type) { return document.createElement(type) }
 
+function getBlock(y, x) {
+    let blocks = get(rowPre + y).children
+    
+    for(let i = 0; i < blocks.length; i++) {
+        if(blocks[i].id = blockPre + x) {
+            return blocks[i]
+        }
+    }
+}
+
 function update() {
     window.dispatchEvent(
         new Event("resize")
@@ -53,27 +63,27 @@ function gen() {
     let height  = getBlockHeight()
     let width   = getBlockWidth()
     
-    playerX = calcInMargin(width, margin)
     playerY = calcInMargin(height, margin)
+    playerX = calcInMargin(width, margin)
 
     for(let h = 0; h < height; h++) {
         let row         = make("div")
-        row.id          = "row " + h
-        row.className   = "row"
+        row.id          = rowPre + h
+        row.className   = rowPre
 
         for(let w = 0; w < width; w++) {
             let block   = make("span")
-            block.id    = "block " + w
+            block.id    = blockPre + w
             row.appendChild(block)
             
             let isWithinRadius = (
-                Math.pow(w - playerX, 2) +
-                Math.pow(h - playerY, 2) <=
+                Math.pow(h - playerY, 2) +
+                Math.pow(w - playerX, 2) <=
                 Math.pow(radius, 2)
             )
 
             if(isWithinRadius) {
-                if(w == playerX && h == playerY) {
+                if( h == playerY && w == playerX) {
                     block.textContent   = "@"
                     block.className     = "blue"
                 }
@@ -168,7 +178,10 @@ onload = () => {
     regen()
 }
 
-radius  = 7.5
-margin  = 15
+radius      = 7.5
+margin      = 15
+rowPre      = "row"
+blockPre    = "block"
+
 playerY = 0
 playerX = 0
