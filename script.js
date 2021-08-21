@@ -90,8 +90,6 @@ function gen() {
 }
 
 function regen() {
-    let board, helperBlock
-    
     this.board.replaceChildren()
     this.board.className = "generating"
     update()
