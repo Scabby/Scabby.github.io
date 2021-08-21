@@ -99,12 +99,23 @@ function regen() {
     board.className = "generating"
     update(board)
 
-    board.style.height  = getBlockHeight() * helperBlock.offsetHeight
-    board.style.width   = getBlockWidth() * helperBlock.offsetWidth
+    window.requestAnimationFrame(() => {
+        board.style.height  = getBlockHeight() * helperBlock.offsetHeight
+        board.style.width   = getBlockWidth() * helperBlock.offsetWidth
+        boardHeight         = board.style.height
+        boardWidth          = board.style.width
 
-    gen()
+        gen()
+        
+        board.className = "generated
+    })
+}
 
-    board.className = "generated"
+function move(y, x) {
+    playerBlock.remove()
+    playerBlock = getBlock(playerY + y, playerX + x)
+    playerY += y
+    playerX += x
 }
 
 function moveUp() {}
@@ -183,5 +194,8 @@ margin      = 15
 rowPre      = "row"
 blockPre    = "block"
 
-playerY = 0
-playerX = 0
+boardWidth  = unset
+boardHeight = unset
+playerY     = unset
+playerX     = unset
+playerBlock = unset
