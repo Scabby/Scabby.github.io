@@ -33,14 +33,20 @@ function genBlock(block) {
     block.className     = color
 }
 
-function getBlockHeight() {
+function makePlayer(block) {
+    playerBlock         = block
+    block.textContent   = "@"
+    block.className     = "blue"
+}
+
+function getBoardHeight() {
     return Math.floor(
         board.offsetHeight /
         helperBlock.offsetHeight
     )
 }
 
-function getBlockWidth() {
+function getBoardWidth() {
     return Math.floor(
         board.offsetWidth /
         helperBlock.offsetWidth
@@ -60,18 +66,15 @@ function calcInMargin(size, margin) {
 }
 
 function gen() {
-    let height  = getBlockHeight()
-    let width   = getBlockWidth()
-    
-    playerY = calcInMargin(height, margin)
-    playerX = calcInMargin(width, margin)
+    playerY = calcInMargin(boardHeight, margin)
+    playerX = calcInMargin(boardWidth, margin)
 
-    for(let h = 0; h < height; h++) {
+    for(let h = 0; h < boardHeight; h++) {
         let row         = make("div")
         row.id          = rowPre + h
         row.className   = rowPre
 
-        for(let w = 0; w < width; w++) {
+        for(let w = 0; w < boardWidth; w++) {
             let block   = make("span")
             block.id    = blockPre + w
             row.appendChild(block)
@@ -83,9 +86,8 @@ function gen() {
             )
 
             if(isWithinRadius) {
-                if( h == playerY && w == playerX) {
-                    block.textContent   = "@"
-                    block.className     = "blue"
+                if(h == playerY && w == playerX) {
+                    makePlayer(block)
                 }
             } else { genBlock(block) }
         }
@@ -100,10 +102,10 @@ function regen() {
     update(board)
 
     window.requestAnimationFrame(() => {
-        board.style.height  = getBlockHeight() * helperBlock.offsetHeight
-        board.style.width   = getBlockWidth() * helperBlock.offsetWidth
-        boardHeight         = board.style.height
-        boardWidth          = board.style.width
+        boardHeight         = getBoardHeight()
+        boardWidth          = getBoardWidth()
+        board.style.height  = boardHeight * helperBlock.offsetHeight
+        board.style.width   = boardWidth * helperBlock.offsetWidth
 
         gen()
         
@@ -112,16 +114,24 @@ function regen() {
 }
 
 function move(y, x) {
-    playerBlock.remove()
-    playerBlock = getBlock(playerY + y, playerX + x)
-    playerY += y
-    playerX += x
+    let nextY = playerY + y
+    let nextX = playerX + x
+
+    if(nextY >= 0 && nextY < boardHeight &&
+       nextX >= 0 && nextX < boardWidth)
+    {
+        playerBlock.remove()
+        playerY = nextY
+        playerX = nextX
+
+        makePlayer(getBlock(PlayerY, playerX))
+    }
 }
 
-function moveUp() {}
-function moveDown() {}
-function moveLeft() {}
-function moveRight() {}
+function moveUp()       { move(-1, 0) }
+function moveDown()     { move(1, 0) }
+function moveLeft()     { move(0, -1) }
+function moveRight()    { move(0, 1) }
 
 function throttle(func, wait = 500) {
     let shouldWait
