@@ -204,8 +204,8 @@ margin      = 15
 rowPre      = "row"
 blockPre    = "block"
 
-boardWidth  = unset
-boardHeight = unset
-playerY     = unset
-playerX     = unset
-playerBlock = unset
+boardWidth  = unassigned
+boardHeight = unassigned
+playerY     = unassigned
+playerX     = unassigned
+playerBlock = unassigned
