@@ -146,8 +146,14 @@ function throttle(func, wait = 500) {
     }
 }
 
-onclick         = throttle(regen)
-//ontouchstart    = throttle(regen)
+onclick = throttle(regen)
+
+window.onscroll = () => {
+    window.scrollTo(
+        window.pageXOffset || document.documentElement.scrollLeft,
+        window.pageYOffset || document.documentElement.scrollTop
+    )
+}
 
 ontouchmove = (e) => {
     e.preventDefault()
