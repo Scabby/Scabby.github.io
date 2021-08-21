@@ -25,15 +25,15 @@ function genBlock(block) {
 
 function getBlockHeight() {
     return Math.floor(
-        this.board.offsetHeight /
-        this.helperBlock.offsetHeight
+        board.offsetHeight /
+        helperBlock.offsetHeight
     )
 }
 
 function getBlockWidth() {
     return Math.floor(
-        this.board.offsetWidth /
-        this.helperBlock.offsetWidth
+        board.offsetWidth /
+        helperBlock.offsetWidth
     )
 }
 
