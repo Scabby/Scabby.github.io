@@ -159,14 +159,15 @@ function stopTouch(e) {
 
 window.addEventListener("touchstart", (e) => {
     stopTouch(e)
-}, { passive: false })
 
-window.addEventListener("touchend", (e) => {
-    stopTouch(e)
+    let lastY = e.touches[0].screenY
+    let lastX = e.touches[0].screenX
 }, { passive: false })
 
 window.addEventListener("touchmove", (e) => {
     stopTouch(e)
+    
+    if(!lastY || !lastX) { return }
     
     parseSwipe = (e) => {
         let lastY, lastX
@@ -174,11 +175,11 @@ window.addEventListener("touchmove", (e) => {
         let touch       = e.changedTouches[0]
         let currentY    = touch.screenY
         let currentX    = touch.screenX
-        let deltaX      = currentX - lastX
         let deltaY      = currentY - lastY
-        
+        let deltaX      = currentX - lastX
+
         let isYSwipe    = Math.abs(deltaY) > Math.abs(deltaX)
-        
+
         if(isYSwipe) {
             let isUp = currentY < lastY
 
@@ -190,17 +191,18 @@ window.addEventListener("touchmove", (e) => {
             if(isLeft)  { moveLeft() }
             else        { moveRight() }
         }
-        
-        lastY = currentY
-        lastX = currentX
     }
-    
+
     throttle(parseSwipe, 100, e)
+}, { passive: false })
+
+window.addEventListener("touchend", (e) => {
+    stopTouch(e)
 }, { passive: false })
 
 onkeydown = (e) => {
     let key = e.key
-    
+
     switch(key) {
         case "w": moveUp();     break
         case "a": moveLeft();   break
