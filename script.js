@@ -160,8 +160,8 @@ function stopTouch(e) {
 window.addEventListener("touchstart", (e) => {
     stopTouch(e)
 
-    let lastY = e.touches[0].screenY
-    let lastX = e.touches[0].screenX
+    lastY = e.touches[0].screenY
+    lastX = e.touches[0].screenX
 }, { passive: false })
 
 window.addEventListener("touchmove", (e) => {
