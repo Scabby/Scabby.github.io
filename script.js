@@ -172,12 +172,10 @@ window.addEventListener("touchmove", (e) => {
     parseSwipe = (e) => {
         let lastY, lastX
 
-        let touch       = e.changedTouches[0]
-        let currentY    = touch.screenY
-        let currentX    = touch.screenX
+        let currentY    = e.touches[0].screenY
+        let currentX    = e.touches[0].screenX
         let deltaY      = currentY - lastY
         let deltaX      = currentX - lastX
-
         let isYSwipe    = Math.abs(deltaY) > Math.abs(deltaX)
 
         if(isYSwipe) {
