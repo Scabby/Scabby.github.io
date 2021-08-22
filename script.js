@@ -171,7 +171,7 @@ window.addEventListener("touchmove", (e) => {
     parseSwipe = (e) => {
         let lastY, lastX
 
-        let touch       = e.touches[0]
+        let touch       = e.changedTouches[0]
         let currentY    = touch.screenY
         let currentX    = touch.screenX
         let deltaX      = currentX - lastX
