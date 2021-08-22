@@ -18,22 +18,13 @@
   user-select: none;
 
   margin: 0;
-
   color: #e3dabe;
 }
 
-:root { --size: 10px; }
+:root { --size: 13px; }
 
 body {
-  overflow: hidden;
-  position: fixed;
   background-color: #302e2c;
-  
-  left: 50%;
-  top: 50%;
-  
-  height: 0px;
-  width: 0px;
 }
 
 @keyframes fadein {
@@ -48,7 +39,7 @@ body {
 #board {
   position: absolute;
   cursor: none;
-  
+
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -69,23 +60,35 @@ body {
 
 .row {
   display: flex;
+  flex-direction: row;
   justify-content: center;
-  
-  width:  100%;
+
+  width: 100%;
   height: var(--size);
 }
 
-span {
-  animation-name: fadein;
-  animation-duration: 1s;
-
+.block {
   box-sizing: content-box;
   display: inline-table;
-  font-size: 8px;
-  text-align: center;
 
   width: var(--size);
-  min-width: var(--size);
+  height: var(--size);
+}
+
+p {
+  animation-name: fadein;
+  animation-duration: 1s;
+  
+  font-size: xx-small;
+  text-align: center;
+}
+
+.block:hover {
+  box-sizing: unset;
+
+  padding: calc(var(--size) / 5);
+  margin: calc(-1 * var(--size) / 5);
+  background-color: #e3dabe20;
 }
 
 .white      { color: #e3dabe; }
