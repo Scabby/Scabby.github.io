@@ -199,7 +199,7 @@ window.addEventListener("touchmove", (e) => {
 }, { passive: false })
 
 onkeydown = (e) => {
-    let key = e.code
+    let key = e.key
     
     switch(key) {
         case "w": moveUp();     break
