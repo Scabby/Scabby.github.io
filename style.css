@@ -20,6 +20,7 @@
   margin: 0;
 
   color: #e3dabe;
+  cursor: none;
 }
 
 :root { --size: 10px; }
