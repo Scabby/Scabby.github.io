@@ -172,8 +172,8 @@ window.addEventListener("touchmove", (e) => {
         let lastY, lastX
 
         let touch       = e.touches[0]
-        let currentY    = touch.clientY
-        let currentX    = touch.clientX
+        let currentY    = touch.pageY
+        let currentX    = touch.pageX
         let deltaX      = currentX - lastX
         let deltaY      = currentY - lastY
         
