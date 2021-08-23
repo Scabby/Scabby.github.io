@@ -88,12 +88,14 @@ p {
   overflow: inherit;
 }
 
-.block:hover {
-  box-sizing: unset;
+@media (hover) {
+  .block:hover {
+    box-sizing: unset;
 
-  padding: calc(var(--size) / 5);
-  margin: calc(-1 * var(--size) / 5);
-  background-color: #e3dabe20;
+    padding: calc(var(--size) / 5);
+    margin: calc(-1 * var(--size) / 5);
+    background-color: #e3dabe20;
+  }
 }
 
 .white      { color: #e3dabe; }
