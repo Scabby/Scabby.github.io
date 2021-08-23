@@ -179,9 +179,6 @@ function loopTouch(func) {
 window.addEventListener("touchstart", (e) => {
     e.preventDefault()
     animationTime = maxAnimationTime;
-
-    initialSwipeY = e.touches[0].pageY
-    initialSwipeX = e.touches[0].pageX
 }, { passive: false })
 
 window.addEventListener("touchmove", (e) => {
@@ -245,8 +242,6 @@ window.addEventListener("touchend", (e) => {
     e.preventDefault()
 
     stopLoopTouch   = true
-    initialSwipeY   = null
-    initialSwipeX   = null
 }, { passive: false })
 
 
@@ -288,6 +283,16 @@ onload = () => {
 }
 
 
+
+onresize() = () => {
+    initialSwipeY = Math.floor(window.innerHeight / 2)
+    initialSwipeX = Math.floor(window.innerWidth / 2)
+}
+
+
+
+initialSwipeY = Math.floor(window.innerHeight / 2)
+initialSwipeX = Math.floor(window.innerWidth / 2)
 
 playerIsMoving      = false
 stopLoopTouch       = true
