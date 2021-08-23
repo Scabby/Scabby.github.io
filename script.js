@@ -183,8 +183,6 @@ window.addEventListener("touchstart", (e) => {
 
 window.addEventListener("touchmove", (e) => {
     e.preventDefault()
-    
-    // implement speed based on distance from initial swipe xy instead of acceleration
 
     let currentY    = e.touches[0].pageY
     let currentX    = e.touches[0].pageX
