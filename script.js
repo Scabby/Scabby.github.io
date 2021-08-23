@@ -132,7 +132,7 @@ function regen() {
 
 function move(y, x) {
     if(playerIsMoving) { return }
-    
+
     if(animationTime > minAnimationTime) {
         let remainingTime = animationTime - minAnimationTime
         animationTime -= remainingTime / animationFriction
@@ -175,21 +175,30 @@ function moveRight()    { move(0, 1) }
 
 
 
+function loopTouch(func) {
+    if(stopLoopTouch) { return }
+    func.apply()
+    setTimeout( () => { loopTouch(func) }, 1)
+}
+
 window.addEventListener("touchstart", (e) => {
     e.preventDefault()
     animationTime = maxAnimationTime;
 
-    lastSwipeY = e.touches[0].pageY
-    lastSwipeX = e.touches[0].pageX
+    initialSwipeY = e.touches[0].pageY
+    initialSwipeX = e.touches[0].pageX
 }, { passive: false })
 
 window.addEventListener("touchmove", (e) => {
     e.preventDefault()
+    
+    // implement speed based on distance from initial swipe xy instead of acceleration
 
     let currentY    = e.touches[0].pageY
     let currentX    = e.touches[0].pageX
-    let deltaY      = currentY - lastSwipeY
-    let deltaX      = currentX - lastSwipeX
+    let deltaY      = currentY - initialSwipeY
+    let deltaX      = currentX - initialSwipeX
+
     let absY        = Math.abs(deltaY)
     let absX        = Math.abs(deltaX)
 
@@ -197,25 +206,47 @@ window.addEventListener("touchmove", (e) => {
     let yTooSmall   = absY < swipeThreshold
     let xTooSmall   = absX < swipeThreshold
 
-    if(yTooSmall || xTooSmall) { return }
-
-    if(isYSwipe) {
-        if(deltaY < 0)  { moveUp() }
-        else            { moveDown() }
-    } else {
-        if(deltaX < 0)  { moveLeft() }
-        else            { moveRight() }
+    if(yTooSmall || xTooSmall) {
+        stopLoopTouch = true
+        return
     }
 
-    lastSwipeY = currentY
-    lastSwipeX = currentX
+    let swipeDirection, moveDirection
+
+    if(isYSwipe) {
+        if(deltaY < 0)  {
+            swipeDirection  = "up"
+            moveDirection   = moveUp
+        } else {
+            swipeDirection  = "down"
+            moveDirection   = moveDown
+        }
+    } else {
+        if(deltaX < 0) {
+            swipeDirection  = "left"
+            moveDirection   = moveLeft
+        } else {
+            swipeDirection  = "right"
+            moveDirection   = moveRight
+        }
+    }
+
+    if(swipeDirection != lastSwipeDirection) {
+        stopLoopTouch = true
+    } else {
+        stopLoopTouch = false
+        loopTouch(moveDirection)
+    }
+
+    lastSwipeDirection = swipeDirection
 }, { passive: false })
 
 window.addEventListener("touchend", (e) => {
     e.preventDefault()
 
-    lastSwipeY = null
-    lastSwipeX = null
+    stopLoopTouch   = true
+    initialSwipeY   = null
+    initialSwipeX   = null
 }, { passive: false })
 
 
@@ -227,7 +258,7 @@ onclick = (e) => {}
 onkeydown = (e) => {
     let key = e.key.toLowerCase()
 
-    animationTime = minAnimationTime;
+    animationTime = minAnimationTime
 
     switch(key) {
         case "arrowup":
@@ -259,11 +290,12 @@ onload = () => {
 
 
 playerIsMoving      = false
-swipeThreshold      = 1
+stopLoopTouch       = true
+swipeThreshold      = 5
 
 minAnimationTime    = 70
 maxAnimationTime    = 180
-animationFriction   = 2
+animationFriction   = 3
 
 radius              = 7.5
 margin              = 15
@@ -274,8 +306,9 @@ let animationTime,
     board,
     boardWidth,
     boardHeight,
-    lastSwipeY,
-    lastSwipeX,
+    initialSwipeY,
+    initialSwipeX,
+    lastSwipeDirection,
     helperBlock,
     playerBlock,
     playerY,
