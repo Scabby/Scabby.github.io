@@ -295,7 +295,7 @@ swipeSensitivity    = 2
 maxSwipeDistance    = 100
 
 minAnimationTime    = 70
-maxAnimationTime    = 180
+maxAnimationTime    = 250
 
 radius              = 7.5
 margin              = 15
