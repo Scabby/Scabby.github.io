@@ -26,10 +26,6 @@
 
 body {
   background-color: #302e2c;
-  position: fixed;
-  
-  left: 50%;
-  top: 50%;
 }
 
 @keyframes fadein {
