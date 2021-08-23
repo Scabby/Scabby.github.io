@@ -132,6 +132,11 @@ function regen() {
 
 function move(y, x) {
     if(playerIsMoving) { return }
+    
+    if(animationTime > minAnimationTime) {
+        let remainingTime = animationTime - minAnimationTime
+        animationTime -= remainingTime / animationFriction
+    }
 
     playerIsMoving = true
 
@@ -180,11 +185,6 @@ window.addEventListener("touchstart", (e) => {
 
 window.addEventListener("touchmove", (e) => {
     e.preventDefault()
-
-    if(animationTime > minAnimationTime) {
-        let remainingTime = animationTime - minAnimationTime
-        animationTime -= remainingTime / animationFriction
-    }
 
     let currentY    = e.touches[0].pageY
     let currentX    = e.touches[0].pageX
