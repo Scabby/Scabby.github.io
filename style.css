@@ -17,6 +17,7 @@
   -ms-user-select: none;
   user-select: none;
 
+  overflow: hidden;
   margin: 0;
   color: #e3dabe;
 }
@@ -37,6 +38,7 @@ body {
 }
 
 #board {
+  overflow: visible;
   position: absolute;
   cursor: none;
 
@@ -62,6 +64,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  overflow: inherit;
 
   width: 100%;
   height: var(--size);
@@ -70,6 +73,7 @@ body {
 .block {
   box-sizing: content-box;
   display: inline-table;
+  overflow: inherit;
 
   width: var(--size);
   height: var(--size);
@@ -81,6 +85,7 @@ p {
   
   font-size: xx-small;
   text-align: center;
+  overflow: inherit;
 }
 
 .block:hover {
