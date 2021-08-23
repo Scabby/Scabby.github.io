@@ -133,11 +133,6 @@ function regen() {
 function move(y, x) {
     if(playerIsMoving) { return }
 
-    if(animationTime > minAnimationTime) {
-        let remainingTime = animationTime - minAnimationTime
-        animationTime -= remainingTime / animationFriction
-    }
-
     playerIsMoving = true
 
     let nextY = playerY + y
@@ -202,14 +197,19 @@ window.addEventListener("touchmove", (e) => {
     let absY        = Math.abs(deltaY)
     let absX        = Math.abs(deltaX)
 
-    let isYSwipe    = absY > absX
-    let yTooSmall   = absY < swipeThreshold
-    let xTooSmall   = absX < swipeThreshold
+    let distance    = Math.sqrt(Math.pow(absY, 2) + Math.pow(absX, 2))
+    let time        = distance / swipeSensitivity
 
-    if(yTooSmall || xTooSmall) {
+    if(time > maxAnimationTime) {
         stopLoopTouch = true
         return
+    } else if(time < minAnimationTime) {
+        animationTime = minAnimationTime
+    } else {
+        animationTime = time
     }
+
+    let isYSwipe    = absY > absX
 
     let swipeDirection, moveDirection
 
@@ -291,11 +291,10 @@ onload = () => {
 
 playerIsMoving      = false
 stopLoopTouch       = true
-swipeThreshold      = 1
+swipeSensitivity    = 3
 
 minAnimationTime    = 70
 maxAnimationTime    = 180
-animationFriction   = 3
 
 radius              = 7.5
 margin              = 15
