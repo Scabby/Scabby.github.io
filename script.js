@@ -175,7 +175,7 @@ window.addEventListener("touchstart", (e) => {
 
     lastSwipeY = e.touches[0].pageY
     lastSwipeX = e.touches[0].pageX
-})
+}, { passive: false })
 
 window.addEventListener("touchmove", (e) => {
     e.preventDefault()
@@ -184,50 +184,61 @@ window.addEventListener("touchmove", (e) => {
     let currentX    = e.touches[0].pageX
     let deltaY      = currentY - lastSwipeY
     let deltaX      = currentX - lastSwipeX
+    let absY        = Math.abs(deltaY)
+    let absX        = Math.abs(deltaX)
 
-    let isYSwipe    = Math.abs(deltaY) > Math.abs(deltaX)
-    let yTooSmall   = Math.abs(deltaY) < swipeThreshold
-    let xTooSmall   = Math.abs(deltaX) < swipeThreshold
+    let isYSwipe    = absY > absX
+    let yTooSmall   = absY < swipeThreshold
+    let xTooSmall   = absX < swipeThreshold
 
     if(yTooSmall || xTooSmall) { return }
 
     if(isYSwipe) {
-        let isUp = currentY < lastSwipeY
-
-        if(isUp)    { moveUp() }
-        else        { moveDown() }
+        if(deltaY < 0)  { moveUp() }
+        else            { moveDown() }
     } else {
-        let isLeft = currentX < lastSwipeX
-
-        if(isLeft)  { moveLeft() }
-        else        { moveRight() }
+        if(deltaX < 0)  { moveLeft() }
+        else            { moveRight() }
     }
 
     lastSwipeY = currentY
     lastSwipeX = currentX
 }, { passive: false })
 
-window.addEventListener("touchend", () => {
+window.addEventListener("touchend", (e) => {
     e.preventDefault()
-    
+
     lastSwipeY = null
     lastSwipeX = null
-})
+}, { passive: false })
 
 
 
-onclick = () => {}
+onclick = (e) => {}
 
 
 
 onkeydown = (e) => {
-    let key = e.key
+    let key = e.key.toLowerCase()
+
+    console.log(key)
 
     switch(key) {
-        case "w": moveUp();     break
-        case "a": moveLeft();   break
-        case "s": moveDown();   break
-        case "d": moveRight();  break
+        case "arrowup":
+        case "w": moveUp()
+        break
+
+        case "arrowleft":
+        case "a": moveLeft()
+        break
+
+        case "arrowdown":
+        case "s": moveDown()
+        break
+
+        case "arrowright":
+        case "d": moveRight()
+        break
     }
 }
 
