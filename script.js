@@ -172,6 +172,7 @@ function moveRight()    { move(0, 1) }
 
 window.addEventListener("touchstart", (e) => {
     e.preventDefault()
+    animationTime = maxAnimationTime;
 
     lastSwipeY = e.touches[0].pageY
     lastSwipeX = e.touches[0].pageX
@@ -179,6 +180,11 @@ window.addEventListener("touchstart", (e) => {
 
 window.addEventListener("touchmove", (e) => {
     e.preventDefault()
+
+    if(animationTime > minAnimationTime) {
+        let remainingTime = animationTime - minAnimationTime
+        animationTime -= remainingTime / animationFriction
+    }
 
     let currentY    = e.touches[0].pageY
     let currentX    = e.touches[0].pageX
@@ -221,7 +227,7 @@ onclick = (e) => {}
 onkeydown = (e) => {
     let key = e.key.toLowerCase()
 
-    console.log(key)
+    animationTime = minAnimationTime;
 
     switch(key) {
         case "arrowup":
@@ -252,15 +258,20 @@ onload = () => {
 
 
 
-playerIsMoving  = false
-animationTime   = 60
-swipeThreshold  = 3
-radius          = 7.5
-margin          = 15
-rowPre          = "row"
-blockPre        = "block"
+playerIsMoving      = false
+swipeThreshold      = 1
 
-let board,
+minAnimationTime    = 60
+maxAnimationTime    = 150
+animationFriction   = 10
+
+radius              = 7.5
+margin              = 15
+blockPre            = "block"
+rowPre              = "row"
+
+let animationTime,
+    board,
     boardWidth,
     boardHeight,
     lastSwipeY,
