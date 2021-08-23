@@ -171,11 +171,15 @@ function moveRight()    { move(0, 1) }
 
 
 window.addEventListener("touchstart", (e) => {
+    e.preventDefault()
+
     lastSwipeY = e.touches[0].pageY
     lastSwipeX = e.touches[0].pageX
 })
 
 window.addEventListener("touchmove", (e) => {
+    e.preventDefault()
+
     let currentY    = e.touches[0].pageY
     let currentX    = e.touches[0].pageX
     let deltaY      = currentY - lastSwipeY
@@ -204,6 +208,8 @@ window.addEventListener("touchmove", (e) => {
 }, { passive: false })
 
 window.addEventListener("touchend", () => {
+    e.preventDefault()
+    
     lastSwipeY = null
     lastSwipeX = null
 })
