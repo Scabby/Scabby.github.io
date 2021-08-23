@@ -198,7 +198,7 @@ window.addEventListener("touchmove", (e) => {
     let absX        = Math.abs(deltaX)
 
     let distance    = Math.sqrt(Math.pow(absY, 2) + Math.pow(absX, 2))
-    let time        = distance / swipeSensitivity
+    let time        = (maxSwipeDistance - distance) / swipeSensitivity
 
     if(time > maxAnimationTime) {
         stopLoopTouch = true
@@ -292,6 +292,7 @@ onload = () => {
 playerIsMoving      = false
 stopLoopTouch       = true
 swipeSensitivity    = 0.5
+maxSwipeDistance    = 100
 
 minAnimationTime    = 70
 maxAnimationTime    = 180
