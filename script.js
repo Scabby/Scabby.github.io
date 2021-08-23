@@ -262,7 +262,7 @@ playerIsMoving      = false
 swipeThreshold      = 1
 
 minAnimationTime    = 60
-maxAnimationTime    = 150
+maxAnimationTime    = 170
 animationFriction   = 10
 
 radius              = 7.5
