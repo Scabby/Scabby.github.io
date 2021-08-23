@@ -261,9 +261,9 @@ onload = () => {
 playerIsMoving      = false
 swipeThreshold      = 1
 
-minAnimationTime    = 60
-maxAnimationTime    = 120
-animationFriction   = 5
+minAnimationTime    = 70
+maxAnimationTime    = 180
+animationFriction   = 2
 
 radius              = 7.5
 margin              = 15
