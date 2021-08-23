@@ -282,7 +282,7 @@ onload = () => {
 
 
 
-onresize() = () => {
+window.onresize() = () => {
     initialSwipeY = Math.floor(window.innerHeight / 2)
     initialSwipeX = Math.floor(window.innerWidth / 2)
 }
