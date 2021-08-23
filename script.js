@@ -291,7 +291,7 @@ onload = () => {
 
 playerIsMoving      = false
 stopLoopTouch       = true
-swipeSensitivity    = 3
+swipeSensitivity    = 0.5
 
 minAnimationTime    = 70
 maxAnimationTime    = 180
