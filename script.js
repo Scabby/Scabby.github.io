@@ -292,7 +292,7 @@ onload = () => {
 playerIsMoving      = false
 stopLoopTouch       = true
 swipeFriction       = 2
-maxSwipeDistance    = 50
+maxSwipeDistance    = 100
 
 minAnimationTime    = 70
 maxAnimationTime    = 250
