@@ -179,10 +179,15 @@ function loopTouch(func) {
 window.addEventListener("touchstart", (e) => {
     e.preventDefault()
     animationTime = maxAnimationTime;
+
+    initialSwipeY = e.touches[0].pageY
+    initialSwipeX = e.touches[0].pageX
 }, { passive: false })
 
 window.addEventListener("touchmove", (e) => {
     e.preventDefault()
+    
+    // implement speed based on distance from initial swipe xy instead of acceleration
 
     let currentY    = e.touches[0].pageY
     let currentX    = e.touches[0].pageX
@@ -240,6 +245,8 @@ window.addEventListener("touchend", (e) => {
     e.preventDefault()
 
     stopLoopTouch   = true
+    initialSwipeY   = null
+    initialSwipeX   = null
 }, { passive: false })
 
 
@@ -282,16 +289,6 @@ onload = () => {
 
 
 
-window.addEventListener("resize", () => {
-    initialSwipeY = Math.floor(window.innerHeight / 2)
-    initialSwipeX = Math.floor(window.innerWidth / 2)
-})
-
-
-
-initialSwipeY = Math.floor(window.innerHeight / 2)
-initialSwipeX = Math.floor(window.innerWidth / 2)
-
 playerIsMoving      = false
 stopLoopTouch       = true
 swipeFriction       = 2
@@ -309,6 +306,8 @@ let animationTime,
     board,
     boardWidth,
     boardHeight,
+    initialSwipeY,
+    initialSwipeX,
     lastSwipeDirection,
     helperBlock,
     playerBlock,
