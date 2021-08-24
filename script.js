@@ -186,8 +186,6 @@ window.addEventListener("touchstart", (e) => {
 
 window.addEventListener("touchmove", (e) => {
     e.preventDefault()
-    
-    // implement speed based on distance from initial swipe xy instead of acceleration
 
     let currentY    = e.touches[0].pageY
     let currentX    = e.touches[0].pageX
@@ -197,8 +195,20 @@ window.addEventListener("touchmove", (e) => {
     let absY        = Math.abs(deltaY)
     let absX        = Math.abs(deltaX)
 
-    let distance    = Math.sqrt(Math.pow(absY, 2) + Math.pow(absX, 2))
-    let time        = (maxSwipeDistance - distance) * swipeFriction
+    let isYSwipe    = absY > absX
+    
+    ifLessThenZero = (value) => {
+        if(value < 0)   { return 0 }
+        else            { return value }
+    }
+    
+    if(isYSwipe) {
+        distance = absY / ifLessThenZero((absX - swipeRatioForgiveness) * swipeRatioAmplifier)
+    } else {
+        distance = absX / ifLessThenZero((absY - swipeRatioForgiveness) * swipeRatioAmplifier)
+    }
+    
+    let time = (maxSwipeDistance - distance) * swipeFriction
 
     if(time > maxAnimationTime) {
         stopLoopTouch = true
@@ -208,8 +218,6 @@ window.addEventListener("touchmove", (e) => {
     } else {
         animationTime = time
     }
-
-    let isYSwipe    = absY > absX
 
     let swipeDirection, moveDirection
 
@@ -293,6 +301,8 @@ playerIsMoving      = false
 stopLoopTouch       = true
 swipeFriction       = 2
 maxSwipeDistance    = 100
+swipeRatioAmplifier = 10
+swipeRatioForgiveness = 10
 
 minAnimationTime    = 70
 maxAnimationTime    = 250
