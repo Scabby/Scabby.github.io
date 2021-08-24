@@ -196,16 +196,11 @@ window.addEventListener("touchmove", (e) => {
     let absX        = Math.abs(deltaX)
 
     let isYSwipe    = absY > absX
-    
-    ifLessThenZero = (value) => {
-        if(value < 0)   { return 0 }
-        else            { return value }
-    }
-    
+
     if(isYSwipe) {
-        distance = absY / ifLessThenZero((absX - swipeRatioForgiveness) * swipeRatioAmplifier)
+        distance = absY / (absX - swipeRatioForgiveness) * swipeRatioAmplifier
     } else {
-        distance = absX / ifLessThenZero((absY - swipeRatioForgiveness) * swipeRatioAmplifier)
+        distance = absX / (absY - swipeRatioForgiveness) * swipeRatioAmplifier
     }
     
     let time = (maxSwipeDistance - distance) * swipeFriction
@@ -297,20 +292,20 @@ onload = () => {
 
 
 
-playerIsMoving      = false
-stopLoopTouch       = true
-swipeFriction       = 2
-maxSwipeDistance    = 100
-swipeRatioAmplifier = 10
-swipeRatioForgiveness = 10
+playerIsMoving          = false
+stopLoopTouch           = true
+swipeFriction           = 2
+maxSwipeDistance        = 100
+swipeRatioAmplifier     = 20
+swipeRatioForgiveness   = 20
 
 minAnimationTime    = 70
 maxAnimationTime    = 250
 
-radius              = 7.5
-margin              = 15
-blockPre            = "block"
-rowPre              = "row"
+radius      = 7.5
+margin      = 15
+blockPre    = "block"
+rowPre      = "row"
 
 let animationTime,
     board,
