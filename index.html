@@ -1,12 +1,28 @@
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="style.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen">
     <title>Test Page</title>
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="script.js"></script>
-  </head>
+    </head>
   <body>
-    <div id="helper_block"></div>
-    <div id="board" class="generating"></div>
+    <div id="loading-screen">
+      <div id="spinning"></div>
+      <p id="message" class="light-grey">
+        Tip: Make sure javascript is enabled.
+      </p>
+    </div>
+
+    <div id="info-panel">
+      <p class="purple">Info Panel:</p>
+      <br>
+      <p class="dark-grey">Dark Grey</p>
+      <p class="grey">Grey</p>
+      <p class="light-grey">Light Grey</p>
+      <p class="pre-white">Pre-White</p>
+      <p class="white">White</p>
+    </div>
+
+    <div id="board"></div>
   </body>
 </html>
