@@ -1,324 +1,141 @@
-function get(id)    { return document.getElementById(id) }
-function make(type) { return document.createElement(type) }
+const instances = []
 
-function getBoardHeight() {
-    return Math.floor(
-        board.offsetHeight /
-        helperBlock.offsetHeight
-    )
-}
+class Movable {
+    constructor(
+        id,
+        x_position = window.innerWidth / 2,
+        y_position = window.innerHeight / 2,
+        x_velocity  = 0,
+        y_velocity  = 0,
+        friction    = 0.8
+    ) {
+        this.element = document.createElement("div")
+        this.element.className  = "movable"
+        this.element.id         = id
+        board.appendChild(this.element)
 
-function getBoardWidth() {
-    return Math.floor(
-        board.offsetWidth /
-        helperBlock.offsetWidth
-    )
-}
+        this.x_position = x_position
+        this.y_position = y_position
+        this.x_velocity = x_velocity
+        this.y_velocity = y_velocity
+        this.friction   = friction
 
-function throttle(f, wait, args) {
-    let timeout
+        instances.push(this)
+    }
 
-    if(timeout) { return }
+    get width()     { return this.element.offsetWidth }
+    get height()    { return this.element.offsetHeight }
 
-    timeout = true
-    f.apply(null, args)
-    setTimeout(() => timeout = false , wait)
-}
+    update() {
+        this.x_velocity = this.x_velocity * this.friction
+        this.y_velocity = this.y_velocity * this.friction
 
+        let x_screen_estate = window.innerWidth - this.width
+        let y_screen_estate = window.innerHeight - this.height
 
+        if(this.x_position < 0) {
+            this.x_position = 0
+            this.x_velocity = 0
+        }
+        
+        if(this.x_position > x_screen_estate) {
+            this.x_position = x_screen_estate
+            this.x_velocity = 0
+        }
+        
+        if(this.y_position < 0) {
+            this.y_position = 0
+            this.y_velocity = 0
+        }
+        
+        if(this.y_position > y_screen_estate) {
+            this.y_position = y_screen_estate
+            this.y_velocity = 0
+        }
 
-function getBlock(y, x) {
-    let blocks = get(rowPre + y).children
+        this.x_position += this.x_velocity
+        this.y_position += this.y_velocity
 
-    for(let i = 0; i < blocks.length; i++) {
-        if(blocks[i].children[0].id == blockPre + x) {
-            return blocks[i].children[0]
+        this.element.style.left = this.x_position + "px"
+        this.element.style.top  = this.y_position + "px"
+    }
+
+    static update_all() {
+        for(const e of instances) {
+            e.update()
         }
     }
 }
 
-function calcBlock(block, value) {
-    let text, color
+function game_loop() {
+    if(move_up)     { move(player, 0, -move_speed) }
+    if(move_down)   { move(player, 0, move_speed) }
+    if(move_left)   { move(player, -move_speed, 0) }
+    if(move_right)  { move(player, move_speed, 0) }
 
-    if(value < 70)      { text = ""; color = "" }
-    else if(value < 75) { text = "."; color = "dark_grey" }
-    else if(value < 85) { text = ","; color = "grey" }
-    else if(value < 95) { text = ":"; color = "light_grey" }
-    else if(value < 97) { text = ";"; color = "white" }
-    else                { text = "!"; color = "red" }
-
-    block.textContent   = text
-    block.className     = color
+    Movable.update_all()
+    window.requestAnimationFrame(game_loop)
 }
 
-function genBlock(block) {
-    let r = Math.floor(Math.random() * 100) + 1
-    calcBlock(block, r)
-}
+window.onload = () => {
+    let delay = 300
 
-function makePlayer(block) {
-    playerBlock         = block
-    block.textContent   = "@"
-    block.className     = "blue"
-}
+    function clear_loading_screen() {
+        let loading_screen  = document.getElementById("loading-screen")
+        let loading_bar     = document.getElementById("spinning")
+        let loading_message = document.getElementById("message")
 
+        loading_bar.animate     ([{ opacity:0 }], { duration:delay })
+        loading_message.animate ([{ opacity:0 }], { duration:delay })
+        loading_screen.animate  ([{ opacity:0 }], { duration:delay, delay:delay })
 
-
-function gen() {
-    let calc = (size, margin) => {
-        if(size <= margin * 2) {
-            return Math.floor(size / 2)
-        } else {
-            return Math.round(
-                Math.random() *
-                (size - margin * 2) +
-                margin
-            )
-        }
-    }
-
-    playerY = calc(boardHeight, margin)
-    playerX = calc(boardWidth, margin)
-
-    for(let h = 0; h < boardHeight; h++) {
-        let row         = make("div")
-        row.id          = rowPre + h
-        row.className   = rowPre
-
-        for(let w = 0; w < boardWidth; w++) {
-            let block       = make("div")
-            block.className = "block"
-
-            row.appendChild(block)
-            block.appendChild(make("p"))
-            let text    = block.children[0]
-            text.id     = blockPre + w
-
-            let isWithinRadius = (
-                Math.pow(h - playerY, 2) +
-                Math.pow(w - playerX, 2) <=
-                Math.pow(radius, 2)
-            )
-
-            if(isWithinRadius) {
-                if(h == playerY && w == playerX) {
-                    makePlayer(text)
-                }
-            } else { genBlock(text) }
-        }
-
-        board.appendChild(row)
-    }
-}
-
-function regen() {
-    board.replaceChildren()
-    board.style     = null
-    board.className = "generating"
-
-    window.requestAnimationFrame(() => {
-        boardHeight         = getBoardHeight()
-        boardWidth          = getBoardWidth()
-        board.style.height  = boardHeight * helperBlock.offsetHeight
-        board.style.width   = boardWidth * helperBlock.offsetWidth
-
-        gen()
-
-        board.className = "generated"
-    })
-}
-
-
-
-function move(y, x) {
-    if(playerIsMoving) { return }
-
-    playerIsMoving = true
-
-    let nextY = playerY + y
-    let nextX = playerX + x
-
-    let withinY = nextY >= 0 && nextY < boardHeight
-    let withinX = nextX >= 0 && nextX < boardWidth
-
-    if(withinY && withinX) {
-        playerBlock.animate([
-            {
-                transform: "translate(" +
-                    x * helperBlock.offsetWidth + "px," +
-                    y * helperBlock.offsetHeight + "px)"
-            }
-        ], { duration: animationTime })
-
-        setTimeout(
-            () => {
-                calcBlock(playerBlock, 0)
-                playerY = nextY
-                playerX = nextX
-                makePlayer(getBlock(playerY, playerX))
-                playerIsMoving = false
-            },
-            animationTime
+        setTimeout(() => {
+                loading_bar.remove();
+                loading_message.remove()
+            }, delay
         )
-    } else { playerIsMoving = false }
-}
 
-function moveUp()       { move(-1, 0) }
-function moveDown()     { move(1, 0) }
-function moveLeft()     { move(0, -1) }
-function moveRight()    { move(0, 1) }
+        setTimeout(() => { loading_screen.remove() }, delay * 2)
 
-
-
-function loopTouch(func) {
-    if(stopLoopTouch) { return }
-    func.apply()
-    setTimeout( () => { loopTouch(func) }, 1)
-}
-
-window.addEventListener("touchstart", (e) => {
-    e.preventDefault()
-    animationTime = maxAnimationTime;
-
-    initialSwipeY = e.touches[0].pageY
-    initialSwipeX = e.touches[0].pageX
-}, { passive: false })
-
-window.addEventListener("touchmove", (e) => {
-    e.preventDefault()
-
-    let currentY    = e.touches[0].pageY
-    let currentX    = e.touches[0].pageX
-    let deltaY      = currentY - initialSwipeY
-    let deltaX      = currentX - initialSwipeX
-
-    let absY        = Math.abs(deltaY)
-    let absX        = Math.abs(deltaX)
-
-    let isYSwipe    = absY > absX
-
-    let oneIfLess = (n) => {
-        if(n < 1)   { return 1 }
-        else        { return n }
-    }
-
-    if(isYSwipe) {
-        distance = absY / oneIfLess(absX - swipeRatioForgiveness)
-    } else {
-        distance = absX / oneIfLess(absY - swipeRatioForgiveness)
+        setTimeout(game_loop, delay)
     }
     
-    let time = (maxSwipeDistance - distance) * swipeFriction
+    clear_loading_screen()
 
-    if(time > maxAnimationTime) {
-        stopLoopTouch = true
-        return
-    } else if(time < minAnimationTime) {
-        animationTime = minAnimationTime
-    } else {
-        animationTime = time
-    }
+    board   = document.getElementById("board")
+    player  = new Movable("player")
+    enemy   = new Movable("enemy")
+}
 
-    let swipeDirection, moveDirection
-
-    if(isYSwipe) {
-        if(deltaY < 0)  {
-            swipeDirection  = "up"
-            moveDirection   = moveUp
-        } else {
-            swipeDirection  = "down"
-            moveDirection   = moveDown
-        }
-    } else {
-        if(deltaX < 0) {
-            swipeDirection  = "left"
-            moveDirection   = moveLeft
-        } else {
-            swipeDirection  = "right"
-            moveDirection   = moveRight
-        }
-    }
-
-    if(swipeDirection != lastSwipeDirection) {
-        stopLoopTouch = true
-    } else {
-        stopLoopTouch = false
-        loopTouch(moveDirection)
-    }
-
-    lastSwipeDirection = swipeDirection
-}, { passive: false })
-
-window.addEventListener("touchend", (e) => {
-    e.preventDefault()
-
-    stopLoopTouch   = true
-    initialSwipeY   = null
-    initialSwipeX   = null
-}, { passive: false })
-
-
-
-onclick = (e) => {}
-
-
+function move(movable, x, y) {
+    movable.x_velocity += x
+    movable.y_velocity += y
+}
 
 onkeydown = (e) => {
-    let key = e.key.toLowerCase()
-
-    animationTime = minAnimationTime
-
-    switch(key) {
-        case "arrowup":
-        case "w": moveUp()
-        break
-
-        case "arrowleft":
-        case "a": moveLeft()
-        break
-
-        case "arrowdown":
-        case "s": moveDown()
-        break
-
-        case "arrowright":
-        case "d": moveRight()
-        break
+    switch(e.key) {
+        case "w": move_up       = true; break
+        case "a": move_left     = true; break
+        case "s": move_down     = true; break
+        case "d": move_right    = true; break
     }
 }
 
-
-
-onload = () => {
-    board          = get("board")
-    helperBlock    = get("helper_block")
-    regen()
+onkeyup = (e) => {
+    switch(e.key) {
+        case "w": move_up       = false; break
+        case "a": move_left     = false; break
+        case "s": move_down     = false; break
+        case "d": move_right    = false; break
+    }
 }
 
+move_up     = false
+move_down   = false
+move_left   = false
+move_right  = false
 
+move_speed  = 2
 
-playerIsMoving          = false
-stopLoopTouch           = true
-swipeFriction           = 2
-maxSwipeDistance        = 100
-swipeRatioForgiveness   = 20
-
-minAnimationTime    = 70
-maxAnimationTime    = 250
-
-radius      = 7.5
-margin      = 15
-blockPre    = "block"
-rowPre      = "row"
-
-let animationTime,
-    board,
-    boardWidth,
-    boardHeight,
-    initialSwipeY,
-    initialSwipeX,
-    lastSwipeDirection,
-    helperBlock,
-    playerBlock,
-    playerY,
-    playerX
+let player,
+    board
