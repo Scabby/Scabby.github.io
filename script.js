@@ -223,7 +223,7 @@ move_left   = false
 move_right  = false
 
 move_speed      = 1
-follow_distance = 100
+follow_distance = 50
 
 let player,
     board
