@@ -207,7 +207,7 @@ move_down   = false
 move_left   = false
 move_right  = false
 
-move_speed  = 0.8
+move_speed  = 1
 
 let player,
     board
