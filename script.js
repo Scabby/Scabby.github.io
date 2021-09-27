@@ -129,13 +129,11 @@ function move_enemies() {
         let x_comp      = Math.cos(angle) * move_speed
         let y_comp      = Math.sin(angle) * move_speed
         
-        if(distance > follow_distance) {
-            move(
-                current,
-                clamp(x_comp / (distance - follow_distance), -x_comp, x_comp),
-                clamp(y_comp / (distance - follow_distance), -y_comp, y_comp)
-            )
-        }
+        move(
+            current,
+            clamp(x_comp / (distance - follow_distance), -x_comp, x_comp),
+            clamp(y_comp / (distance - follow_distance), -y_comp, y_comp)
+        )
     }
 }
 
