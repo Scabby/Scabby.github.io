@@ -27,8 +27,8 @@ class Movable {
     get height()    { return this.element.offsetHeight }
 
     update() {
-        this.x_velocity = this.x_velocity - this.friction * this.x_velocity
-        this.y_velocity = this.y_velocity - this.friction * this.y_velocity
+        this.x_velocity -= this.friction * this.x_velocity
+        this.y_velocity -= this.friction * this.y_velocity
 
         let x_screen_estate = window.innerWidth - this.width
         let y_screen_estate = window.innerHeight - this.height
