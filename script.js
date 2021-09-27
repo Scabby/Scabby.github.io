@@ -7,7 +7,7 @@ class Movable {
         y_position = window.innerHeight / 2,
         x_velocity  = 0,
         y_velocity  = 0,
-        friction    = 0.8
+        friction    = 0.15
     ) {
         this.element = document.createElement("div")
         this.element.className  = "movable"
@@ -27,30 +27,30 @@ class Movable {
     get height()    { return this.element.offsetHeight }
 
     update() {
-        this.x_velocity = this.x_velocity * this.friction
-        this.y_velocity = this.y_velocity * this.friction
+        this.x_velocity = this.x_velocity - this.friction * this.x_velocity
+        this.y_velocity = this.y_velocity - this.friction * this.y_velocity
 
         let x_screen_estate = window.innerWidth - this.width
         let y_screen_estate = window.innerHeight - this.height
 
         if(this.x_position < 0) {
             this.x_position = 0
-            this.x_velocity = 0
+            this.x_velocity = -this.x_velocity
         }
-        
+
         if(this.x_position > x_screen_estate) {
             this.x_position = x_screen_estate
-            this.x_velocity = 0
+            this.x_velocity = -this.x_velocity
         }
-        
+
         if(this.y_position < 0) {
             this.y_position = 0
-            this.y_velocity = 0
+            this.y_velocity = -this.y_velocity
         }
-        
+
         if(this.y_position > y_screen_estate) {
             this.y_position = y_screen_estate
-            this.y_velocity = 0
+            this.y_velocity = -this.y_velocity
         }
 
         this.x_position += this.x_velocity
@@ -61,6 +61,48 @@ class Movable {
     }
 
     static update_all() {
+        for(let current of instances) {
+            for(let target of instances) {
+                if(current == target) { continue }
+
+                if( current.x_position < target.x_position + target.width &&
+                    current.x_position + current.width > target.x_position &&
+                    current.y_position < target.y_position + target.height &&
+                    current.y_position + current.height > target.y_position)
+                {
+                    let x_pos_diff, y_pos_diff
+
+                    if(current.x_position < target.x_position) {
+                        x_pos_diff = current.x_position + current.width - target.x_position
+                    } else {
+                        x_pos_diff = target.x_position + target.width - current.x_position
+                    }
+
+                    if(current.y_position < target.y_position) {
+                        y_pos_diff = current.y_position + current.height - target.y_position
+                    } else {
+                        y_pos_diff = target.y_position + target.height - current.y_position
+                    }
+
+                    let x_vel_ave = (current.x_velocity - target.x_velocity) / 2
+                    let y_vel_ave = (current.y_velocity - target.y_velocity) / 2
+
+                    if(Math.abs(x_pos_diff) > Math.abs(y_pos_diff)) {
+                        current.y_position  += y_pos_diff
+                        target.y_position   -= y_pos_diff
+                    } else {
+                        current.x_position  += x_pos_diff
+                        target.x_position   -= x_pos_diff
+                    }
+
+                    current.x_velocity  -= x_vel_ave
+                    current.y_velocity  -= y_vel_ave
+                    target.x_velocity   += x_vel_ave
+                    target.y_velocity   += y_vel_ave
+                }
+            }
+        }
+
         for(const e of instances) {
             e.update()
         }
@@ -68,10 +110,24 @@ class Movable {
 }
 
 function game_loop() {
-    if(move_up)     { move(player, 0, -move_speed) }
-    if(move_down)   { move(player, 0, move_speed) }
-    if(move_left)   { move(player, -move_speed, 0) }
-    if(move_right)  { move(player, move_speed, 0) }
+    function parse_diagonals() {
+        let x = move_speed
+        let y = move_speed
+
+        if(move_up)     { y = -y }
+        if(move_left)   { x = -x }
+
+        move(player, Math.cos(45) * x, Math.cos(45) * y)
+    }
+
+    if((move_up || move_down) && (move_left || move_right)) {
+        parse_diagonals()
+    } else {
+        if(move_up)     { move(player, 0, -move_speed) }
+        if(move_down)   { move(player, 0, move_speed) }
+        if(move_left)   { move(player, -move_speed, 0) }
+        if(move_right)  { move(player, move_speed, 0) }
+    }
 
     Movable.update_all()
     window.requestAnimationFrame(game_loop)
@@ -99,18 +155,34 @@ window.onload = () => {
 
         setTimeout(game_loop, delay)
     }
-    
+
+    //setTimeout(clear_loading_screen, 7000)
     clear_loading_screen()
 
     board   = document.getElementById("board")
     player  = new Movable("player")
-    enemy   = new Movable("enemy")
+
+    let enemies = []
+
+    for(let i = 0; i < 10; i++) {
+        let x, y
+        while(true) {
+            x = Math.floor(Math.random() * window.innerWidth + 1)
+            y = Math.floor(Math.random() * window.innerHeight + 1)
+
+            if( Math.pow(x - player.x_position, 2) +
+                Math.pow(y - player.y_position, 2) >
+                Math.pow(200, 2)) { break }
+        }
+        enemies.push(new Movable("enemy" + i, x, y, 0, 0, 0.03))
+    }
 }
 
 function move(movable, x, y) {
     movable.x_velocity += x
     movable.y_velocity += y
 }
+
 
 onkeydown = (e) => {
     switch(e.key) {
@@ -135,7 +207,7 @@ move_down   = false
 move_left   = false
 move_right  = false
 
-move_speed  = 2
+move_speed  = 1
 
 let player,
     board
