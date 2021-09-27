@@ -125,14 +125,14 @@ function move_enemies() {
         let x_diff      = current.x_position - player.x_position
         let y_diff      = current.y_position - player.y_position
         let angle       = Math.atan2(y_diff, x_diff) * 180 / Math.PI
-        let distance    = Math.sqrt(Math.pow(x_diff, 2) + Math.pow(y_diff, 2))
+        let distance    = Math.sqrt(Math.pow(x_diff, 2) + Math.pow(y_diff, 2)) - follow_distance
         let x_comp      = Math.cos(angle) * move_speed
         let y_comp      = Math.sin(angle) * move_speed
         
         move(
             current,
-            clamp(x_comp / (distance - follow_distance), -x_comp, x_comp),
-            clamp(y_comp / (distance - follow_distance), -y_comp, y_comp)
+            clamp(x_comp / distance, -x_comp, x_comp),
+            clamp(y_comp / distance, -y_comp, y_comp)
         )
     }
 }
@@ -231,7 +231,7 @@ move_left   = false
 move_right  = false
 
 move_speed      = 1
-follow_distance = 50
+follow_distance = 10
 
 let player,
     board
