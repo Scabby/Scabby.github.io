@@ -132,8 +132,8 @@ function move_enemies() {
 
             move(
                 current,
-                clamp(x_comp / distance, -x_comp, x_comp),
-                clamp(y_comp / distance, -y_comp, y_comp)
+                clamp(x_comp),// / distance, -x_comp, x_comp),
+                clamp(y_comp)// / distance, -y_comp, y_comp)
             )
         }
     }
