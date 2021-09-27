@@ -124,8 +124,8 @@ function move_enemies() {
         if(distance > follow_distance) {
             move(
                 current,
-                (Math.cos(angle) * move_speed) / (distance - follow_distance),
-                (Math.sin(angle) * move_speed) / (distance - follow_distance)
+                (Math.cos(angle) * move_speed) // (distance - follow_distance),
+                (Math.sin(angle) * move_speed) // (distance - follow_distance)
             )
         }
     }
