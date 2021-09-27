@@ -186,7 +186,7 @@ window.onload = () => {
 
     let enemies = []
 
-    for(let i = 0; i < 10; i++) {
+    for(let i = 0; i < 20; i++) {
         let x, y
         while(true) {
             x = Math.floor(Math.random() * window.innerWidth + 1)
