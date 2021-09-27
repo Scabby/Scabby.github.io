@@ -109,6 +109,12 @@ class Movable {
     }
 }
 
+function clamp(n, low, high) {
+    if(n < low)     { return low }
+    if(n > high)    {return high}
+    return n
+}
+
 function move(movable, x, y) {
     movable.x_velocity += x
     movable.y_velocity += y
@@ -120,12 +126,14 @@ function move_enemies() {
         let y_diff      = current.y_position - player.y_position
         let angle       = Math.atan2(y_diff, x_diff) * 180 / Math.PI
         let distance    = Math.sqrt(Math.pow(x_diff, 2) + Math.pow(y_diff, 2))
+        let x_comp      = Math.cos(angle) * move_speed
+        let y_comp      = Math.sin(angle) * move_speed
         
         if(distance > follow_distance) {
             move(
                 current,
-                (Math.cos(angle) * move_speed), // (distance - follow_distance),
-                (Math.sin(angle) * move_speed) // (distance - follow_distance)
+                clamp(x_comp / (distance - follow_distance), -x_comp, x_comp),
+                clamp(y_comp / (distance - follow_distance), -y_comp, y_comp)
             )
         }
     }
