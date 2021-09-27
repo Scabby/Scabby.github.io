@@ -140,6 +140,8 @@ function move_enemies() {
 }
 
 function game_loop() {
+    move_enemies()
+    
     function parse_diagonals() {
         let x = move_speed
         let y = move_speed
