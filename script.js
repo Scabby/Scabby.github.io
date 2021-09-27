@@ -111,7 +111,7 @@ class Movable {
 
 function clamp(n, low, high) {
     if(n < low)     { return low }
-    if(n > high)    {return high}
+    if(n > high)    { return high }
     return n
 }
 
@@ -132,8 +132,8 @@ function move_enemies() {
 
             move(
                 current,
-                clamp(x_comp),// / distance, -x_comp, x_comp),
-                clamp(y_comp)// / distance, -y_comp, y_comp)
+                clamp(x_comp) / distance * 100, -x_comp, x_comp),
+                clamp(y_comp) / distance * 100, -y_comp, y_comp)
             )
         }
     }
