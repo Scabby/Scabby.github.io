@@ -82,8 +82,8 @@ body {
 
 .movable {
     position: absolute;
-    width: 10px;
-    height: 10px;
+    width: 20px;
+    height: 20px;
 
     background-color: #eb8f99;
 }
