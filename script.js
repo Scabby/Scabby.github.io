@@ -122,7 +122,7 @@ function move(movable, x, y) {
 
 function move_enemies() {
     for(let current of instances) {
-        if(current.element.id.includes("enemy") {
+        if(current.element.id.includes("enemy")) {
             let x_diff      = current.x_position - player.x_position
             let y_diff      = current.y_position - player.y_position
             let angle       = Math.atan2(y_diff, x_diff) * 180 / Math.PI
