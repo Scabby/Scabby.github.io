@@ -88,11 +88,11 @@ class Movable {
                     let y_vel_ave = (current.y_velocity - target.y_velocity) / 2
 
                     if(Math.abs(x_pos_diff) > Math.abs(y_pos_diff)) {
-                        current.y_position  += y_pos_diff
-                        target.y_position   -= y_pos_diff
+                        current.y_position  += y_pos_diff + 1/16
+                        target.y_position   -= y_pos_diff + 1/16
                     } else {
-                        current.x_position  += x_pos_diff
-                        target.x_position   -= x_pos_diff
+                        current.x_position  += x_pos_diff + 1/16
+                        target.x_position   -= x_pos_diff + 1/16
                     }
 
                     current.x_velocity  -= x_vel_ave
@@ -105,6 +105,28 @@ class Movable {
 
         for(const e of instances) {
             e.update()
+        }
+    }
+}
+
+function move(movable, x, y) {
+    movable.x_velocity += x
+    movable.y_velocity += y
+}
+
+function move_enemies() {
+    for(let current of instances) {
+        let x_diff      = current.x_position - player.x_position
+        let y_diff      = current.y_position - player.y_position
+        let angle       = Math.atan2(y_diff, x_diff) * 180 / Math.PI
+        let distance    = Math.sqrt(Math.pow(x_diff, 2) + Math.pow(y_diff, 2))
+        
+        if(distance > follow_distance) {
+            move(
+                current,
+                (Math.cos(angle) * move_speed) / (distance - follow_distance),
+                (Math.sin(angle) * move_speed) / (distance - follow_distance)
+            )
         }
     }
 }
@@ -177,13 +199,6 @@ window.onload = () => {
         enemies.push(new Movable("enemy" + i, x, y, 0, 0, 0.03))
     }
 }
-
-function move(movable, x, y) {
-    movable.x_velocity += x
-    movable.y_velocity += y
-}
-
-
 onkeydown = (e) => {
     switch(e.key) {
         case "w": move_up       = true; break
@@ -207,7 +222,8 @@ move_down   = false
 move_left   = false
 move_right  = false
 
-move_speed  = 1
+move_speed      = 1
+follow_distance = 100
 
 let player,
     board
