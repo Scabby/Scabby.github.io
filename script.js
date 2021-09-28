@@ -127,7 +127,10 @@ function move(movable, x, y) {
 function move_toward(current, target) {
     function get_speed(distance) {
         return Math.atan(
-            (distance - follow_distance) / follow_ease
+            Math.pow(
+                (distance - follow_distance) / follow_ease,
+                3
+            )
         ) * (Math.PI / 5) * move_speed
     }
     
