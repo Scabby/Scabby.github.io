@@ -252,7 +252,7 @@ window.onload = () => {
     board   = document.getElementById("board")
     player  = new Movable("player")
 
-    for(let i = 0; i < 50; i++) {
+    for(let i = 0; i < 100; i++) {
         let x, y
         let fail_count = 0
         while(true) {
@@ -325,7 +325,7 @@ move_right  = false
 follow_distance     = 150
 follow_ease         = 50
 leave_distance      = 10
-leave_ease          = 5
+leave_ease          = 3
 
 touch_sensitivity   = 0.3
 touch_threshold     = 5
