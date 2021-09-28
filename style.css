@@ -35,7 +35,7 @@ body {
 
 @keyframes spin {
     from    { transform:rotate(0deg); }
-    to      { transform:rotate(360deg); }
+    to      { transform:rotate(90deg); }
 }
 
 @keyframes fadein {
@@ -72,7 +72,7 @@ body {
     height: 20px;
     background-color: #e3e3e3;
 
-    animation:  spin 1s linear infinite,
+    animation:  spin 1s ease infinite,
                 fadein 1s, linear 1;
 }
 
