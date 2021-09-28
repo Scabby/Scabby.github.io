@@ -69,7 +69,7 @@ class Movable {
             for(let target of instances) {
                 if(current == target) { continue }
 
-                if(current.element.id != "player") {
+                if(current.element.id != "player" && target.element.id != "player") {
                     move_away(current, target)
                 }
 
