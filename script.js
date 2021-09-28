@@ -143,7 +143,7 @@ function move_enemies() {
 
 function game_loop() {
     move_enemies()
-    
+
     function parse_diagonals() {
         let x = move_speed
         let y = move_speed
@@ -235,7 +235,7 @@ move_left   = false
 move_right  = false
 
 move_speed      = 1
-follow_distance = 10
+follow_distance = 200
 
 let player,
     board
