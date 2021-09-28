@@ -7,7 +7,7 @@ class Movable {
         y_position  = window.innerHeight / 2,
         x_velocity  = 0,
         y_velocity  = 0,
-        friction    = 0.15
+        friction    = 0.15,
         move_speed  = 2
     ) {
         this.element = document.createElement("div")
