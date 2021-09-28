@@ -251,8 +251,8 @@ ontouchmove = (e) => {
 
     move(
         player,
-        clamp(Math.cos(angle) * (diff_x * touch_sensitivity), -max_x, max_x),
-        clamp(Math.sin(angle) * (diff_y * touch_sensitivity), -max_y, max_y)
+        Math.cos(angle) * (diff_x * touch_sensitivity,
+        Math.sin(angle) * (diff_y * touch_sensitivity
     )
 
     last_swipe_x = new_swipe_x
