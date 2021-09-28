@@ -158,6 +158,17 @@ function move_away(current, target) {
             move_speed
         )
     }
+
+    let x_diff      = target.x_position - current.x_position
+    let y_diff      = target.y_position - current.y_position
+    let angle       = Math.atan2(y_diff, x_diff)
+    let distance    = Math.sqrt(Math.pow(y_diff, 2) + Math.pow(x_diff, 2))
+
+    move(
+        current,
+        Math.cos(angle) * curve(distance),
+        Math.sin(angle) * curve(distance)
+    )
 }
 
 function game_loop() {
