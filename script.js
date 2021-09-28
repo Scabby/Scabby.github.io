@@ -292,7 +292,7 @@ player_move_speed   = 2
 move_speed          = 1
 follow_distance     = 150
 follow_ease         = 50
-leave_distance      = 5
+leave_distance      = 7
 leave_ease          = 15
 
 touch_sensitivity   = 0.3
