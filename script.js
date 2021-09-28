@@ -173,8 +173,8 @@ function move_away(current, target) {
 
 function game_loop() {
     function parse_diagonals() {
-        let x = move_speed
-        let y = move_speed
+        let x = player_move_speed
+        let y = player_move_speed
 
         if(move_up)     { y = -y }
         if(move_left)   { x = -x }
@@ -185,10 +185,10 @@ function game_loop() {
     if((move_up || move_down) && (move_left || move_right)) {
         parse_diagonals()
     } else {
-        if(move_up)     { move(player, 0, -move_speed) }
-        if(move_down)   { move(player, 0, move_speed) }
-        if(move_left)   { move(player, -move_speed, 0) }
-        if(move_right)  { move(player, move_speed, 0) }
+        if(move_up)     { move(player, 0, -player_move_speed) }
+        if(move_down)   { move(player, 0, player_move_speed) }
+        if(move_left)   { move(player, -player_move_speed, 0) }
+        if(move_right)  { move(player, player_move_speed, 0) }
     }
 
     Movable.update_all()
