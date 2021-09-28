@@ -211,6 +211,7 @@ window.onload = () => {
         enemies.push(new Movable("enemy" + i, x, y, 0, 0, 0.03))
     }
 }
+
 onkeydown = (e) => {
     switch(e.key) {
         case "w": move_up       = true; break
@@ -229,13 +230,47 @@ onkeyup = (e) => {
     }
 }
 
+ontouchstart = (e) => {
+    last_swipe_x = e.touches[0].pageX
+    last_swipe_y = e.touches[0].pageY
+}
+
+ontouchmove = (e) => {
+    let new_swipe_x = e.touches[0].pageX
+    let new_swipe_y = e.touches[0].pageY
+    let diff_x      = new_swipe_x - last_swipe_x
+    let diff_y      = new_swipe_y - last_swipe_y
+
+    if( Math.abs(diff_x) < touch_threshold &&
+        Math.abs(diff_y) < touch_threshold) { return }
+
+    let angle       = Math.atan2(diff_y, diff_x)
+
+    let max_x = Math.cos(angle) * move_speed
+    let max_y = Math.sin(angle) * move_speed
+
+    move(
+        player,
+        clamp(Math.cos(angle) * (diff_x * touch_sensitivity), -max_x, max_x),
+        clamp(Math.sin(angle) * (diff_y * touch_sensitivity), -max_y, max_y)
+    )
+
+    last_swipe_x = new_swipe_x
+    last_swipe_y = new_swipe_y
+}
+
 move_up     = false
 move_down   = false
 move_left   = false
 move_right  = false
 
 move_speed      = 1
-follow_distance = 200
+follow_distance = 100
+
+touch_sensitivity   = 1
+touch_threshold     = 5
 
 let player,
-    board
+    board,
+    last_swipe_x,
+    last_swipe_y
