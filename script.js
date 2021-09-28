@@ -245,13 +245,10 @@ ontouchmove = (e) => {
 
     let angle = Math.atan2(diff_y, diff_x)
 
-    let max_x = Math.cos(angle) * move_speed
-    let max_y = Math.sin(angle) * move_speed
-
     move(
         player,
-        Math.cos(angle) * (diff_x * touch_sensitivity),
-        Math.sin(angle) * (diff_y * touch_sensitivity)
+        Math.cos(angle) * Math.abs(diff_x) * touch_sensitivity,
+        Math.sin(angle) * Math.abs(diff_y) * touch_sensitivity
     )
 
     last_swipe_x = new_swipe_x
@@ -266,7 +263,7 @@ move_right  = false
 move_speed      = 1
 follow_distance = 100
 
-touch_sensitivity   = 1
+touch_sensitivity   = 0.2
 touch_threshold     = 5
 
 let player,
