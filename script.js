@@ -275,8 +275,8 @@ ontouchmove = (e) => {
 
     move(
         player,
-        Math.cos(angle) * Math.abs(diff_x) * touch_sensitivity,
-        Math.sin(angle) * Math.abs(diff_y) * touch_sensitivity
+        clamp(Math.cos(angle) * Math.abs(diff_x) * touch_sensitivity, -player_move_speed, player_move_speed),
+        clamp(Math.sin(angle) * Math.abs(diff_y) * touch_sensitivity, -player_move_speed, player_move_speed)
     )
 
     last_swipe_x = new_swipe_x
@@ -288,11 +288,12 @@ move_down   = false
 move_left   = false
 move_right  = false
 
-move_speed      = 1
-follow_distance = 150
-follow_ease     = 50
-leave_distance  = 5
-leave_ease      = 5
+player_move_speed   = 2
+move_speed          = 1
+follow_distance     = 150
+follow_ease         = 50
+leave_distance      = 5
+leave_ease          = 5
 
 touch_sensitivity   = 0.3
 touch_threshold     = 5
