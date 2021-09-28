@@ -63,13 +63,13 @@ class Movable {
     }
     
     get_force_toward(target) {
-        function curve(distance) {
+        function curve(distance, move_speed) {
             return Math.atan(
                 Math.pow(
                     (distance - follow_distance) / follow_ease,
                     3
                 )
-            ) * (Math.PI / 5) * this.move_speed
+            ) * (Math.PI / 5) * move_speed
         }
 
         let x_diff      = target.x_position - this.x_position
@@ -78,8 +78,8 @@ class Movable {
         let distance    = Math.sqrt(Math.pow(y_diff, 2) + Math.pow(x_diff, 2))
 
         return [
-            Math.cos(angle) * curve(distance),
-            Math.sin(angle) * curve(distance)
+            Math.cos(angle) * curve(distance, this.move_speed),
+            Math.sin(angle) * curve(distance, this.move_speed)
         ]
     }
 
