@@ -32,11 +32,11 @@ class Movable {
         this.x_velocity -= this.friction * this.x_velocity
         this.y_velocity -= this.friction * this.y_velocity
 
-        let x_screen_estate = window.innerWidth - this.width
-        let y_screen_estate = window.innerHeight - this.height
+        let x_screen_estate = window.innerWidth - this.width - 1
+        let y_screen_estate = window.innerHeight - this.height - 1
 
-        if(this.x_position < 0) {
-            this.x_position = 0
+        if(this.x_position < 1) {
+            this.x_position = 1
             this.x_velocity = -this.x_velocity
         }
 
@@ -45,8 +45,8 @@ class Movable {
             this.x_velocity = -this.x_velocity
         }
 
-        if(this.y_position < 0) {
-            this.y_position = 0
+        if(this.y_position < 1) {
+            this.y_position = 1
             this.y_velocity = -this.y_velocity
         }
 
