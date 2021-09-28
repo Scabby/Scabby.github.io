@@ -3,8 +3,8 @@ const instances = []
 class Movable {
     constructor(
         id,
-        x_position = window.innerWidth / 2,
-        y_position = window.innerHeight / 2,
+        x_position  = window.innerWidth / 2,
+        y_position  = window.innerHeight / 2,
         x_velocity  = 0,
         y_velocity  = 0,
         friction    = 0.15
@@ -87,7 +87,6 @@ class Movable {
         function curve(distance) {
             return -clamp(
                 1 / (Math.pow(distance / leave_distance, leave_ease)),
-                -this.move_speed,
                 this.move_speed
             )
         }
@@ -187,21 +186,10 @@ class Movable {
     }
 }
 
-function clamp(n, low, high) {
-    if(n < low)     { return low }
-    if(n > high)    { return high }
-    return n
-}
-
 function clamp(n, max) {
     if(n < -max)    { return -max }
     if(n > max)     { return max }
     return n
-}
-
-function move(movable, x, y) {
-    movable.x_velocity += x
-    movable.y_velocity += y
 }
 
 function game_loop() {
@@ -313,8 +301,8 @@ ontouchmove = (e) => {
     let angle = Math.atan2(diff_y, diff_x)
 
     player.move(
-        clamp(Math.cos(angle) * Math.abs(diff_x) * touch_sensitivity, -player.move_speed, player.move_speed),
-        clamp(Math.sin(angle) * Math.abs(diff_y) * touch_sensitivity, -player.move_speed, player.move_speed)
+        clamp(Math.cos(angle) * Math.abs(diff_x) * touch_sensitivity, player.move_speed),
+        clamp(Math.sin(angle) * Math.abs(diff_y) * touch_sensitivity, player.move_speed)
     )
 
     last_swipe_x = new_swipe_x
