@@ -20,6 +20,7 @@ class Movable {
         this.x_velocity = x_velocity
         this.y_velocity = y_velocity
         this.friction   = friction
+        this.move_speed = move_speed
 
         instances.push(this)
     }
