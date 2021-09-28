@@ -59,18 +59,64 @@ class Movable {
         this.element.style.left = this.x_position + "px"
         this.element.style.top  = this.y_position + "px"
     }
+    
+    move(x, y) {
+        this.x_velocity += x
+        this.y_velocity += y
+    }
+    
+    move_toward(target) {
+        function curve(distance) {
+            return Math.atan(
+                Math.pow(
+                    (distance - follow_distance) / follow_ease,
+                    3
+                )
+            ) * (Math.PI / 5) * move_speed
+        }
 
+        let x_diff      = target.x_position - this.x_position
+        let y_diff      = target.y_position - this.y_position
+        let angle       = Math.atan2(y_diff, x_diff)
+        let distance    = Math.sqrt(Math.pow(y_diff, 2) + Math.pow(x_diff, 2))
+
+        this.move(
+            Math.cos(angle) * curve(distance),
+            Math.sin(angle) * curve(distance)
+        )
+    }
+
+    move_away(target) {
+        function curve(distance) {
+            return -clamp(
+                1 / (Math.pow(distance / leave_distance, leave_ease)),
+                -move_speed,
+                move_speed
+            )
+        }
+
+        let x_diff      = target.x_position - this.x_position
+        let y_diff      = target.y_position - this.y_position
+        let angle       = Math.atan2(y_diff, x_diff)
+        let distance    = Math.sqrt(Math.pow(y_diff, 2) + Math.pow(x_diff, 2))
+
+        this.move(
+            Math.cos(angle) * curve(distance),
+            Math.sin(angle) * curve(distance)
+        )
+    }
+    
     static update_all() {
         for(let current of instances) {
             if(current.element.id.includes("enemy")) {
-                move_toward(current, player)
+                current.move_toward(player)
             }
             
             for(let target of instances) {
                 if(current == target) { continue }
 
                 if(current.element.id != "player" && target.element.id != "player") {
-                    move_away(current, target)
+                    current.move_away(target)
                 }
 
                 if( current.x_position < target.x_position + target.width &&
@@ -128,49 +174,6 @@ function move(movable, x, y) {
     movable.y_velocity += y
 }
 
-function move_toward(current, target) {
-    function curve(distance) {
-        return Math.atan(
-            Math.pow(
-                (distance - follow_distance) / follow_ease,
-                3
-            )
-        ) * (Math.PI / 5) * move_speed
-    }
-    
-    let x_diff      = target.x_position - current.x_position
-    let y_diff      = target.y_position - current.y_position
-    let angle       = Math.atan2(y_diff, x_diff)
-    let distance    = Math.sqrt(Math.pow(y_diff, 2) + Math.pow(x_diff, 2))
-
-    move(
-        current,
-        Math.cos(angle) * curve(distance),
-        Math.sin(angle) * curve(distance)
-    )
-}
-
-function move_away(current, target) {
-    function curve(distance) {
-        return -clamp(
-            1 / (Math.pow(distance / leave_distance, leave_ease)),
-            -move_speed,
-            move_speed
-        )
-    }
-
-    let x_diff      = target.x_position - current.x_position
-    let y_diff      = target.y_position - current.y_position
-    let angle       = Math.atan2(y_diff, x_diff)
-    let distance    = Math.sqrt(Math.pow(y_diff, 2) + Math.pow(x_diff, 2))
-
-    move(
-        current,
-        Math.cos(angle) * curve(distance),
-        Math.sin(angle) * curve(distance)
-    )
-}
-
 function game_loop() {
     function parse_diagonals() {
         let x = player_move_speed
@@ -179,16 +182,16 @@ function game_loop() {
         if(move_up)     { y = -y }
         if(move_left)   { x = -x }
 
-        move(player, Math.cos(45) * x, Math.cos(45) * y)
+        player.move(Math.cos(45) * x, Math.cos(45) * y)
     }
 
     if((move_up || move_down) && (move_left || move_right)) {
         parse_diagonals()
     } else {
-        if(move_up)     { move(player, 0, -player_move_speed) }
-        if(move_down)   { move(player, 0, player_move_speed) }
-        if(move_left)   { move(player, -player_move_speed, 0) }
-        if(move_right)  { move(player, player_move_speed, 0) }
+        if(move_up)     { player.move(0, -player_move_speed) }
+        if(move_down)   { player.move(0, player_move_speed) }
+        if(move_left)   { player.move(-player_move_speed, 0) }
+        if(move_right)  { player.move(player_move_speed, 0) }
     }
 
     Movable.update_all()
@@ -279,8 +282,7 @@ ontouchmove = (e) => {
 
     let angle = Math.atan2(diff_y, diff_x)
 
-    move(
-        player,
+    player.move(
         clamp(Math.cos(angle) * Math.abs(diff_x) * touch_sensitivity, -player_move_speed, player_move_speed),
         clamp(Math.sin(angle) * Math.abs(diff_y) * touch_sensitivity, -player_move_speed, player_move_speed)
     )
