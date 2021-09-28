@@ -257,7 +257,7 @@ window.onload = () => {
                 Math.pow(y - player.y_position, 2) >
                 Math.pow(200, 2))
             {
-                new Movable("enemy" + i, x, y, 0, 0, 0.03, 0,8)
+                new Movable("enemy" + i, x, y, 0, 0, 0.03, 0.8)
                 break
             }
             
