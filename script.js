@@ -263,7 +263,7 @@ move_right  = false
 move_speed      = 1
 follow_distance = 100
 
-touch_sensitivity   = 0.2
+touch_sensitivity   = 0.3
 touch_threshold     = 5
 
 let player,
