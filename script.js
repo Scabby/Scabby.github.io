@@ -295,7 +295,7 @@ move_left   = false
 move_right  = false
 
 player_move_speed   = 2
-move_speed          = 1
+move_speed          = 0.8
 follow_distance     = 150
 follow_ease         = 50
 leave_distance      = 15
