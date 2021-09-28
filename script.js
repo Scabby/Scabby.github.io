@@ -8,6 +8,7 @@ class Movable {
         x_velocity  = 0,
         y_velocity  = 0,
         friction    = 0.15
+        move_speed  = 2
     ) {
         this.element = document.createElement("div")
         this.element.className  = "movable"
@@ -60,19 +61,14 @@ class Movable {
         this.element.style.top  = this.y_position + "px"
     }
     
-    move(x, y) {
-        this.x_velocity += x
-        this.y_velocity += y
-    }
-    
-    move_toward(target) {
+    get_force_toward(target) {
         function curve(distance) {
             return Math.atan(
                 Math.pow(
                     (distance - follow_distance) / follow_ease,
                     3
                 )
-            ) * (Math.PI / 5) * move_speed
+            ) * (Math.PI / 5) * this.move_speed
         }
 
         let x_diff      = target.x_position - this.x_position
@@ -80,18 +76,18 @@ class Movable {
         let angle       = Math.atan2(y_diff, x_diff)
         let distance    = Math.sqrt(Math.pow(y_diff, 2) + Math.pow(x_diff, 2))
 
-        this.move(
+        return [
             Math.cos(angle) * curve(distance),
             Math.sin(angle) * curve(distance)
-        )
+        ]
     }
 
-    move_away(target) {
+    get_force_away(target) {
         function curve(distance) {
             return -clamp(
                 1 / (Math.pow(distance / leave_distance, leave_ease)),
-                -move_speed,
-                move_speed
+                -this.move_speed,
+                this.move_speed
             )
         }
 
@@ -100,23 +96,47 @@ class Movable {
         let angle       = Math.atan2(y_diff, x_diff)
         let distance    = Math.sqrt(Math.pow(y_diff, 2) + Math.pow(x_diff, 2))
 
-        this.move(
+        return [
             Math.cos(angle) * curve(distance),
             Math.sin(angle) * curve(distance)
-        )
+        ]
+    }
+    
+    move(x, y) {
+        this.x_velocity += x
+        this.y_velocity += y
+    }
+    
+    move_toward(target) {
+        let [x, y] = get_force_toward(target)
+        this.move(x, y)
+    }
+    
+    move_away(target) {
+        let [x, y] = get_force_away(target)
+        this.move(x, y)
     }
     
     static update_all() {
         for(let current of instances) {
+            let new_x_move_force = 0
+            let new_y_move_force = 0
+            
+            function add_force(force) {
+                let [x, y] = force
+                new_x_move_force += x
+                new_y_move_force += y
+            }
+            
             if(current.element.id.includes("enemy")) {
-                current.move_toward(player)
+                add_force(current.get_force_toward(player))
             }
             
             for(let target of instances) {
                 if(current == target) { continue }
 
                 if(current.element.id != "player" && target.element.id != "player") {
-                    current.move_away(target)
+                    add_force(current.get_force_away(target))
                 }
 
                 if( current.x_position < target.x_position + target.width &&
@@ -155,6 +175,9 @@ class Movable {
                     target.y_velocity   += y_vel_ave
                 }
             }
+            
+            current.x_velocity += clamp(new_x_move_force, current.move_speed)
+            current.y_velocity += clamp(new_y_move_force, current.move_speed)
         }
 
         for(const e of instances) {
@@ -169,6 +192,12 @@ function clamp(n, low, high) {
     return n
 }
 
+function clamp(n, max) {
+    if(n < -max)    { return -max }
+    if(n > max)     { return max }
+    return n
+}
+
 function move(movable, x, y) {
     movable.x_velocity += x
     movable.y_velocity += y
@@ -176,8 +205,8 @@ function move(movable, x, y) {
 
 function game_loop() {
     function parse_diagonals() {
-        let x = player_move_speed
-        let y = player_move_speed
+        let x = player.move_speed
+        let y = player.move_speed
 
         if(move_up)     { y = -y }
         if(move_left)   { x = -x }
@@ -188,10 +217,10 @@ function game_loop() {
     if((move_up || move_down) && (move_left || move_right)) {
         parse_diagonals()
     } else {
-        if(move_up)     { player.move(0, -player_move_speed) }
-        if(move_down)   { player.move(0, player_move_speed) }
-        if(move_left)   { player.move(-player_move_speed, 0) }
-        if(move_right)  { player.move(player_move_speed, 0) }
+        if(move_up)     { player.move(0, -player.move_speed) }
+        if(move_down)   { player.move(0, player.move_speed) }
+        if(move_left)   { player.move(-player.move_speed, 0) }
+        if(move_right)  { player.move(player.move_speed, 0) }
     }
 
     Movable.update_all()
@@ -239,7 +268,7 @@ window.onload = () => {
                 Math.pow(y - player.y_position, 2) >
                 Math.pow(200, 2))
             {
-                new Movable("enemy" + i, x, y, 0, 0, 0.03)
+                new Movable("enemy" + i, x, y, 0, 0, 0.03, 0,8)
                 break
             }
             
@@ -283,8 +312,8 @@ ontouchmove = (e) => {
     let angle = Math.atan2(diff_y, diff_x)
 
     player.move(
-        clamp(Math.cos(angle) * Math.abs(diff_x) * touch_sensitivity, -player_move_speed, player_move_speed),
-        clamp(Math.sin(angle) * Math.abs(diff_y) * touch_sensitivity, -player_move_speed, player_move_speed)
+        clamp(Math.cos(angle) * Math.abs(diff_x) * touch_sensitivity, -player.move_speed, player.move_speed),
+        clamp(Math.sin(angle) * Math.abs(diff_y) * touch_sensitivity, -player.move_speed, player.move_speed)
     )
 
     last_swipe_x = new_swipe_x
@@ -296,8 +325,6 @@ move_down   = false
 move_left   = false
 move_right  = false
 
-player_move_speed   = 2
-move_speed          = 0.8
 follow_distance     = 150
 follow_ease         = 50
 leave_distance      = 15
