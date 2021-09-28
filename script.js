@@ -62,6 +62,10 @@ class Movable {
 
     static update_all() {
         for(let current of instances) {
+            if(current.element.id.includes("enemy")) {
+                move_toward(current, player)
+            }
+            
             for(let target of instances) {
                 if(current == target) { continue }
 
@@ -120,30 +124,26 @@ function move(movable, x, y) {
     movable.y_velocity += y
 }
 
-function move_enemies() {
+function move_toward(current, target) {
     function get_speed(distance) {
-        return -(Math.atan((distance - follow_distance)/ 300) * (Math.PI / 5) * move_speed)
+        return Math.atan(
+            (distance - follow_distance) / follow_ease
+        ) * (Math.PI / 5) * move_speed
     }
+    
+    let x_diff      = target.x_position - current.x_position
+    let y_diff      = target.y_position - current.y_position
+    let angle       = Math.atan2(y_diff, x_diff)
+    let distance    = Math.sqrt(Math.pow(y_diff, 2) + Math.pow(x_diff, 2))
 
-    for(let current of instances) {
-        if(current.element.id.includes("enemy")) {
-            let x_diff      = current.x_position - player.x_position
-            let y_diff      = current.y_position - player.y_position
-            let angle       = Math.atan2(y_diff, x_diff)
-            let distance    = Math.sqrt(Math.pow(y_diff, 2) + Math.pow(x_diff, 2))
-
-            move(
-                current,
-                Math.cos(angle) * get_speed(distance),
-                Math.sin(angle) * get_speed(distance)
-            )
-        }
-    }
+    move(
+        current,
+        Math.cos(angle) * get_speed(distance),
+        Math.sin(angle) * get_speed(distance)
+    )
 }
 
 function game_loop() {
-    move_enemies()
-
     function parse_diagonals() {
         let x = move_speed
         let y = move_speed
@@ -262,6 +262,7 @@ move_right  = false
 
 move_speed      = 1
 follow_distance = 150
+follow_ease     = 300
 
 touch_sensitivity   = 0.3
 touch_threshold     = 5
