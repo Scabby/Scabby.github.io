@@ -292,7 +292,7 @@ move_speed      = 1
 follow_distance = 150
 follow_ease     = 50
 leave_distance  = 20
-leave_ease      = 2
+leave_ease      = 3
 
 touch_sensitivity   = 0.3
 touch_threshold     = 5
