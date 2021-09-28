@@ -324,7 +324,7 @@ move_right  = false
 
 follow_distance     = 150
 follow_ease         = 50
-leave_distance      = 10
+leave_distance      = 5
 leave_ease          = 3
 
 touch_sensitivity   = 0.3
