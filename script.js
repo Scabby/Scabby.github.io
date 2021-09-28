@@ -225,15 +225,20 @@ window.onload = () => {
 
     let enemies = []
 
-    for(let i = 0; i < 20; i++) {
+    for(let i = 0; i < 200; i++) {
         let x, y
+        let fail_count = 0
         while(true) {
+            if(fail_count > 10) { break }
+            
             x = Math.floor(Math.random() * window.innerWidth + 1)
             y = Math.floor(Math.random() * window.innerHeight + 1)
 
             if( Math.pow(x - player.x_position, 2) +
                 Math.pow(y - player.y_position, 2) >
                 Math.pow(200, 2)) { break }
+            
+            fail_count++
         }
         enemies.push(new Movable("enemy" + i, x, y, 0, 0, 0.03))
     }
