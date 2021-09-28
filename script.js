@@ -121,22 +121,22 @@ function move(movable, x, y) {
 }
 
 function move_enemies() {
+    function get_speed(distance) {
+        return -(Math.atan((distance - follow_distance)/ 300) * (Math.PI / 5) * move_speed)
+    }
+
     for(let current of instances) {
         if(current.element.id.includes("enemy")) {
             let x_diff      = current.x_position - player.x_position
             let y_diff      = current.y_position - player.y_position
-            let angle       = Math.atan2(y_diff, x_diff) * 180 / Math.PI
-            let distance    = Math.sqrt(Math.pow(x_diff, 2) + Math.pow(y_diff, 2)) - follow_distance
-            let x_comp      = Math.cos(angle) * move_speed
-            let y_comp      = Math.sin(angle) * move_speed
-            
-            if(distance != 0) {
-                move(
-                    current,
-                    clamp(x_comp) / distance * 100, -x_comp, x_comp,
-                    clamp(y_comp) / distance * 100, -y_comp, y_comp
-                )
-            }
+            let angle       = Math.atan2(y_diff, x_diff)
+            let distance    = Math.sqrt(Math.pow(y_diff, 2) + Math.pow(x_diff, 2))
+
+            move(
+                current,
+                Math.cos(angle) * get_speed(distance),
+                Math.sin(angle) * get_speed(distance)
+            )
         }
     }
 }
