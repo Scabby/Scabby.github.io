@@ -144,35 +144,43 @@ class Movable {
                     current.y_position < target.y_position + target.height &&
                     current.y_position + current.height > target.y_position)
                 {
-                    let x_pos_diff, y_pos_diff
+                    let x_diff =
+                        (current.x_position + current.width / 2) -
+                        (target.x_position + target.width / 2)
 
-                    if(current.x_position < target.x_position) {
-                        x_pos_diff = current.x_position + current.width - target.x_position
+                    let y_diff =
+                        (current.y_position + current.height / 2) -
+                        (target.y_position + target.height / 2)
+
+                    let x_overlap, y_overlap
+
+                    if(x_diff > 0) {
+                        x_overlap = target.x_position + target.width - current.x_position
                     } else {
-                        x_pos_diff = target.x_position + target.width - current.x_position
+                        x_overlap = -(current.x_position + current.width - target.x_position)
                     }
 
-                    if(current.y_position < target.y_position) {
-                        y_pos_diff = current.y_position + current.height - target.y_position
+                    if(y_diff > 0) {
+                        y_overlap = target.y_position + target.height - current.y_position
                     } else {
-                        y_pos_diff = target.y_position + target.height - current.y_position
+                        y_overlap = -(current.y_position + current.height - target.y_position)
                     }
 
-                    let x_vel_ave = (current.x_velocity - target.x_velocity) / 2
-                    let y_vel_ave = (current.y_velocity - target.y_velocity) / 2
-
-                    if(Math.abs(x_pos_diff) > Math.abs(y_pos_diff)) {
-                        current.y_position  += y_pos_diff + 1/16
-                        target.y_position   -= y_pos_diff + 1/16
+                    if(Math.abs(x_diff) < Math.abs(y_diff)) {
+                        current.y_position  += y_overlap / 2
+                        target.y_position   -= y_overlap / 2
                     } else {
-                        current.x_position  += x_pos_diff + 1/16
-                        target.x_position   -= x_pos_diff + 1/16
+                        current.x_position  += x_overlap / 2
+                        target.x_position   -= x_overlap / 2
                     }
 
-                    current.x_velocity  -= x_vel_ave
-                    current.y_velocity  -= y_vel_ave
-                    target.x_velocity   += x_vel_ave
-                    target.y_velocity   += y_vel_ave
+                    let curr_x_velocity = current.x_velocity
+                    let curr_y_velocity = current.y_velocity
+
+                    current.x_velocity  = target.x_velocity
+                    current.y_velocity  = target.y_velocity
+                    target.x_velocity   = curr_x_velocity
+                    target.y_velocity   = curr_y_velocity
                 }
             }
 
