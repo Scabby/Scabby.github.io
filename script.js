@@ -153,7 +153,7 @@ function move_toward(current, target) {
 function move_away(current, target) {
     function curve(distance) {
         return -clamp(
-            1 / (Math.pow(distance, 1 / leave_ease) - leave_distance),
+            1 / (Math.pow(distance, leave_ease) - leave_distance),
             -move_speed,
             move_speed
         )
