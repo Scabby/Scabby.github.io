@@ -223,7 +223,7 @@ window.onload = () => {
     board   = document.getElementById("board")
     player  = new Movable("player")
 
-    for(let i = 0; i < 100; i++) {
+    for(let i = 0; i < 50; i++) {
         let x, y
         let fail_count = 0
         while(true) {
