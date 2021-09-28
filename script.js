@@ -223,8 +223,6 @@ window.onload = () => {
     board   = document.getElementById("board")
     player  = new Movable("player")
 
-    let enemies = []
-
     for(let i = 0; i < 200; i++) {
         let x, y
         let fail_count = 0
@@ -236,11 +234,14 @@ window.onload = () => {
 
             if( Math.pow(x - player.x_position, 2) +
                 Math.pow(y - player.y_position, 2) >
-                Math.pow(200, 2)) { break }
+                Math.pow(200, 2))
+            {
+                new Movable("enemy" + i, x, y, 0, 0, 0.03)
+                break
+            }
             
             fail_count++
         }
-        enemies.push(new Movable("enemy" + i, x, y, 0, 0, 0.03))
     }
 }
 
