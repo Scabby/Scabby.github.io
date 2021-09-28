@@ -69,6 +69,10 @@ class Movable {
             for(let target of instances) {
                 if(current == target) { continue }
 
+                if(target != player) {
+                    move_away(current, target)
+                }
+
                 if( current.x_position < target.x_position + target.width &&
                     current.x_position + current.width > target.x_position &&
                     current.y_position < target.y_position + target.height &&
@@ -125,7 +129,7 @@ function move(movable, x, y) {
 }
 
 function move_toward(current, target) {
-    function get_speed(distance) {
+    function curve(distance) {
         return Math.atan(
             Math.pow(
                 (distance - follow_distance) / follow_ease,
@@ -141,9 +145,19 @@ function move_toward(current, target) {
 
     move(
         current,
-        Math.cos(angle) * get_speed(distance),
-        Math.sin(angle) * get_speed(distance)
+        Math.cos(angle) * curve(distance),
+        Math.sin(angle) * curve(distance)
     )
+}
+
+function move_away(current, target) {
+    function curve(distance) {
+        return -clamp(
+            1 / (Math.pow(distance, 1 / leave_ease) - leave_distance),
+            -move_speed,
+            move_speed
+        )
+    }
 }
 
 function game_loop() {
