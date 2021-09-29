@@ -11,7 +11,7 @@
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
 
-    font-size: size;
+    font-size: var(--size);
     color: #e3e3e3;
 
     margin: 0;
@@ -26,10 +26,10 @@ body {
 
 #info-panel {
     position: absolute;
-    margin-left: calc(size / 2);
-    margin-top: calc(size / 2);
-    padding: calc(size / 1.5);
-    border-radius: calc(size / 2);
+    margin-left: calc(var(--size) / 2);
+    margin-top: calc(var(--size) / 2);
+    padding: calc(var(--size) / 1.5);
+    border-radius: calc(var(--size) / 2);
     z-index: 98 !important;
 
     background-color:#2b2b2bb0;
@@ -69,10 +69,10 @@ body {
 }
 
 #spinning {
-    margin-left: calc(50% - size);
-    margin-bottom: calc(size / 2);
-    width: calc(size * 2);
-    height: calc(size * 2);
+    margin-left: calc(50% - var(--size));
+    margin-bottom: calc(var(--size) / 2);
+    width: calc(var(--size) * 2);
+    height: calc(var(--size) * 2);
     background-color: #e3e3e3;
 
     animation:  spin 1s ease infinite,
@@ -91,9 +91,9 @@ body {
 
 .movable {
     position: absolute;
-    width: size;
-    height: size;
-    border-radius: calc(size / 2);
+    width: var(--size);
+    height: var(--size);
+    border-radius: calc(var(--size) / 2);
 
     background-color: #eb8f99;
 
