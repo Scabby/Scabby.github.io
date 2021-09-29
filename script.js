@@ -2,21 +2,16 @@ function get(id) {
     return document.getElementById(id)
 }
 
-function half_window_x(element = null) {
-    let half_x = window.innerWidth / 2
-
-    if(element != null) { return half_x - element.offsetWidth / 2 }
-    else                { return half_x }
+function half_window_x(element) {
+    return window.innerWidth / 2 - element.offsetWidth / 2
 }
 
-function half_window_y(element = null) {
-    let half_y = window.innerHeight / 2
-
-    if(element != null) { return half_y - element.offsetHeight / 2 }
-    else                { return half_y }
+function half_window_y(element) {
+    return window.innerHeight / 2 - element.offsetHeight / 2
 }
 
 const instances = []
+const explosion_instances = []
 
 class Movable {
     constructor(
@@ -159,6 +154,10 @@ class Movable {
                 add_force(current.get_force_toward(player))
                 enemy_count++
             }
+            
+            for(const explosion in explosion_instances) {
+                explosion.push(current)
+            }
 
             for(let target of instances) {
                 if(current == target) { continue }
@@ -232,22 +231,50 @@ class Movable {
 
 class Explosion() {
     constructor(
-        x_position = half_window_x(),
-        y_position = half_window_y(),
-        force_curve = (time_left, distance_away) => {
-            return (time_left) * (1/distance_away)
-        },
+        x_position,
+        y_position,
         duration
     ) {
         this.x_position     = x_position
         this.y_position     = y_position
-        this.force_curve    = force_curve
         this.duration       = duration
+        
+        explosion_instances.push(this)
     }
 
-    update() {}
+    push(target) {
+        [x, y] = force_curve(
+            duration,
+            this.x_position - target.x_position,
+            this.y_position - target.y_position
+        )
 
-    static update_all() {}
+        target.move(x, y)
+    }
+    
+    update() {
+        this.duration--
+        
+        if(this.duration < 0) {
+            explosion_instances = explosion_instances.filter(e => e != this)
+        }
+    }
+    
+    static update_all() {
+        for(const instance of explosion_instances) {
+            instance.update()
+        }
+    }
+    
+    static force_curve(time, x_diff, y_diff) {
+        let distance    = Math.sqrt(Math.pow(x_diff, 2) + Math.pow(y_diff, 2))
+        let angle       = Math.atan2(y_diff, x_diff)
+        
+        return [
+            (Math.cos(angle) / distance) / time,
+            (Math.sin(angle) / distance) / time
+        ]
+    }
 }
 
 function clamp(n, max) {
@@ -284,6 +311,7 @@ function game_loop() {
     }
 
     Movable.update_all()
+    Explosion.update_all()
 
     let speed_count = Math.sqrt(
         Math.pow(player.x_velocity, 2) +
