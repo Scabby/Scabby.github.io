@@ -91,9 +91,9 @@ body {
 
 .movable {
     position: absolute;
-    width: var(--size);
-    height: var(--size);
-    border-radius: calc(var(--size) / 2);
+    width: calc(var(--size) * 3 / 4);
+    height: calc(var(--size) * 3 / 4);
+    border-radius: calc(var(--size) * 3 / 8);
 
     background-color: #eb8f99;
 
