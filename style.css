@@ -104,6 +104,10 @@ body {
     background-color: #bed195;
 }
 
+#movable-helper {
+    opacity: 0;
+}
+
 .red        { color: #eb8f99 !important; }
 .orange     { color: #faaf8d !important; }
 .yellow     { color: #ebca89 !important; }
