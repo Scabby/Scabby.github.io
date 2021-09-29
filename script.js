@@ -7,6 +7,7 @@ class Movable {
         y_position  = window.innerHeight / 2,
         x_velocity  = 0,
         y_velocity  = 0,
+        health      = 100,
         friction    = 0.15,
         move_speed  = 2
     ) {
@@ -19,6 +20,7 @@ class Movable {
         this.y_position = y_position
         this.x_velocity = x_velocity
         this.y_velocity = y_velocity
+        this.health     = health
         this.friction   = friction
         this.move_speed = move_speed
 
@@ -123,6 +125,8 @@ class Movable {
     }
 
     static update_all() {
+        let enemy_count = 0
+
         for(let current of instances) {
             let new_x_move_force = 0
             let new_y_move_force = 0
@@ -135,6 +139,7 @@ class Movable {
 
             if(current.element.id.includes("enemy")) {
                 add_force(current.get_force_toward(player))
+                enemy_count++
             }
 
             for(let target of instances) {
@@ -202,6 +207,8 @@ class Movable {
         for(const e of instances) {
             e.update()
         }
+
+        enemy_counter.innerHTML = "enemies: " + enemy_count
     }
 }
 
@@ -216,10 +223,12 @@ function game_loop() {
         let x = player.move_speed
         let y = player.move_speed
 
+        let angle = Math.atan2(y, x)
+
         if(move_up)     { y = -y }
         if(move_left)   { x = -x }
 
-        player.move(Math.cos(45) * x, Math.cos(45) * y)
+        player.move(Math.cos(angle) * x, Math.sin(angle) * y)
     }
 
     if((move_up || move_down) && (move_left || move_right)) {
@@ -232,6 +241,35 @@ function game_loop() {
     }
 
     Movable.update_all()
+
+    let speed_count = Math.sqrt(
+        Math.pow(player.x_velocity, 2) +
+        Math.pow(player.y_velocity, 2)
+    ).toFixed(2)
+
+    let angle_count
+
+    if( Math.abs(player.x_velocity).toFixed(2) > 0 ||
+        Math.abs(player.y_velocity).toFixed(2) > 0
+    ) {
+        angle_count = (
+            Math.atan2(player.y_velocity, player.x_velocity) *
+            (180 / Math.PI)
+        ).toFixed(2)
+    } else {
+        angle_count = "NaN"
+    }
+
+    health_counter.innerHTML    = "health: " + player.health
+    x_pos_counter.innerHTML     = "x position: " + player.x_position.toFixed(2)
+    y_pos_counter.innerHTML     = "y position: " + player.y_position.toFixed(2)
+    speed_counter.innerHTML     = "speed: " + speed_count
+    angle_counter.innerHTML     = "angle: " + angle_count
+
+    if(player.health > 50)          { health_counter.className = "green" }
+    else if(player.health <= 10)    { health_counter.className = "red" }
+    else                            { health_counter.className = "yellow" }
+
     window.requestAnimationFrame(game_loop)
 }
 
@@ -284,8 +322,14 @@ window.onload = () => {
 
     close_loading_screen()
 
-    board   = document.getElementById("board")
-    player  = new Movable("player")
+    board           = document.getElementById("board")
+    health_counter  = document.getElementById("health-counter")
+    x_pos_counter   = document.getElementById("x-position")
+    y_pos_counter   = document.getElementById("y-position")
+    speed_counter   = document.getElementById("speed-counter")
+    angle_counter   = document.getElementById("angle-counter")
+    enemy_counter   = document.getElementById("enemy-counter")
+    player          = new Movable("player")
 
     setTimeout(spawn_enemy, 2000)
 }
@@ -356,5 +400,11 @@ touch_threshold     = 5
 
 let player,
     board,
+    health_counter,
+    x_pos_counter,
+    y_pos_counter,
+    speed_counter,
+    angle_counter,
+    enemy_counter,
     last_swipe_x,
     last_swipe_y
