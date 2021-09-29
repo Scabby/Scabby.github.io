@@ -219,6 +219,10 @@ function clamp(n, max) {
 }
 
 function game_loop() {
+    if(!is_paused) {
+        window.requestAnimationFrame(game_loop)
+    }
+
     function parse_diagonals() {
         let x = player.move_speed
         let y = player.move_speed
@@ -335,6 +339,9 @@ window.onload = () => {
 }
 
 function handle_key(k, start_move) {
+    if(k == "tab")  { is_paused = !is_paused }
+    if(is_paused)   { return }
+
     switch(k) {
         case "w":
         case "ArrowUp":     move_up     = start_move;
@@ -381,6 +388,8 @@ ontouchmove = (e) => {
     last_swipe_x = new_swipe_x
     last_swipe_y = new_swipe_y
 }
+
+is_paused = false
 
 move_up     = false
 move_down   = false
