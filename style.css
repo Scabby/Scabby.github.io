@@ -18,7 +18,7 @@
     overflow: hidden;
 }
 
-:root { --size = 0.75em; }
+:root { --size = 11px; }
 
 body {
     background-color: #353535;
