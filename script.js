@@ -261,8 +261,8 @@ function game_loop() {
     }
 
     health_counter.innerHTML    = "health: " + player.health
-    x_pos_counter.innerHTML     = "x position: " + player.x_position.toFixed(2)
-    y_pos_counter.innerHTML     = "y position: " + player.y_position.toFixed(2)
+    x_pos_counter.innerHTML     = "x pos: " + player.x_position.toFixed(2)
+    y_pos_counter.innerHTML     = "y pos: " + player.y_position.toFixed(2)
     speed_counter.innerHTML     = "speed: " + speed_count
     angle_counter.innerHTML     = "angle: " + angle_count
 
