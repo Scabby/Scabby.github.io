@@ -346,7 +346,7 @@ move_right  = false
 enemy_count         = 50
 enemy_spawn_delay   = 200
 
-follow_distance     = 10
+follow_distance     = 7
 follow_ease         = 50
 leave_distance      = 0.7
 leave_ease          = 5
