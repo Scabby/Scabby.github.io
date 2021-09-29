@@ -271,8 +271,8 @@ class Explosion() {
         let angle       = Math.atan2(y_diff, x_diff)
         
         return [
-            (Math.cos(angle) / distance) / time,
-            (Math.sin(angle) / distance) / time
+            (Math.cos(angle) * distance) / time,
+            (Math.sin(angle) * distance) / time
         ]
     }
 }
