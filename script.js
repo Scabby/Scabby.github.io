@@ -66,7 +66,7 @@ class Movable {
         function curve(distance, move_speed) {
             return Math.atan(
                 Math.pow(
-                    (distance - follow_distance) / follow_ease,
+                    (distance - (follow_distance * width_sum)) / follow_ease,
                     3
                 )
             ) * (Math.PI / 5) * move_speed
@@ -75,6 +75,7 @@ class Movable {
         let x_diff      = target.x_position - this.x_position
         let y_diff      = target.y_position - this.y_position
         let angle       = Math.atan2(y_diff, x_diff)
+        let width_sum   = this.width + target.width
         let distance    = Math.sqrt(Math.pow(y_diff, 2) + Math.pow(x_diff, 2))
 
         return [
@@ -86,7 +87,10 @@ class Movable {
     get_force_away(target) {
         function curve(distance, move_speed, width_sum) {
             return -clamp(
-                1 / (Math.pow(distance / (leave_distance * width_sum), leave_ease)),
+                1 / (
+                    Math.pow(distance /(leave_distance * width_sum),
+                    leave_ease)
+                ),
                 move_speed
             )
         }
@@ -145,26 +149,32 @@ class Movable {
                     current.y_position < target.y_position + target.height &&
                     current.y_position + current.height > target.y_position)
                 {
-                    let x_diff =
-                        (current.x_position + current.width / 2) -
-                        (target.x_position + target.width / 2)
+                    let x_diff =    (current.x_position + current.width / 2) -
+                                    (target.x_position + target.width / 2)
 
-                    let y_diff =
-                        (current.y_position + current.height / 2) -
-                        (target.y_position + target.height / 2)
+                    let y_diff =    (current.y_position + current.height / 2) -
+                                    (target.y_position + target.height / 2)
 
                     let x_overlap, y_overlap
 
                     if(x_diff > 0) {
-                        x_overlap = target.x_position + target.width - current.x_position
+                        x_overlap = target.x_position +
+                                    target.width -
+                                    current.x_position
                     } else {
-                        x_overlap = -(current.x_position + current.width - target.x_position)
+                        x_overlap = -(current.x_position +
+                                    current.width -
+                                    target.x_position)
                     }
 
                     if(y_diff > 0) {
-                        y_overlap = target.y_position + target.height - current.y_position
+                        y_overlap = target.y_position +
+                                    target.height -
+                                    current.y_position
                     } else {
-                        y_overlap = -(current.y_position + current.height - target.y_position)
+                        y_overlap = -(current.y_position +
+                                    current.height -
+                                    target.y_position)
                     }
 
                     if(Math.abs(x_diff) < Math.abs(y_diff)) {
@@ -226,9 +236,9 @@ function game_loop() {
 }
 
 window.onload = () => {
-    let delay = 300
+    function close_loading_screen() {
+        let delay = 300
 
-    function clear_loading_screen() {
         let loading_screen  = document.getElementById("loading-screen")
         let loading_bar     = document.getElementById("spinning")
         let loading_message = document.getElementById("message")
@@ -248,31 +258,36 @@ window.onload = () => {
         setTimeout(game_loop, delay)
     }
 
-    clear_loading_screen()
+    function spawn_enemy(n = 0) {
+        if(n >= enemy_count) { return }
+
+        let fail_count = 0
+
+        while(true) {
+            if(fail_count > 10) { break }
+
+            let x = Math.floor(Math.random() * window.innerWidth + 1)
+            let y = Math.floor(Math.random() * window.innerHeight + 1)
+
+            if( Math.pow(x - player.x_position, 2) +
+                Math.pow(y - player.y_position, 2) >
+                Math.pow(follow_distance * (player.width * 2), 2)
+            ) {
+                new Movable("enemy" + n, x, y); break
+            } else {
+                fail_count++
+            }
+        }
+
+        setTimeout(() => spawn_enemy(n + 1), 200)
+    }
+
+    close_loading_screen()
 
     board   = document.getElementById("board")
     player  = new Movable("player")
 
-    for(let i = 0; i < 50; i++) {
-        let x, y
-        let fail_count = 0
-        while(true) {
-            if(fail_count > 10) { break }
-
-            x = Math.floor(Math.random() * window.innerWidth + 1)
-            y = Math.floor(Math.random() * window.innerHeight + 1)
-
-            if( Math.pow(x - player.x_position, 2) +
-                Math.pow(y - player.y_position, 2) >
-                Math.pow(200, 2))
-            {
-                new Movable("enemy" + i, x, y)
-                break
-            }
-
-            fail_count++
-        }
-    }
+    setTimeout(spawn_enemy, 2000)
 }
 
 onkeydown = (e) => {
@@ -345,7 +360,10 @@ move_down   = false
 move_left   = false
 move_right  = false
 
-follow_distance     = 150
+enemy_count         = 50
+enemy_spawn_delay   = 200
+
+follow_distance     = 10
 follow_ease         = 50
 leave_distance      = 0.7
 leave_ease          = 5
