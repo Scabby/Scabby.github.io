@@ -3,11 +3,17 @@ function get(id) {
 }
 
 function half_window_x(element) {
-    return window.innerWidth / 2 - element.offsetWidth / 2
+    let half_x = window.innerWidth / 2
+
+    if(element != null) { return half_x - element.offsetWidth / 2 }
+    else                { return half_x }
 }
 
 function half_window_y(element) {
-    return window.innerHeight / 2 - element.offsetHeight / 2
+    let half_y = window.innerHeight / 2
+
+    if(element != null) { return half_y - element.offsetHeight / 2 }
+    else                { return half_y }
 }
 
 const instances = []
@@ -222,6 +228,26 @@ class Movable {
 
         enemy_counter.innerHTML = "enemies: " + enemy_count
     }
+}
+
+class Explosion() {
+    constructor(
+        x_position = half_window_x(),
+        y_position = half_window_y(),
+        force_curve = (time_left, distance_away) => {
+            return (time_left) * (1/distance_away)
+        },
+        duration
+    ) {
+        this.x_position     = x_position
+        this.y_position     = y_position
+        this.force_curve    = force_curve
+        this.duration       = duration
+    }
+
+    update() {}
+
+    static update_all() {}
 }
 
 function clamp(n, max) {
