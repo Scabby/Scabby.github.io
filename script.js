@@ -290,45 +290,28 @@ window.onload = () => {
     setTimeout(spawn_enemy, 2000)
 }
 
-onkeydown = (e) => {
-    switch(e.key) {
+function handle_key(k, start_move) {
+    switch(k) {
         case "w":
-        case "ArrowUp":     move_up     = true;
+        case "ArrowUp":     move_up     = start_move;
         break
 
         case "a":
-        case "ArrowLeft":   move_left   = true;
+        case "ArrowLeft":   move_left   = start_move;
         break
 
         case "s":
-        case "ArrowDown":   move_down   = true;
+        case "ArrowDown":   move_down   = start_move;
         break
 
         case "d":
-        case "ArrowRight":  move_right  = true;
+        case "ArrowRight":  move_right  = start_move;
         break
     }
 }
 
-onkeyup = (e) => {
-    switch(e.key) {
-        case "w":
-        case "ArrowUp":     move_up     = false;
-        break
-
-        case "a":
-        case "ArrowLeft":   move_left   = false;
-        break
-
-        case "s":
-        case "ArrowDown":   move_down   = false;
-        break
-
-        case "d":
-        case "ArrowRight":  move_right  = false;
-        break
-    }
-}
+onkeydown   = (e) => { handle_key(e.key, true) }
+onkeyup     = (e) => { handle_key(e.key, false) }
 
 ontouchstart = (e) => {
     last_swipe_x = e.touches[0].pageX
