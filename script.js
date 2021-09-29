@@ -1,10 +1,14 @@
+function get(id) {
+    return document.getElementById(id)
+}
+
 const instances = []
 
 class Movable {
     constructor(
         id,
-        x_position  = window.innerWidth / 2,
-        y_position  = window.innerHeight / 2,
+        x_position  = window.innerWidth / 2 - movable_helper.offsetWidth,
+        y_position  = window.innerHeight / 2 - movable_helper.offsetHeight,
         x_velocity  = 0,
         y_velocity  = 0,
         health      = 100,
@@ -281,9 +285,9 @@ window.onload = () => {
     function close_loading_screen() {
         let delay = 300
 
-        let loading_screen  = document.getElementById("loading-screen")
-        let loading_bar     = document.getElementById("spinning")
-        let loading_message = document.getElementById("message")
+        let loading_screen  = get("loading-screen")
+        let loading_bar     = get("spinning")
+        let loading_message = get("message")
 
         loading_bar.animate     ([{ opacity:0 }], { duration:delay })
         loading_message.animate ([{ opacity:0 }], { duration:delay })
@@ -300,7 +304,7 @@ window.onload = () => {
         setTimeout(game_loop, delay)
     }
 
-    function spawn_enemy(n = 0) {
+    function spawn_enemies(n = 0) {
         if(n >= enemy_count) { return }
 
         let fail_count = 0
@@ -308,8 +312,8 @@ window.onload = () => {
         while(true) {
             if(fail_count > 10) { break }
 
-            let x = Math.floor(Math.random() * window.innerWidth + 1)
-            let y = Math.floor(Math.random() * window.innerHeight + 1)
+            let x = Math.floor(Math.random() * window.innerWidth) - movable_helper.offsetWidth
+            let y = Math.floor(Math.random() * window.innerHeight - movable_helper.offsetHeight
 
             if( Math.pow(x - player.x_position, 2) +
                 Math.pow(y - player.y_position, 2) >
@@ -321,21 +325,22 @@ window.onload = () => {
             }
         }
 
-        setTimeout(() => spawn_enemy(n + 1), 200)
+        setTimeout(() => spawn_enemies(n + 1), 200)
     }
 
     close_loading_screen()
 
-    board           = document.getElementById("board")
-    health_counter  = document.getElementById("health-counter")
-    x_pos_counter   = document.getElementById("x-position")
-    y_pos_counter   = document.getElementById("y-position")
-    speed_counter   = document.getElementById("speed-counter")
-    angle_counter   = document.getElementById("angle-counter")
-    enemy_counter   = document.getElementById("enemy-counter")
+    board           = get("board")
+    health_counter  = get("health-counter")
+    x_pos_counter   = get("x-pos-counter")
+    y_pos_counter   = get("y-pos-counter")
+    speed_counter   = get("speed-counter")
+    angle_counter   = get("angle-counter")
+    enemy_counter   = get("enemy-counter")
+    movable_helper  = get("movable-helper")
     player          = new Movable("player")
 
-    setTimeout(spawn_enemy, 2000)
+    setTimeout(spawn_enemies, 2000)
 }
 
 function handle_key(e, start_move) {
