@@ -291,7 +291,7 @@ onkeydown = (e) => {
 
         case "d":
         case "ArrowRight":  move_right  = true;
-        breakbreak
+        break
     }
 }
 
