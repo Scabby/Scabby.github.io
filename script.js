@@ -84,9 +84,9 @@ class Movable {
     }
 
     get_force_away(target) {
-        function curve(distance, move_speed) {
+        function curve(distance, move_speed, width_sum) {
             return -clamp(
-                1 / (Math.pow(distance / leave_distance, leave_ease)),
+                1 / (Math.pow(distance / (leave_distance * width_sum), leave_ease)),
                 move_speed
             )
         }
@@ -94,11 +94,12 @@ class Movable {
         let x_diff      = target.x_position - this.x_position
         let y_diff      = target.y_position - this.y_position
         let angle       = Math.atan2(y_diff, x_diff)
+        let width_sum   = this.width + target.width
         let distance    = Math.sqrt(Math.pow(y_diff, 2) + Math.pow(x_diff, 2))
 
         return [
-            Math.cos(angle) * curve(distance, this.move_speed),
-            Math.sin(angle) * curve(distance, this.move_speed)
+            Math.cos(angle) * curve(distance, this.move_speed, width_sum),
+            Math.sin(angle) * curve(distance, this.move_speed, width_sum)
         ]
     }
 
@@ -265,7 +266,7 @@ window.onload = () => {
                 Math.pow(y - player.y_position, 2) >
                 Math.pow(200, 2))
             {
-                new Movable("enemy" + i, x, y, 0, 0, 0.03, 0.8)
+                new Movable("enemy" + i, x, y)
                 break
             }
 
@@ -276,19 +277,41 @@ window.onload = () => {
 
 onkeydown = (e) => {
     switch(e.key) {
-        case "w": move_up       = true; break
-        case "a": move_left     = true; break
-        case "s": move_down     = true; break
-        case "d": move_right    = true; break
+        case "w":
+        case "ArrowUp":     move_up     = true;
+        break
+
+        case "a":
+        case "ArrowLeft":   move_left   = true;
+        break
+
+        case "s":
+        case "ArrowDown":   move_down   = true;
+        break
+
+        case "d":
+        case "ArrowRight":  move_right  = true;
+        breakbreak
     }
 }
 
 onkeyup = (e) => {
     switch(e.key) {
-        case "w": move_up       = false; break
-        case "a": move_left     = false; break
-        case "s": move_down     = false; break
-        case "d": move_right    = false; break
+        case "w":
+        case "ArrowUp":     move_up     = false;
+        break
+
+        case "a":
+        case "ArrowLeft":   move_left   = false;
+        break
+
+        case "s":
+        case "ArrowDown":   move_down   = false;
+        break
+
+        case "d":
+        case "ArrowRight":  move_right  = false;
+        break
     }
 }
 
@@ -324,7 +347,7 @@ move_right  = false
 
 follow_distance     = 150
 follow_ease         = 50
-leave_distance      = 15
+leave_distance      = 0.7
 leave_ease          = 5
 
 touch_sensitivity   = 0.3
