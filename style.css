@@ -32,7 +32,7 @@ body {
     border-radius: calc(var(--size) / 2);
     z-index: 98 !important;
 
-    background-color:#2b2b2bb0;
+    background-color:#222222b0;
 }
 
 @keyframes spin {
