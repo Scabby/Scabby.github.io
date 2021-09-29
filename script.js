@@ -2,13 +2,21 @@ function get(id) {
     return document.getElementById(id)
 }
 
+function half_window_x(element) {
+    return window.innerWidth / 2 - element.offsetWidth / 2
+}
+
+function half_window_y(element) {
+    return window.innerHeight / 2 - element.offsetHeight / 2
+}
+
 const instances = []
 
 class Movable {
     constructor(
         id,
-        x_position  = window.innerWidth / 2 - movable_helper.offsetWidth,
-        y_position  = window.innerHeight / 2 - movable_helper.offsetHeight,
+        x_position  = half_window_x(movable_helper),
+        y_position  = half_window_y(movable_helper),
         x_velocity  = 0,
         y_velocity  = 0,
         health      = 100,
@@ -313,8 +321,8 @@ window.onload = () => {
         while(true) {
             if(fail_count > 10) { break }
 
-            let x = Math.floor(Math.random() * window.innerWidth) - movable_helper.offsetWidth
-            let y = Math.floor(Math.random() * window.innerHeight) - movable_helper.offsetHeight
+            let x = Math.floor(Math.random() * half_window_x(movable_helper))
+            let y = Math.floor(Math.random() * half_window_y(movable_helper))
 
             if( Math.pow(x - player.x_position, 2) +
                 Math.pow(y - player.y_position, 2) >
@@ -393,8 +401,15 @@ ontouchmove = (e) => {
     let angle = Math.atan2(diff_y, diff_x)
 
     player.move(
-        clamp(Math.cos(angle) * Math.abs(diff_x) * touch_sensitivity, player.move_speed),
-        clamp(Math.sin(angle) * Math.abs(diff_y) * touch_sensitivity, player.move_speed)
+        clamp(
+            Math.cos(angle) * Math.abs(diff_x) * touch_sensitivity,
+            player.move_speed
+        ),
+
+        clamp(
+            Math.sin(angle) * Math.abs(diff_y) * touch_sensitivity,
+            player.move_speed
+        )
     )
 
     last_swipe_x = new_swipe_x
