@@ -229,7 +229,7 @@ class Movable {
     }
 }
 
-class Explosion() {
+class Explosion {
     constructor(
         x_position,
         y_position,
