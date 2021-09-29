@@ -223,8 +223,9 @@ function clamp(n, max) {
 }
 
 function game_loop() {
-    if(!is_paused) {
+    if(is_paused) {
         window.requestAnimationFrame(game_loop)
+        return
     }
 
     function parse_diagonals() {
