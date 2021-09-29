@@ -243,7 +243,7 @@ class Explosion() {
     }
 
     push(target) {
-        [x, y] = force_curve(
+        [x, y] = Explosion.force_curve(
             duration,
             this.x_position - target.x_position,
             this.y_position - target.y_position
