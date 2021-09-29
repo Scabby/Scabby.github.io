@@ -11,7 +11,7 @@
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
 
-    font-size: 0.5em;
+    font-size: 0.75em;
     color: #e3e3e3;
 
     margin: 0;
@@ -24,10 +24,10 @@ body {
 
 #info-panel {
     position: absolute;
-    margin-left: 0.25em;
-    margin-top: 0.25em;
-    padding: 0.4em;
-    border-radius: 0.25em;
+    margin-left: 0.325em;
+    margin-top: 0.325em;
+    padding: 0.5em;
+    border-radius: 0.325em;
     z-index: 98 !important;
 
     background-color:#2b2b2bb0;
