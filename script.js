@@ -2,14 +2,14 @@ function get(id) {
     return document.getElementById(id)
 }
 
-function half_window_x(element) {
+function half_window_x(element = null) {
     let half_x = window.innerWidth / 2
 
     if(element != null) { return half_x - element.offsetWidth / 2 }
     else                { return half_x }
 }
 
-function half_window_y(element) {
+function half_window_y(element = null) {
     let half_y = window.innerHeight / 2
 
     if(element != null) { return half_y - element.offsetHeight / 2 }
