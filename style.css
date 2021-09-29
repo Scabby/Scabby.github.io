@@ -15,11 +15,11 @@
     color: #e3e3e3;
 
     margin: 0;
+    overflow: hidden;
 }
 
 body {
     background-color: #353535;
-    overflow: hidden;
 }
 
 #info-panel {
@@ -61,6 +61,7 @@ body {
     position: absolute;
     top: 50%;
     width: 100%;
+    overflow: visible;
 
     transform: translateY(-50%);
 }
