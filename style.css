@@ -70,7 +70,7 @@ body {
 
 #spinning {
     margin-left: calc(50% - var(--size));
-    margin-bottom: calc(var(--size) / 2);
+    margin-bottom: calc(var(--size) * 3 / 4);
     width: calc(var(--size) * 2);
     height: calc(var(--size) * 2);
     background-color: #e3e3e3;
