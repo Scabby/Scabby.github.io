@@ -393,7 +393,7 @@ function handle_key(k, start_move) {
 }
 
 onkeydown = (e) => {
-    if(e.key == " ")    { is_paused = !is_paused }
+    if(e.key == " ")    { toggle_pause() }
     else if(!is_paused) { handle_key(e.key, true) }
 }
 onkeyup = (e) => { handle_key(e.key, false) }
