@@ -321,8 +321,17 @@ window.onload = () => {
         while(true) {
             if(fail_count > 10) { break }
 
-            let x = Math.floor(Math.random() * window.innerWidth - movable_helper.offsetWidth
-            let y = Math.floor(Math.random() * window.innerHeight - movable_helper.offsetHeight
+            let x = Math.floor(
+                Math.random() *
+                window.innerWidth -
+                movable_helper.offsetWidth
+            )
+
+            let y = Math.floor(
+                Math.random() *
+                window.innerHeight -
+                movable_helper.offsetHeight
+            )
 
             if( Math.pow(x - player.x_position, 2) +
                 Math.pow(y - player.y_position, 2) >
