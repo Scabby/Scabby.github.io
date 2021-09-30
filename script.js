@@ -399,11 +399,15 @@ onkeydown = (e) => {
 onkeyup = (e) => { handle_key(e.key, false) }
 
 ontouchstart = (e) => {
+    if(is_paused) { return }
+    
     last_swipe_x = e.touches[0].pageX
     last_swipe_y = e.touches[0].pageY
 }
 
 ontouchmove = (e) => {
+    if(is_paused) { return }
+    
     let new_swipe_x = e.touches[0].pageX
     let new_swipe_y = e.touches[0].pageY
     let diff_x      = new_swipe_x - last_swipe_x
