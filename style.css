@@ -41,6 +41,10 @@ body {
     to      { transform:rotate(90deg); }
 }
 
+@keyframes fadein {
+    from { opacity: 0; }
+}
+
 @keyframes load_fadein {
     0%  { opacity: 0; }
     50% { opacity: 0; }
@@ -93,10 +97,8 @@ body {
     z-index: 99 !important;
     
     background-color: #262626b0;
-}
-
-@keyframes movable_fadein {
-    from { opacity: 0; }
+    
+    animation: fadein 0.2s ease 1;
 }
 
 .movable {
@@ -107,7 +109,7 @@ body {
 
     background-color: #eb8f99;
 
-    animation: movable_fadein 1s ease 1;
+    animation: fadein 1s ease 1;
 }
 
 #player {
