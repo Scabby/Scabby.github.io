@@ -10,6 +10,17 @@ function half_window_y(element) {
     return window.innerHeight / 2 - element.offsetHeight / 2
 }
 
+function toggle_pause() {
+    is_paused = !is_paused
+
+    if(is_paused) {
+        let pause_background    = document.createElement("div")
+        pause_background.id     = "pause-background"
+    } else {
+        get("pause-background").remove()
+    }
+}
+
 const instances = []
 
 class Movable {
@@ -303,7 +314,7 @@ window.onload = () => {
         loading_screen.animate  ([{ opacity:0 }], { duration:delay, delay:delay })
 
         setTimeout(() => {
-                loading_bar.remove();
+                loading_bar.remove()
                 loading_message.remove()
             }, delay
         )
