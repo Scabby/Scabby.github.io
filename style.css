@@ -86,7 +86,7 @@ body {
     animation: delayed_load_fadein 4s ease 1;
 }
 
-#pause-background {
+#pause-screen {
     position: absolute;
     width: 100%;
     height: 100%;
