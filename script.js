@@ -406,16 +406,7 @@ window.onload = () => {
     setTimeout(spawn_enemies, 2000)
 }
 
-function handle_key(e, start_move) {
-    let k = e.key
-
-    if(k == "tab") {
-        is_paused = !is_paused
-        e.preventDefault()
-    }
-
-    if(is_paused) { return }
-
+function handle_key(k, start_move) {
     switch(k) {
         case "w":
         case "ArrowUp":     move_up     = start_move;
@@ -435,8 +426,11 @@ function handle_key(e, start_move) {
     }
 }
 
-onkeydown   = (e) => { handle_key(e, true) }
-onkeyup     = (e) => { handle_key(e, false) }
+onkeydown = (e) => {
+    if(e.key == " ")    { is_paused = !is_paused }
+    else if(!is_paused) { handle_key(e, true) }
+}
+onkeyup = (e) => { handle_key(e.key, false) }
 
 ontouchstart = (e) => {
     last_swipe_x = e.touches[0].pageX
