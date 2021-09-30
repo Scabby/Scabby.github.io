@@ -16,6 +16,7 @@ function toggle_pause() {
     if(is_paused) {
         let pause_screen    = document.createElement("div")
         pause_screen.id     = "pause-screen"
+        get("body").appendChild(pause_screen)
     } else {
         get("pause-screen").remove()
     }
