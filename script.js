@@ -14,10 +14,10 @@ function toggle_pause() {
     is_paused = !is_paused
 
     if(is_paused) {
-        let pause_background    = document.createElement("div")
-        pause_background.id     = "pause-background"
+        let pause_screen    = document.createElement("div")
+        pause_screen.id     = "pause-screen"
     } else {
-        get("pause-background").remove()
+        get("pause-screen").remove()
     }
 }
 
