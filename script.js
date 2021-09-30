@@ -11,7 +11,6 @@ function half_window_y(element) {
 }
 
 const instances = []
-const explosion_instances = []
 
 class Movable {
     constructor(
@@ -154,10 +153,6 @@ class Movable {
                 add_force(current.get_force_toward(player))
                 enemy_count++
             }
-            
-            for(const explosion in explosion_instances) {
-                explosion.push(current)
-            }
 
             for(let target of instances) {
                 if(current == target) { continue }
@@ -229,54 +224,6 @@ class Movable {
     }
 }
 
-class Explosion {
-    constructor(
-        x_position,
-        y_position,
-        duration
-    ) {
-        this.x_position     = x_position
-        this.y_position     = y_position
-        this.duration       = duration
-        
-        explosion_instances.push(this)
-    }
-
-    push(target) {
-        [x, y] = Explosion.force_curve(
-            duration,
-            this.x_position - target.x_position,
-            this.y_position - target.y_position
-        )
-
-        target.move(x, y)
-    }
-    
-    update() {
-        this.duration--
-        
-        if(this.duration < 0) {
-            explosion_instances = explosion_instances.filter(e => e != this)
-        }
-    }
-    
-    static update_all() {
-        for(const instance of explosion_instances) {
-            instance.update()
-        }
-    }
-    
-    static force_curve(time, x_diff, y_diff) {
-        let distance    = Math.sqrt(Math.pow(x_diff, 2) + Math.pow(y_diff, 2))
-        let angle       = Math.atan2(y_diff, x_diff)
-        
-        return [
-            (Math.cos(angle) * distance) / time,
-            (Math.sin(angle) * distance) / time
-        ]
-    }
-}
-
 function clamp(n, max) {
     if(n < -max)    { return -max }
     if(n > max)     { return max }
@@ -311,7 +258,6 @@ function game_loop() {
     }
 
     Movable.update_all()
-    Explosion.update_all()
 
     let speed_count = Math.sqrt(
         Math.pow(player.x_velocity, 2) +
@@ -328,7 +274,7 @@ function game_loop() {
             (180 / Math.PI)
         ).toFixed(2)
     } else {
-        angle_count = "NaN"
+        angle_count = NaN
     }
 
     health_counter.innerHTML    = "health: " + player.health
