@@ -296,9 +296,7 @@ function game_loop() {
 
     let angle_count
 
-    if( Math.abs(player.x_velocity).toFixed(2) > 0 ||
-        Math.abs(player.y_velocity).toFixed(2) > 0
-    ) {
+    if(speed_count != 0) {
         angle_count = (
             Math.atan2(player.y_velocity, player.x_velocity) *
             (180 / Math.PI)
