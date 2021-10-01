@@ -173,7 +173,7 @@ class Movable {
     }
 }
 
-update_all() {
+function update_all() {
     let enemy_count = 0
 
     for(let current of instances) {
