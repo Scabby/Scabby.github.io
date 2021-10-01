@@ -465,7 +465,7 @@ move_down   = false
 move_left   = false
 move_right  = false
 
-enemy_count         = 50
+enemy_count         = 100
 enemy_spawn_delay   = 200
 
 follow_distance     = 7
