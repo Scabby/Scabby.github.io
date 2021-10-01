@@ -11,14 +11,26 @@ function half_window_y(element) {
 }
 
 function toggle_pause() {
-    is_paused = !is_paused
+    if(pause_screen == null) {
+        info_panel.animate([{ opacity: 0 }], { duration: fade_delay })
+        setTimeout(() => { info_panel.className = "hidden" }, fade_delay)
 
-    if(is_paused) {
-        let pause_screen    = document.createElement("div")
-        pause_screen.id     = "pause-screen"
-        get("body").appendChild(pause_screen)
+        pause_screen    = document.createElement("div")
+        pause_screen.id = "pause-screen"
+        document.body.appendChild(pause_screen)
+
+        is_paused = true
     } else {
-        get("pause-screen").remove()
+        info_panel.animate  ([{ opacity: 100 }],    { duration: fade_delay })
+        pause_screen.animate([{ opacity: 0 }],      { duration: fade_delay })
+
+        setTimeout(() => {
+            info_panel.className = ""
+            pause_screen.remove()
+            pause_screen = null
+
+            is_paused = false
+        }, fade_delay)
     }
 }
 
@@ -304,25 +316,23 @@ function game_loop() {
 
 window.onload = () => {
     function close_loading_screen() {
-        let delay = 300
-
         let loading_screen  = get("loading-screen")
         let loading_bar     = get("spinning")
         let loading_message = get("message")
 
-        loading_bar.animate     ([{ opacity:0 }], { duration:delay })
-        loading_message.animate ([{ opacity:0 }], { duration:delay })
-        loading_screen.animate  ([{ opacity:0 }], { duration:delay, delay:delay })
+        loading_bar.animate     ([{ opacity: 0 }], { duration: fade_delay })
+        loading_message.animate ([{ opacity: 0 }], { duration: fade_delay })
+        loading_screen.animate  ([{ opacity: 0 }], { duration: fade_delay, delay: fade_delay })
 
         setTimeout(() => {
                 loading_bar.remove()
                 loading_message.remove()
-            }, delay
+            }, fade_delay
         )
 
-        setTimeout(() => { loading_screen.remove() }, delay * 2)
+        setTimeout(() => { loading_screen.remove() }, fade_delay * 2)
 
-        setTimeout(game_loop, delay)
+        setTimeout(game_loop, fade_delay)
     }
 
     function spawn_enemies(n = 0) {
@@ -361,6 +371,7 @@ window.onload = () => {
     close_loading_screen()
 
     board           = get("board")
+    info_panel      = get("info-panel")
     health_counter  = get("health-counter")
     x_pos_counter   = get("x-pos-counter")
     y_pos_counter   = get("y-pos-counter")
@@ -401,14 +412,14 @@ onkeyup = (e) => { handle_key(e.key, false) }
 
 ontouchstart = (e) => {
     if(is_paused) { return }
-    
+
     last_swipe_x = e.touches[0].pageX
     last_swipe_y = e.touches[0].pageY
 }
 
 ontouchmove = (e) => {
     if(is_paused) { return }
-    
+
     let new_swipe_x = e.touches[0].pageX
     let new_swipe_y = e.touches[0].pageY
     let diff_x      = new_swipe_x - last_swipe_x
@@ -437,6 +448,8 @@ ontouchmove = (e) => {
 
 is_paused = false
 
+fade_delay = 200
+
 move_up     = false
 move_down   = false
 move_left   = false
@@ -455,6 +468,7 @@ touch_threshold     = 5
 
 let player,
     board,
+    pause_screen,
     health_counter,
     x_pos_counter,
     y_pos_counter,
