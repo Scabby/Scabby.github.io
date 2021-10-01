@@ -50,14 +50,14 @@ class Movable {
         x_velocity  = 0,
         y_velocity  = 0,
         health      = 100,
-        class       = "default",
         ammunition  = 10,
+        m_class     = "default",
         fire_rate   = 1,
         friction    = 0.15,
         move_speed  = 2
     ) {
         this.element = document.createElement("div")
-        this.element.className  = "movable " + class
+        this.element.className  = "movable " + m_class
         this.element.id         = id
         board.appendChild(this.element)
 
@@ -67,6 +67,7 @@ class Movable {
         this.y_velocity = y_velocity
         this.health     = health
         this.ammunition = ammunition
+        this.m_class    = m_class
         this.fire_rate  = fire_rate
         this.friction   = friction
         this.move_speed = move_speed
@@ -259,8 +260,6 @@ update_all() {
     enemy_counter.innerHTML = "enemies: " + enemy_count
 }
 
-class 
-
 function game_loop() {
     if(is_paused) {
         window.requestAnimationFrame(game_loop)
@@ -309,6 +308,8 @@ function game_loop() {
     }
 
     health_counter.innerHTML    = "health: " + player.health
+    ammo_counter.innerHTML      = "ammo: " + player.ammunition
+    class_counter.innerHTML     = "class: " + player.m_class
     x_pos_counter.innerHTML     = "x pos: " + player.x_position.toFixed(2)
     y_pos_counter.innerHTML     = "y pos: " + player.y_position.toFixed(2)
     speed_counter.innerHTML     = "speed: " + speed_count
@@ -380,6 +381,8 @@ window.onload = () => {
     board           = get("board")
     info_panel      = get("info-panel")
     health_counter  = get("health-counter")
+    ammo_counter    = get("ammo-counter")
+    class_counter   = get("class-counter")
     x_pos_counter   = get("x-pos-counter")
     y_pos_counter   = get("y-pos-counter")
     speed_counter   = get("speed-counter")
