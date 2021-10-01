@@ -2,6 +2,12 @@ function get(id) {
     return document.getElementById(id)
 }
 
+function clamp(n, max) {
+    if(n < -max)    { return -max }
+    if(n > max)     { return max }
+    return n
+}
+
 function half_window_x(element) {
     return window.innerWidth / 2 - element.offsetWidth / 2
 }
@@ -44,11 +50,14 @@ class Movable {
         x_velocity  = 0,
         y_velocity  = 0,
         health      = 100,
+        class       = "default",
+        ammunition  = 10,
+        fire_rate   = 1,
         friction    = 0.15,
         move_speed  = 2
     ) {
         this.element = document.createElement("div")
-        this.element.className  = "movable"
+        this.element.className  = "movable " + class
         this.element.id         = id
         board.appendChild(this.element)
 
@@ -57,6 +66,8 @@ class Movable {
         this.x_velocity = x_velocity
         this.y_velocity = y_velocity
         this.health     = health
+        this.ammunition = ammunition
+        this.fire_rate  = fire_rate
         this.friction   = friction
         this.move_speed = move_speed
 
@@ -159,100 +170,96 @@ class Movable {
         let [x, y] = get_force_away(target)
         this.move(x, y)
     }
+}
 
-    static update_all() {
-        let enemy_count = 0
+update_all() {
+    let enemy_count = 0
 
-        for(let current of instances) {
-            let new_x_move_force = 0
-            let new_y_move_force = 0
+    for(let current of instances) {
+        let new_x_move_force = 0
+        let new_y_move_force = 0
 
-            function add_force(force) {
-                let [x, y] = force
-                new_x_move_force += x
-                new_y_move_force += y
-            }
-
-            if(current.element.id.includes("enemy")) {
-                add_force(current.get_force_toward(player))
-                enemy_count++
-            }
-
-            for(let target of instances) {
-                if(current == target) { continue }
-
-                if(current.element.id != "player" && target.element.id != "player") {
-                    add_force(current.get_force_away(target))
-                }
-
-                if( current.x_position < target.x_position + target.width &&
-                    current.x_position + current.width > target.x_position &&
-                    current.y_position < target.y_position + target.height &&
-                    current.y_position + current.height > target.y_position)
-                {
-                    let x_diff =    (current.x_position + current.width / 2) -
-                                    (target.x_position + target.width / 2)
-
-                    let y_diff =    (current.y_position + current.height / 2) -
-                                    (target.y_position + target.height / 2)
-
-                    let x_overlap, y_overlap
-
-                    if(x_diff > 0) {
-                        x_overlap = target.x_position +
-                                    target.width -
-                                    current.x_position
-                    } else {
-                        x_overlap = -(current.x_position +
-                                    current.width -
-                                    target.x_position)
-                    }
-
-                    if(y_diff > 0) {
-                        y_overlap = target.y_position +
-                                    target.height -
-                                    current.y_position
-                    } else {
-                        y_overlap = -(current.y_position +
-                                    current.height -
-                                    target.y_position)
-                    }
-
-                    if(Math.abs(x_diff) < Math.abs(y_diff)) {
-                        current.y_position  += y_overlap / 2
-                        target.y_position   -= y_overlap / 2
-                    } else {
-                        current.x_position  += x_overlap / 2
-                        target.x_position   -= x_overlap / 2
-                    }
-
-                    let curr_x_velocity = current.x_velocity
-                    let curr_y_velocity = current.y_velocity
-
-                    current.x_velocity  = target.x_velocity
-                    current.y_velocity  = target.y_velocity
-                    target.x_velocity   = curr_x_velocity
-                    target.y_velocity   = curr_y_velocity
-                }
-            }
-
-            current.x_velocity += clamp(new_x_move_force, current.move_speed)
-            current.y_velocity += clamp(new_y_move_force, current.move_speed)
+        function add_force(force) {
+            let [x, y] = force
+            new_x_move_force += x
+            new_y_move_force += y
         }
 
-        for(const e of instances) {
-            e.update()
+        if(current.element.id.includes("enemy")) {
+            add_force(current.get_force_toward(player))
+            enemy_count++
         }
 
-        enemy_counter.innerHTML = "enemies: " + enemy_count
+        for(let target of instances) {
+            if(current == target) { continue }
+
+            if(current.element.id != "player" && target.element.id != "player") {
+                add_force(current.get_force_away(target))
+            }
+
+            if( current.x_position < target.x_position + target.width &&
+                current.x_position + current.width > target.x_position &&
+                current.y_position < target.y_position + target.height &&
+                current.y_position + current.height > target.y_position)
+            {
+                let x_diff =    (current.x_position + current.width / 2) -
+                                (target.x_position + target.width / 2)
+
+                let y_diff =    (current.y_position + current.height / 2) -
+                                (target.y_position + target.height / 2)
+
+                let x_overlap, y_overlap
+
+                if(x_diff > 0) {
+                    x_overlap = target.x_position +
+                                target.width -
+                                current.x_position
+                } else {
+                    x_overlap = -(current.x_position +
+                                current.width -
+                                target.x_position)
+                }
+
+                if(y_diff > 0) {
+                    y_overlap = target.y_position +
+                                target.height -
+                                current.y_position
+                } else {
+                    y_overlap = -(current.y_position +
+                                current.height -
+                                target.y_position)
+                }
+
+                if(Math.abs(x_diff) < Math.abs(y_diff)) {
+                    current.y_position  += y_overlap / 2
+                    target.y_position   -= y_overlap / 2
+                } else {
+                    current.x_position  += x_overlap / 2
+                    target.x_position   -= x_overlap / 2
+                }
+
+                let curr_x_velocity = current.x_velocity
+                let curr_y_velocity = current.y_velocity
+
+                current.x_velocity  = target.x_velocity
+                current.y_velocity  = target.y_velocity
+                target.x_velocity   = curr_x_velocity
+                target.y_velocity   = curr_y_velocity
+            }
+        }
+
+        current.x_velocity += clamp(new_x_move_force, current.move_speed)
+        current.y_velocity += clamp(new_y_move_force, current.move_speed)
     }
+
+    for(const e of instances) {
+        e.update()
+    }
+
+    enemy_counter.innerHTML = "enemies: " + enemy_count
 }
 
-function clamp(n, max) {
-    if(n < -max)    { return -max }
-    if(n > max)     { return max }
-    return n
-}
+class 
 
 function game_loop() {
     if(is_paused) {
@@ -281,7 +288,7 @@ function game_loop() {
         if(move_right)  { player.move(player.move_speed, 0) }
     }
 
-    Movable.update_all()
+    update_all()
 
     let speed_count = Math.sqrt(
         Math.pow(player.x_velocity, 2) +
