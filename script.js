@@ -8,45 +8,155 @@ function clamp(n, max) {
     return n
 }
 
-function half_window_x(element) {
-    return window.innerWidth / 2 - element.offsetWidth / 2
+function screen_area_x(element) {
+    return window.innerWidth - element.offsetWidth
 }
 
-function half_window_y(element) {
-    return window.innerHeight / 2 - element.offsetHeight / 2
+function screen_area_y(element) {
+    return window.innerHeight - element.offsetHeight
+}
+
+function found_class(element, name) {
+    let names = element.className
+    let index = names.indexOf(name)
+
+    if(!names.includes(name)) { return false }
+
+    return  names == name                           // equal
+            ||
+            index == 0 &&
+            names.charAt(name.length) == " "        // start
+            ||
+            index == names.length - name.length &&
+            names.charAt(index - 1) == " "          // at end
+            ||
+            // in middle
+            names.substring(index - 1, index + name.length) == " " + name + " "
+}
+
+function add_class(element, name) {
+    let names = element.className
+
+    if(found_class(element, name)) { return }
+
+    if(!names.includes(name)) {
+        if(names.length == 0)   { element.className = name }
+        else                    { element.className += " " + name }
+    }
+}
+
+function remove_class(element, name) {
+    let names = element.className
+    let index = names.indexOf(name)
+
+    if(!found_class(element, name)) { return }
+
+    if(names.includes(" ")) {
+        if(index == 0) {
+            element.className = names.substring(name.length)
+        } else {
+            element.className = names.substring(0, index - 1) +
+                                names.substring(index + name.length)
+        }
+    } else if(index > -1) { element.className = "" }
+}
+
+var fading_out = []
+
+function fade_out(element, duration = fade_delay, delay = 0) {
+    let fade_animation = element.animate(
+        [{ opacity: 0}],
+        { duration: duration, delay: delay }
+    )
+
+    if(fading_out.includes(element))    { return }
+    else                                { fading_out.push(element) }
+
+    setTimeout(() => {
+        if(!fading_out.includes(element)) {
+            fade_animation.finish()
+            return
+        }
+
+        add_class(element, "hidden")
+    }, duration)
+}
+
+function fade_in(element, duration = fade_delay, delay = 0) {
+    let fade_animation = element.animate(
+        [{ opacity: 100 }],
+        { duration: duration, delay: delay }
+    )
+
+    if(fading_out.includes(element)) {
+        fading_out.splice(
+            fading_out.indexOf(element),
+            1
+        )
+    }
+
+    setTimeout(() => {
+        if(fading_out.includes(element)) {
+            fade_animation.finish()
+            return
+        }
+
+        remove_class(element, "hidden")
+    }, duration)
 }
 
 function toggle_pause() {
+    let animations = document.getAnimations()
+
     if(pause_screen == null) {
-        info_panel.animate([{ opacity: 0 }], { duration: fade_delay })
-        setTimeout(() => { info_panel.className = "hidden" }, fade_delay)
+        animations.forEach(animation => animation.pause())
+
+        fade_out(info_panel)
 
         pause_screen    = document.createElement("div")
         pause_screen.id = "pause-screen"
         document.body.appendChild(pause_screen)
 
+        if(text_box == null) {
+            text_box        = document.createElement("input")
+            text_box.id     = "text-box"
+            text_box.type   = "text"
+            pause_screen.appendChild(text_box)
+            setTimeout(() => text_box.focus(), 10)
+        }
+
         is_paused = true
     } else {
-        info_panel.animate  ([{ opacity: 100 }],    { duration: fade_delay })
-        pause_screen.animate([{ opacity: 0 }],      { duration: fade_delay })
+        animations.forEach(animation => animation.play())
+
+        fade_in(info_panel)
+        fade_out(pause_screen)
+        fade_out(text_box)
+        text_box.blur()
 
         setTimeout(() => {
-            info_panel.className = ""
-            pause_screen.remove()
-            pause_screen = null
+            if(pause_screen != null) {
+                pause_screen.remove()
+                pause_screen = undefined
+            }
+
+            if(text_box != null) {
+                text_box.remove()
+                text_box = null
+            }
 
             is_paused = false
         }, fade_delay)
     }
 }
 
-const instances = []
+movable_instances = []
 
 class Movable {
     constructor(
         id,
-        x_position  = half_window_x(movable_helper),
-        y_position  = half_window_y(movable_helper),
+        x_position  = screen_area_x(movable_helper) / 2,
+        y_position  = screen_area_y(movable_helper) / 2,
         x_velocity  = 0,
         y_velocity  = 0,
         health      = 100,
@@ -54,7 +164,8 @@ class Movable {
         m_class     = "default",
         fire_rate   = 1,
         friction    = 0.15,
-        move_speed  = 2
+        move_speed  = 2,
+        is_alive    = true
     ) {
         this.element = document.createElement("div")
         this.element.className  = "movable " + m_class
@@ -71,8 +182,9 @@ class Movable {
         this.fire_rate  = fire_rate
         this.friction   = friction
         this.move_speed = move_speed
+        this.is_alive   = is_alive
 
-        instances.push(this)
+        movable_instances.push(this)
     }
 
     get width()     { return this.element.offsetWidth }
@@ -82,26 +194,22 @@ class Movable {
         this.x_velocity -= this.friction * this.x_velocity
         this.y_velocity -= this.friction * this.y_velocity
 
-        let x_screen_estate = window.innerWidth - this.width
-        let y_screen_estate = window.innerHeight - this.height
+        let x_screen_area = window.innerWidth - this.width
+        let y_screen_area = window.innerHeight - this.height
 
         if(this.x_position < 0) {
             this.x_position = 1
             this.x_velocity = -this.x_velocity
-        }
-
-        if(this.x_position > x_screen_estate) {
-            this.x_position = x_screen_estate - 1
+        } else if(this.x_position > x_screen_area) {
+            this.x_position = x_screen_area - 1
             this.x_velocity = -this.x_velocity
         }
 
         if(this.y_position < 0) {
             this.y_position = 1
             this.y_velocity = -this.y_velocity
-        }
-
-        if(this.y_position > y_screen_estate) {
-            this.y_position = y_screen_estate - 1
+        } else if(this.y_position > y_screen_area) {
+            this.y_position = y_screen_area - 1
             this.y_velocity = -this.y_velocity
         }
 
@@ -162,6 +270,12 @@ class Movable {
         this.y_velocity += y
     }
 
+    heal(amount) { this.health += amount }
+    harm(amount) { this.health -= amount }
+
+    give_ammo(amount) { this.ammo += amount }
+    take_ammo(amount) { this.ammo -= amount }
+
     move_toward(target) {
         let [x, y] = get_force_toward(target)
         this.move(x, y)
@@ -174,9 +288,10 @@ class Movable {
 }
 
 function update_all() {
-    let enemy_count = 0
+    for(let current of movable_instances) {
+        if(!current.is_alive)   { add_class(current.element, "dead") }
+        else                    { remove_class(current.element, "dead") }
 
-    for(let current of instances) {
         let new_x_move_force = 0
         let new_y_move_force = 0
 
@@ -186,15 +301,17 @@ function update_all() {
             new_y_move_force += y
         }
 
-        if(current.element.id.includes("enemy")) {
+        if(current.element.id.includes("enemy") && current.is_alive) {
             add_force(current.get_force_toward(player))
-            enemy_count++
         }
 
-        for(let target of instances) {
+        for(let target of movable_instances) {
             if(current == target) { continue }
 
-            if(current.element.id != "player" && target.element.id != "player") {
+            if( current.element.id != "player" &&
+                target.element.id != "player" &&
+                current.is_alive
+            ) {
                 add_force(current.get_force_away(target))
             }
 
@@ -253,17 +370,41 @@ function update_all() {
         current.y_velocity += clamp(new_y_move_force, current.move_speed)
     }
 
-    for(const e of instances) {
+    for(const e of movable_instances) {
         e.update()
     }
-
-    enemy_counter.innerHTML = "enemies: " + enemy_count
 }
 
 function game_loop() {
     if(is_paused) {
-        window.requestAnimationFrame(game_loop)
+        setTimeout(game_loop, game_tick)
         return
+    }
+
+    if( wave_is_spawning &&
+        current_enemy_spawn_timer > enemy_spawn_delay &&
+        enemy_count < enemy_spawn_cap
+    ) {
+        let attempts = 0
+        let x, y
+
+        while(attempts < 10) {
+            x = Math.random() * screen_area_x(movable_helper)
+            y = Math.random() * screen_area_y(movable_helper)
+            attempts++
+        }
+
+        new Movable("enemy", x, y)
+        current_enemy_spawn_timer = 0
+        enemy_count++
+
+        if(enemy_count == enemy_spawn_cap) {
+            wave_is_spawning = false
+        }
+    }
+
+    if(current_enemy_spawn_timer <= enemy_spawn_delay) {
+        current_enemy_spawn_timer++
     }
 
     function parse_diagonals() {
@@ -306,75 +447,43 @@ function game_loop() {
     }
 
     health_counter.innerHTML    = "health: " + player.health
-    ammo_counter.innerHTML      = "ammo: " + player.ammunition
+    ammo_counter.innerHTML      = "ammo:   " + player.ammunition
+
     class_counter.innerHTML     = "class: " + player.m_class
     x_pos_counter.innerHTML     = "x pos: " + player.x_position.toFixed(2)
     y_pos_counter.innerHTML     = "y pos: " + player.y_position.toFixed(2)
     speed_counter.innerHTML     = "speed: " + speed_count
     angle_counter.innerHTML     = "angle: " + angle_count
 
+    enemy_counter.innerHTML     = "enemies: " + enemy_count
+
     if(player.health > 50)          { health_counter.className = "green" }
     else if(player.health <= 10)    { health_counter.className = "red" }
     else                            { health_counter.className = "yellow" }
 
-    window.requestAnimationFrame(game_loop)
+    setTimeout(game_loop, game_tick)
 }
 
 window.onload = () => {
-    function close_loading_screen() {
-        let loading_screen  = get("loading-screen")
-        let loading_bar     = get("spinning")
-        let loading_message = get("message")
+    let loading_screen  = get("loading-screen")
+    let loading_bar     = get("spinning")
+    let loading_message = get("message")
 
-        loading_bar.animate     ([{ opacity: 0 }], { duration: fade_delay })
-        loading_message.animate ([{ opacity: 0 }], { duration: fade_delay })
-        loading_screen.animate  ([{ opacity: 0 }], { duration: fade_delay, delay: fade_delay })
+    fade_out(loading_bar, fade_delay)
+    fade_out(loading_message, fade_delay)
+    fade_out(loading_screen, fade_delay, fade_delay)
 
-        setTimeout(() => {
-                loading_bar.remove()
-                loading_message.remove()
-            }, fade_delay
-        )
+    setTimeout(() => {
+            loading_bar.remove()
+            loading_message.remove()
+        }, fade_delay
+    )
 
-        setTimeout(() => { loading_screen.remove() }, fade_delay * 2)
+    setTimeout(() => {
+        loading_screen.remove()
+    }, fade_delay * 2)
 
-        setTimeout(game_loop, fade_delay)
-    }
-
-    function spawn_enemies(n = 0) {
-        if(n >= enemy_count) { return }
-
-        let fail_count = 0
-
-        while(true) {
-            if(fail_count > 10) { break }
-
-            let x = Math.floor(
-                Math.random() *
-                window.innerWidth -
-                movable_helper.offsetWidth
-            )
-
-            let y = Math.floor(
-                Math.random() *
-                window.innerHeight -
-                movable_helper.offsetHeight
-            )
-
-            if( Math.pow(x - player.x_position, 2) +
-                Math.pow(y - player.y_position, 2) >
-                Math.pow(follow_distance * (player.width * 2), 2)
-            ) {
-                new Movable("enemy" + n, x, y); break
-            } else {
-                fail_count++
-            }
-        }
-
-        setTimeout(() => spawn_enemies(n + 1), 200)
-    }
-
-    close_loading_screen()
+    setTimeout(game_loop, fade_delay)
 
     board           = get("board")
     info_panel      = get("info-panel")
@@ -389,7 +498,7 @@ window.onload = () => {
     movable_helper  = get("movable-helper")
     player          = new Movable("player")
 
-    setTimeout(spawn_enemies, 2000)
+    game_loop()
 }
 
 function handle_key(k, start_move) {
@@ -413,9 +522,30 @@ function handle_key(k, start_move) {
 }
 
 onkeydown = (e) => {
+    if(is_paused) {
+        if(text_box == document.activeElement) {
+            if(e.key == "Enter") {
+                text_box.blur()
+                command = text_box.value
+                text_box.value = ""
+                text_box.focus()
+
+                if(command == "") {
+                    text_box.blur()
+                    toggle_pause()
+                }
+            }
+
+            return
+        } else if(e.key == "Enter") {
+            toggle_pause()
+        }
+    }
+
     if(e.key == " ")    { toggle_pause() }
     else if(!is_paused) { handle_key(e.key, true) }
 }
+
 onkeyup = (e) => { handle_key(e.key, false) }
 
 ontouchstart = (e) => {
@@ -454,34 +584,30 @@ ontouchmove = (e) => {
     last_swipe_y = new_swipe_y
 }
 
-is_paused = false
+var pause_screen, text_box
 
-fade_delay = 200
+is_paused           = false
+wave_is_spawning    = true
+
+fade_delay  = 200
 
 move_up     = false
 move_down   = false
 move_left   = false
 move_right  = false
 
-enemy_count         = 50
-enemy_spawn_delay   = 200
+enemy_count                 = 0
+enemy_spawn_cap             = 50
+current_enemy_spawn_timer   = -200
+enemy_spawn_delay           = 10
 
 follow_distance     = 7
 follow_ease         = 50
+
 leave_distance      = 0.7
 leave_ease          = 5
 
 touch_sensitivity   = 0.3
 touch_threshold     = 5
 
-let player,
-    board,
-    pause_screen,
-    health_counter,
-    x_pos_counter,
-    y_pos_counter,
-    speed_counter,
-    angle_counter,
-    enemy_counter,
-    last_swipe_x,
-    last_swipe_y
+game_tick = 25
