@@ -604,7 +604,7 @@ move_left   = false
 move_right  = false
 
 enemy_count                 = 0
-enemy_spawn_cap             = 50
+enemy_spawn_cap             = 75
 current_enemy_spawn_timer   = -200
 enemy_spawn_delay           = 10
 
