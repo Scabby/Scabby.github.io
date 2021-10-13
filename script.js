@@ -534,6 +534,9 @@ onkeydown = (e) => {
                     text_box.blur()
                     toggle_pause()
                 }
+            } else if(e.key == " " && text_box.value == "") {
+                text_box.blur()
+                toggle_pause()
             }
 
             return
