@@ -124,6 +124,27 @@ body {
     opacity: 0;
 }
 
+#text-box {
+    position: absolute;
+    left: 20%;
+    top: calc(50% - var(--size) / 2);
+
+    height: var(--size * 2);
+    width: 60%;
+    padding: calc(var(--size) / 1.5);
+    border-radius: calc(var(--size) / 2);
+
+    color: #adadad;
+    background-color: #353535;
+    border-style: none;
+
+    animation: fadein 0.2s ease 1;
+}
+
+#text-box:focus {
+    outline: none;
+}
+
 .red        { color: #eb8f99 !important; }
 .orange     { color: #faaf8d !important; }
 .yellow     { color: #ebca89 !important; }
