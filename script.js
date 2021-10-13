@@ -19,7 +19,10 @@ function screen_area_y(element) {
 function found_class(element, name) {
     let names = element.className
     let index = names.indexOf(name)
+    
+    return names.includes(name)
 
+    /*
     if(!names.includes(name)) { return false }
 
     return  names == name                           // equal
@@ -32,6 +35,7 @@ function found_class(element, name) {
             ||
             // in middle
             names.substring(index - 1, index + name.length) == " " + name + " "
+    */
 }
 
 function add_class(element, name) {
@@ -58,7 +62,7 @@ function remove_class(element, name) {
             element.className = names.substring(0, index - 1) +
                                 names.substring(index + name.length)
         }
-    } else if(index > -1) { element.className = "" }
+    } else { element.className = "" }
 }
 
 var fading_out = []
