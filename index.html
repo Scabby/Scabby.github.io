@@ -1,11 +1,11 @@
-<html>
+<html lang="en">
   <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css" media="screen">
     <title>Test Page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
     <script src="script.js"></script>
     </head>
   <body>
@@ -20,19 +20,64 @@
       </div>
     </div>
 
-    <div id="info-panel">
-      <p id="health-counter"    class="green"></p>
-      <p id="ammo-counter"      class="pre-white"></p>
+    <div id="info-panel" class="hidden">
+      <pre id="health-counter"              class="green"></pre>
+      <pre id="ammo-counter"                class="pre-white"></pre>
       <br>
-      <p id="class-counter"     class="pre-white"></p>
-      <p id="x-pos-counter"     class="pre-white"></p>
-      <p id="y-pos-counter"     class="pre-white"></p>
-      <p id="speed-counter"     class="pre-white"></p>
-      <p id="angle-counter"     class="pre-white"></p>
+      <pre id="class-counter"               class="pre-white"></pre>
+      <pre id="x-pos-counter"               class="pre-white"></pre>
+      <pre id="y-pos-counter"               class="pre-white"></pre>
+      <pre id="speed-counter"               class="pre-white"></pre>
+      <pre id="angle-counter"               class="pre-white"></pre>
       <br>
-      <p id="enemy-counter"     class="pre-white"></p>
+      <pre id="enemy-counter"               class="pre-white"></pre>
+      <pre id="element-counter"             class="pre-white"></pre>
+      <pre id="ticks-per-second-counter"    class="pre-white"></pre>
     </div>
 
     <div id="board"></div>
+
+    <div id=pause-screen class=hidden>
+      <div id="text-box-container">
+        <input id="text-box" type="text"></input>
+        <button id="text-box-button">?</button>
+      </div>
+
+      <div id="help-panel-container">
+        <div id="help-panel" class="hidden">
+          <p>Note that the following list is not correct or complete.</p>
+          <br>
+          <p>spawn <span class="yellow">&lt;selection&gt;</span></p>
+          <p>kill <span class="yellow">&lt;selection&gt;</span></p>
+          <p>revive <span class="yellow">&lt;selection&gt;</span></p>
+          <p>heal <span class="red">&lt;amount&gt;</span> <span class="yellow">&lt;selection&gt;</span></p>
+          <p>harm <span class="red">&lt;amount&gt;</span> <span class="yellow">&lt;selection&gt;</span></p>
+          <p>remove <span class="yellow">&lt;selection&gt;</span></p>
+          <p>set <span class="green">&lt;variable&gt;</span> <span class="blue">&lt;value&gt;</span> <span class="yellow">&lt;selection&gt;</span></p>
+          <br>
+          <br>
+          <p>Valid values for <span class="red">amount</span>:</p>
+          <pre>    Any integer value (e.g: 100)</pre>
+          <br>
+          <p>Valid values for <span class="yellow">selection</span>:</p>
+          <pre>    <span class="yellow">&lt;count&gt;</span> <span class="yellow">&lt;type&gt;</span></pre>
+          <pre>    "self"</pre>
+          <pre>    "all"</pre>
+          <br>
+          <p>Valid values for <span class="green">variable</span>:</p>
+          <pre></pre>
+          <br>
+          <p>Valid values for count:</p>
+          <pre>    "all"</pre>
+          <pre>    Any integer value (e.g: 100)</pre>
+          <br>
+          <p>Valid values for type:</p>
+          <pre>    "all"</pre>
+          <pre>    "enemy"</pre>
+          <pre>    "dummy"</pre>
+        </div>
+        <div id="help-panel-spacer"></div>
+      </div>
+    </div>
   </body>
 </html>
