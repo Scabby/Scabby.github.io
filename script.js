@@ -1,6 +1,8 @@
-function get(id) {
-    return document.getElementById(id)
-}
+function get(id)    { return document.getElementById(id) }
+function make(type) { return document.createElement(type) }
+
+function screen_area_x(element) { return window.innerWidth - element.offsetWidth }
+function screen_area_y(element) { return window.innerHeight - element.offsetHeight }
 
 function clamp(n, max) {
     if(n < -max)    { return -max }
@@ -8,21 +10,10 @@ function clamp(n, max) {
     return n
 }
 
-function screen_area_x(element) {
-    return window.innerWidth - element.offsetWidth
-}
-
-function screen_area_y(element) {
-    return window.innerHeight - element.offsetHeight
-}
-
 function found_class(element, name) {
     let names = element.className
     let index = names.indexOf(name)
-    
-    return names.includes(name)
 
-    /*
     if(!names.includes(name)) { return false }
 
     return  names == name                           // equal
@@ -35,7 +26,6 @@ function found_class(element, name) {
             ||
             // in middle
             names.substring(index - 1, index + name.length) == " " + name + " "
-    */
 }
 
 function add_class(element, name) {
@@ -64,6 +54,8 @@ function remove_class(element, name) {
         }
     } else { element.className = "" }
 }
+
+
 
 var fading_out = []
 
@@ -109,84 +101,141 @@ function fade_in(element, duration = fade_delay, delay = 0) {
     }, duration)
 }
 
+
 function toggle_pause() {
     let animations = document.getAnimations()
 
-    if(pause_screen == null) {
+    if(pause_screen_is_hidden) {
         animations.forEach(animation => animation.pause())
 
-        fade_out(info_panel)
+        if(!info_panel_is_hidden) { fade_out(info_panel) }
 
-        pause_screen    = document.createElement("div")
-        pause_screen.id = "pause-screen"
-        document.body.appendChild(pause_screen)
-
-        if(text_box == null) {
-            text_box        = document.createElement("input")
-            text_box.id     = "text-box"
-            text_box.type   = "text"
-            pause_screen.appendChild(text_box)
-            setTimeout(() => text_box.focus(), 10)
-        }
+        fade_in(pause_screen)
+        setTimeout(() => {
+            text_box.disabled           = false
+            text_box_button.disabled    = false
+            text_box.focus()
+        }, 10)
 
         is_paused = true
     } else {
         animations.forEach(animation => animation.play())
 
-        fade_in(info_panel)
+        if(!info_panel_is_hidden) { fade_in(info_panel) }
+
         fade_out(pause_screen)
-        fade_out(text_box)
+        text_box.disabled           = true
+        text_box_button.disabled    = true
         text_box.blur()
 
-        setTimeout(() => {
-            if(pause_screen != null) {
-                pause_screen.remove()
-                pause_screen = undefined
-            }
-
-            if(text_box != null) {
-                text_box.remove()
-                text_box = null
-            }
-
-            is_paused = false
-        }, fade_delay)
+        setTimeout(() => is_paused = false, fade_delay)
     }
+
+    pause_screen_is_hidden = !pause_screen_is_hidden
 }
+
+function toggle_info_panel() {
+    if(info_panel_is_hidden)    { fade_in(info_panel) }
+    else                        { fade_out(info_panel) }
+    info_panel_is_hidden = !info_panel_is_hidden
+}
+
+function toggle_help_panel() {
+    let help_height = help_panel.offsetHeight
+    let box_height = text_box_container.offsetHeight
+
+    let margin = "((100% - " + help_height + "px - " + box_height + "px) / 3)"
+
+    let min_box_top     = "var(--size)"
+    let min_help_top    = "calc(var(--size) * 2 + " + box_height + "px)"
+
+    let box_top     = "max(" + min_box_top + ", calc(" + margin + "))"
+    let help_top    = "max(" + min_help_top + ", calc((" + margin + " * 2) + var(--size) * 2.5))"
+
+    if(help_panel_is_hidden) {
+        fade_in(help_panel)
+
+        text_box_container.animate([
+            {},
+            { top: box_top }
+        ], { duration:fade_delay })
+
+        help_panel_container.animate([
+            { top: "100%" },
+            { top: help_top }
+        ], { duration: fade_delay })
+
+        setTimeout(() => {
+            text_box_container.style.top    = box_top
+            help_panel_container.style.top  = help_top
+            pause_screen.style.overflow     = "auto"
+        }, fade_delay )
+    } else {
+        fade_out(help_panel)
+
+        text_box_container.style.top    = ""
+        help_panel_container.style.top  = ""
+        pause_screen.style.overflow     = "hidden"
+
+        text_box_container.animate([
+            { top: box_top },
+            {}
+        ], { duration:fade_delay })
+
+        help_panel_container.animate([
+            { top: help_top },
+            { top: "100%" }
+        ], { duration: fade_delay })
+    }
+
+    help_panel_is_hidden = !help_panel_is_hidden
+}
+
+
 
 movable_instances = []
 
 class Movable {
     constructor(
         id,
-        x_position  = screen_area_x(movable_helper) / 2,
-        y_position  = screen_area_y(movable_helper) / 2,
-        x_velocity  = 0,
-        y_velocity  = 0,
-        health      = 100,
-        ammunition  = 10,
-        m_class     = "default",
-        fire_rate   = 1,
-        friction    = 0.15,
-        move_speed  = 2,
-        is_alive    = true
+        x_position      = screen_area_x(movable_helper) / 2,
+        y_position      = screen_area_y(movable_helper) / 2,
+        x_velocity      = 0,
+        y_velocity      = 0,
+        health          = 100,
+        max_health      = 100,
+        ammunition      = 10,
+        max_ammunition  = 10,
+        m_class         = "default",
+        fire_rate       = 1,
+        friction        = 0.15,
+        move_speed      = 1.1,
+        is_alive        = true
     ) {
-        this.element = document.createElement("div")
+        this.element = make("div")
         this.element.className  = "movable " + m_class
         this.element.id         = id
         board.appendChild(this.element)
 
-        this.x_position = x_position
-        this.y_position = y_position
-        this.x_velocity = x_velocity
-        this.y_velocity = y_velocity
-        this.health     = health
-        this.ammunition = ammunition
-        this.m_class    = m_class
-        this.fire_rate  = fire_rate
-        this.friction   = friction
-        this.move_speed = move_speed
-        this.is_alive   = is_alive
+        if(is_paused) {
+            this.element.getAnimations().forEach(a => a.pause())
+        }
+
+        this.x_position             = x_position
+        this.y_position             = y_position
+        this.previous_x_position    = this.x_position
+        this.previous_y_position    = this.y_position
+        this.x_velocity             = x_velocity
+        this.y_velocity             = y_velocity
+        this.health                 = health
+        this.max_health             = max_health
+        this.ammunition             = ammunition
+        this.max_ammunition         = max_ammunition
+        this.m_class                = m_class
+        this.fire_rate              = fire_rate
+        this.friction               = friction
+        this.move_speed             = move_speed
+        this.is_alive               = is_alive
 
         movable_instances.push(this)
     }
@@ -195,6 +244,39 @@ class Movable {
     get height()    { return this.element.offsetHeight }
 
     update() {
+        if(this.health <= 0) {
+            if(this.is_alive) {
+                this.is_alive = false
+
+                add_class(this.element, "dead")
+
+                this.element.animate([
+                    {},
+                    { background_color: "var(--grey)" }
+                ], { duration: 500 })
+            }
+        } else {
+            if(!this.is_alive) {
+                this.is_alive = true
+
+                remove_class(this.element, "dead")
+
+                this.element.animate([
+                    { background_color: "var(--grey)" },
+                    {}
+                ], { duration: 500 })
+            }
+        }
+
+        if(this.last_health != this.health) {
+            this.element.style = "filter: saturate(" + this.health + "%)"
+
+            this.element.animate([
+                { filter: "saturate(" + this.last_health + "%)" },
+                { filter: "saturate(" + this.health + "%)" }
+            ], { duration: 500 })
+        }
+
         this.x_velocity -= this.friction * this.x_velocity
         this.y_velocity -= this.friction * this.y_velocity
 
@@ -222,13 +304,15 @@ class Movable {
 
         this.element.style.left = this.x_position + "px"
         this.element.style.top  = this.y_position + "px"
+
+        this.last_health = this.health
     }
 
     get_force_toward(target) {
         function curve(distance, move_speed) {
             return Math.atan(
                 Math.pow(
-                    (distance - (follow_distance * width_sum)) / follow_ease,
+                    (distance - (follow_distance * (width_sum / 2))) / follow_ease,
                     3
                 )
             ) * (Math.PI / 5) * move_speed
@@ -250,7 +334,7 @@ class Movable {
         function curve(distance, move_speed, width_sum) {
             return -clamp(
                 1 / (
-                    Math.pow(distance /(leave_distance * width_sum),
+                    Math.pow(distance /(leave_distance * (width_sum / 2)),
                     leave_ease)
                 ),
                 move_speed
@@ -274,11 +358,13 @@ class Movable {
         this.y_velocity += y
     }
 
-    heal(amount) { this.health += amount }
-    harm(amount) { this.health -= amount }
+    heal(amount)    { this.health += amount }
+    harm(amount)    { this.health -= amount }
+    kill()          { this.health = 0}
+    revive()        { this.health = this.max_health }
 
-    give_ammo(amount) { this.ammo += amount }
-    take_ammo(amount) { this.ammo -= amount }
+    give_ammo(amount)   { this.ammo += amount }
+    take_ammo(amount)   { this.ammo -= amount }
 
     move_toward(target) {
         let [x, y] = get_force_toward(target)
@@ -292,10 +378,9 @@ class Movable {
 }
 
 function update_all() {
-    for(let current of movable_instances) {
-        if(!current.is_alive)   { add_class(current.element, "dead") }
-        else                    { remove_class(current.element, "dead") }
+    enemy_count = 0
 
+    for(let current of movable_instances) {
         let new_x_move_force = 0
         let new_y_move_force = 0
 
@@ -305,14 +390,15 @@ function update_all() {
             new_y_move_force += y
         }
 
-        if(current.element.id.includes("enemy") && current.is_alive) {
+        if(current.element.id == "enemy" && current.is_alive) {
+            enemy_count++
             add_force(current.get_force_toward(player))
         }
 
         for(let target of movable_instances) {
             if(current == target) { continue }
 
-            if( current.element.id != "player" &&
+            if( current.element.id == "enemy" &&
                 target.element.id != "player" &&
                 current.is_alive
             ) {
@@ -360,13 +446,13 @@ function update_all() {
                     target.x_position   -= x_overlap / 2
                 }
 
-                let curr_x_velocity = current.x_velocity
-                let curr_y_velocity = current.y_velocity
+                let average_x_vel   = (target.x_velocity + current.x_velocity) / 2
+                let average_y_vel   = (target.y_velocity + current.y_velocity) / 2
 
-                current.x_velocity  = target.x_velocity
-                current.y_velocity  = target.y_velocity
-                target.x_velocity   = curr_x_velocity
-                target.y_velocity   = curr_y_velocity
+                current.x_velocity  = average_x_vel - average_x_vel * 0.1
+                current.y_velocity  = average_y_vel - average_y_vel * 0.1
+                target.x_velocity   = average_x_vel + average_x_vel * 0.1
+                target.y_velocity   = average_y_vel + average_y_vel * 0.1
             }
         }
 
@@ -379,9 +465,11 @@ function update_all() {
     }
 }
 
-function game_loop() {
+function physics_loop() {
+    let start_tick = performance.now()
+
     if(is_paused) {
-        setTimeout(game_loop, game_tick)
+        setTimeout(physics_loop, game_tick)
         return
     }
 
@@ -400,7 +488,6 @@ function game_loop() {
 
         new Movable("enemy", x, y)
         current_enemy_spawn_timer = 0
-        enemy_count++
 
         if(enemy_count == enemy_spawn_cap) {
             wave_is_spawning = false
@@ -434,6 +521,20 @@ function game_loop() {
 
     update_all()
 
+    last_tick = performance.now() - start_tick
+
+    setTimeout(physics_loop, game_tick - last_tick)
+}
+
+function update_info_panel() {
+    if(last_tick > game_tick * 1.1 && wave_is_spawning) {
+        wave_is_spawning = false
+    }
+
+    if(info_panel_is_hidden) {
+        return
+    }
+
     let speed_count = Math.sqrt(
         Math.pow(player.x_velocity, 2) +
         Math.pow(player.y_velocity, 2)
@@ -447,25 +548,45 @@ function game_loop() {
             (180 / Math.PI)
         ).toFixed(2)
     } else {
-        angle_count = NaN
+        angle_count = "NaN"
     }
 
-    health_counter.innerHTML    = "health: " + player.health
-    ammo_counter.innerHTML      = "ammo:   " + player.ammunition
+    if(last_tick < game_tick) { last_tick = game_tick }
 
-    class_counter.innerHTML     = "class: " + player.m_class
-    x_pos_counter.innerHTML     = "x pos: " + player.x_position.toFixed(2)
-    y_pos_counter.innerHTML     = "y pos: " + player.y_position.toFixed(2)
-    speed_counter.innerHTML     = "speed: " + speed_count
-    angle_counter.innerHTML     = "angle: " + angle_count
+    health_counter.innerHTML    = "health:    " + player.health
+    ammo_counter.innerHTML      = "ammo:      " + player.ammunition
 
-    enemy_counter.innerHTML     = "enemies: " + enemy_count
+    class_counter.innerHTML     = "class:     " + player.m_class
+    x_pos_counter.innerHTML     = "x pos:     " + player.x_position.toFixed(2)
+    y_pos_counter.innerHTML     = "y pos:     " + player.y_position.toFixed(2)
+    speed_counter.innerHTML     = "speed:     " + speed_count
+    angle_counter.innerHTML     = "angle:     " + angle_count
 
-    if(player.health > 50)          { health_counter.className = "green" }
-    else if(player.health <= 10)    { health_counter.className = "red" }
-    else                            { health_counter.className = "yellow" }
+    enemy_counter.innerHTML     = "enemies:   " + enemy_count
+    element_counter.innerHTML   = "elements:  " + movable_instances.length
+    tps_counter.innerHTML       = "tps:       " + Math.floor(1000 / last_tick)
 
-    setTimeout(game_loop, game_tick)
+    if(player.health > 75)          { health_counter.className = "green" }
+    else if(player.health > 50)     { health_counter.className = "yellow" }
+    else if(player.health > 25)     { health_counter.className = "orange" }
+    else if(player.health > 0)      { health_counter.className = "red" }
+    else                            { health_counter.className = "pre-white" }
+
+    if(last_tick > game_tick * 2)           { tps_counter.className = "red"}
+    else if(last_tick > game_tick * 1.5)    { tps_counter.className = "orange" }
+    else if(last_tick > game_tick * 1.125)  { tps_counter.className = "yellow" }
+    else                                    { tps_counter.className = "green" }
+}
+
+function render_loop() {
+    if(is_paused) {
+        requestAnimationFrame(render_loop)
+        return
+    }
+
+    update_info_panel()
+
+    requestAnimationFrame(render_loop)
 }
 
 window.onload = () => {
@@ -487,9 +608,28 @@ window.onload = () => {
         loading_screen.remove()
     }, fade_delay * 2)
 
-    setTimeout(game_loop, fade_delay)
+    setTimeout(() => {
+        physics_loop()
+        render_loop()
+    }, fade_delay)
 
-    board           = get("board")
+    board = get("board")
+
+    pause_screen            = get("pause-screen")
+    text_box_container      = get("text-box-container")
+    text_box                = get("text-box")
+    text_box_button         = get("text-box-button")
+    help_panel              = get("help-panel")
+    help_panel_container    = get("help-panel-container")
+
+    text_box_button.onclick = () => {
+        text_box.focus()
+        toggle_help_panel()
+    }
+
+    text_box.disabled           = true
+    text_box_button.disabled    = true
+
     info_panel      = get("info-panel")
     health_counter  = get("health-counter")
     ammo_counter    = get("ammo-counter")
@@ -499,58 +639,278 @@ window.onload = () => {
     speed_counter   = get("speed-counter")
     angle_counter   = get("angle-counter")
     enemy_counter   = get("enemy-counter")
-    movable_helper  = get("movable-helper")
-    player          = new Movable("player")
+    element_counter = get("element-counter")
+    tps_counter     = get("ticks-per-second-counter")
 
-    game_loop()
+    movable_helper  = get("movable-helper")
+    player          = new Movable(
+        "player",
+        undefined, undefined, undefined, undefined, undefined, undefined,
+        undefined, undefined, undefined, undefined, undefined,
+        1.5
+    )
+}
+
+function test_command(args) {
+    for(i = args.length; i > 0; i--) {
+        if(args[i] == "" || args[i] == " ") {
+            args.splice(i, 1)
+        }
+    }
+
+    function is_count_bad(count) {
+        if(count == null) { return false }
+        return count != "all" && isNaN(count)
+    }
+
+
+    let arg_len = args.length
+    let arg_count
+    let are_args_bad
+
+    switch(args[0]) {
+        case "spawn":
+            arg_count       = 3
+            are_args_bad    = is_count_bad(args[1]) || (
+                                args[2] != "enemy" &&
+                                args[2] != "dummy" &&
+                                args[2] != null)
+            break
+
+        case "remove":
+            arg_count       = 3
+            are_args_bad    = is_count_bad(args[1]) || (
+                                args[2] != "enemy" &&
+                                args[2] != "dummy" &&
+                                args[2] != "all" &&
+                                args[2] != null)
+            break
+
+        case "kill":
+        case "revive":
+            arg_count = 3
+            are_args_bad = is_count_bad(args[1]) || (
+                            args[2] != "enemy" &&
+                            args[2] != "dummy" &&
+                            args[2] != "all" &&
+                            args[2] != null)
+
+            if(are_args_bad && args[1] == "self") {
+                arg_count = 2
+                are_args_bad = false
+            }
+            break
+
+        case "heal":
+        case "harm":
+            arg_count       = 3
+            are_args_bad    = isNaN(args[1]) || is_count_bad(args[2])
+            break
+
+        default: return "red"
+    }
+
+    if(are_args_bad)                { return "red" }
+    else if(arg_len != arg_count)   { return "yellow" }
+    else                            { return "green" }
+}
+
+function parse_command(args) {
+    let end_ind         = movable_instances.length - 1
+    let targeting_self  = false
+    let targeting_enemy = false
+    let targeting_dummy = false
+    let targeting_count
+    let amount
+
+    switch(args[0]) {
+        case "spawn":
+        case "remove":
+        case "kill":
+        case "revive":
+            if(args[1] == "all")        { targeting_count = end_ind }
+            else if(args[1] == "self")  { targeting_self = true }
+            else                        { targeting_count = parseInt(args[1]) }
+
+            switch(args[2]) {
+                case "enemy":   targeting_enemy = true; break
+                case "dummy":   targeting_dummy = true; break
+                case "all":     targeting_enemy = true; targeting_dummy = true; break
+            }
+            break
+
+        case "heal":
+        case "harm":
+            amount = parseInt(args[1])
+
+            if(args[2] == "all")        { targeting_count = end_ind }
+            else if(args[2] == "self")  { targeting_self = true }
+            else                        { targeting_count = parseInt(args[2]) }
+    }
+
+    switch(args[0]) {
+        case "spawn":
+            switch(args[2]) {
+                case "enemy":
+                case "dummy":
+                    for(i = 0; i < targeting_count; i++) {
+                        new Movable(args[2])
+                    }
+                    break
+            }
+            break
+
+        case "remove":
+            for(i = 0; i < targeting_count && i <= end_ind; i++) {
+                let current = movable_instances[i]
+
+                if(current == player ||
+                    (!targeting_enemy && current.id == "enemy") &&
+                    (!targeting_dummy && current.id == "dummy")
+                ) {
+                    targeting_count++
+                } else {
+                    movable_instances[i].element.remove()
+                    movable_instances.splice(i, 1)
+                    i--
+                    targeting_count--
+                    end_ind--
+                }
+            }
+            break
+
+        case "kill":
+            if(targeting_self) {
+                player.kill()
+                break
+            }
+
+            for(i = end_ind; i > end_ind - targeting_count && i > 0; i--) {
+                let current = movable_instances[i]
+
+                if(current == player ||
+                    (!targeting_enemy && current.id == "enemy") &&
+                    (!targeting_dummy && current.id == "dummy")
+                ) {
+                    targeting_count--
+                } else if(current.is_alive) { current.kill() }
+                else                        { targeting_count++ }
+            }
+            break
+
+
+        case "revive":
+            if(targeting_self) {
+                player.revive()
+                break
+            }
+
+            for(i = end_ind; i > end_ind - targeting_count && i > 0; i--) {
+                let current = movable_instances[i]
+
+                if(current == player ||
+                    (!targeting_enemy && current.id == "enemy") &&
+                    (!targeting_dummy && current.id == "dummy")
+                ) {
+                    targeting_count--
+                } else if(!current.is_alive)    { current.revive() }
+                else                            { targeting_count++ }
+            }
+            break
+
+        case "harm": amount = -amount
+        case "heal":
+            if(targeting_self) {
+                let final_health = player.health + amount
+
+                if(final_health < 0)                        { player.kill() }
+                else if(final_health > player.max_health)   { player.revive() }
+                else                                        { player.heal(amount) }
+                break
+            }
+
+            for(i = end_ind; i > end_ind - targeting_count && i > 0; i--) {
+                let current = movable_instances[i]
+
+                if(current == player) { targeting_count++ }
+                else {
+                    let final_health = current.health + amount
+
+                    if(final_health < 0)                        { current.kill() }
+                    else if(final_health > current.max_health)  { current.revive() }
+                    else                                        { current.heal(amount) }
+                }
+            }
+            break
+    }
 }
 
 function handle_key(k, start_move) {
     switch(k) {
         case "w":
         case "ArrowUp":     move_up     = start_move;
-        break
+            break
 
         case "a":
         case "ArrowLeft":   move_left   = start_move;
-        break
+            break
 
         case "s":
         case "ArrowDown":   move_down   = start_move;
-        break
+            break
 
         case "d":
         case "ArrowRight":  move_right  = start_move;
-        break
+            break
     }
 }
 
 onkeydown = (e) => {
-    if(is_paused) {
-        if(text_box == document.activeElement) {
-            if(e.key == "Enter") {
-                text_box.blur()
-                command = text_box.value
-                text_box.value = ""
-                text_box.focus()
+    let k = e.key
+    let is_k_pause_trigger = k == " " || k == "Enter"
 
-                if(command == "") {
-                    text_box.blur()
-                    toggle_pause()
-                }
-            } else if(e.key == " " && text_box.value == "") {
-                text_box.blur()
-                toggle_pause()
-            }
-
-            return
-        } else if(e.key == "Enter") {
-            toggle_pause()
-        }
+    if(k == "Escape") {
+        if(help_panel_is_hidden)    { toggle_pause() }
+        else                        { toggle_help_panel() }
+        return
     }
 
-    if(e.key == " ")    { toggle_pause() }
-    else if(!is_paused) { handle_key(e.key, true) }
+    if(is_paused) {
+        if(text_box == document.activeElement) {
+            text_box.blur()
+            text_box.focus()
+
+            if(is_k_pause_trigger && text_box.value == "") {
+                toggle_pause()
+                return
+            }
+
+            setTimeout(() => {
+                let args = text_box.value.split(" ")
+
+                if(text_box.value == "") {
+                    text_box.className = ""
+                    return
+                }
+
+                command_score       = test_command(args)
+                text_box.className  = command_score
+
+                if(k == "Enter") {
+                    if(command_score == "green") {
+                        parse_command(args)
+                        text_box.value = ""
+                    }
+                }
+            }, 10)
+
+            return
+        }
+    } else {
+        if(k == "i") { toggle_info_panel() }
+    }
+
+    handle_key(k, true)
 }
 
 onkeyup = (e) => { handle_key(e.key, false) }
@@ -591,10 +951,11 @@ ontouchmove = (e) => {
     last_swipe_y = new_swipe_y
 }
 
-var pause_screen, text_box
-
-is_paused           = false
-wave_is_spawning    = true
+is_paused               = false
+wave_is_spawning        = true
+info_panel_is_hidden    = true
+help_panel_is_hidden    = true
+pause_screen_is_hidden  = true
 
 fade_delay  = 200
 
@@ -604,17 +965,18 @@ move_left   = false
 move_right  = false
 
 enemy_count                 = 0
-enemy_spawn_cap             = 75
+enemy_spawn_cap             = 250
 current_enemy_spawn_timer   = -200
-enemy_spawn_delay           = 10
+enemy_spawn_delay           = 10 // 10
 
-follow_distance     = 7
-follow_ease         = 50
+follow_distance     = 15
+follow_ease         = 15
 
-leave_distance      = 0.7
-leave_ease          = 5
+leave_distance      = 2.5
+leave_ease          = 7
 
 touch_sensitivity   = 0.3
 touch_threshold     = 5
 
-game_tick = 25
+game_tick = 16.66
+last_tick = game_tick
