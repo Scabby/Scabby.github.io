@@ -128,7 +128,10 @@ function toggle_pause() {
         text_box_button.disabled    = true
         text_box.blur()
 
-        setTimeout(() => is_paused = false, fade_delay)
+        setTimeout(() => {
+            text_box.className = ""
+            is_paused = false
+        }, fade_delay)
     }
 
     pause_screen_is_hidden = !pause_screen_is_hidden
