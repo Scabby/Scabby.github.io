@@ -231,6 +231,7 @@ class Movable {
         this.x_velocity             = x_velocity
         this.y_velocity             = y_velocity
         this.health                 = health
+        this.last_health            = health
         this.max_health             = max_health
         this.ammunition             = ammunition
         this.max_ammunition         = max_ammunition
