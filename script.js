@@ -917,6 +917,7 @@ onkeydown = (e) => {
 onkeyup = (e) => { handle_key(e.key, false) }
 
 ontouchstart = (e) => {
+    e.preventDefault()
     if(is_paused) { return }
 
     last_swipe_x = e.touches[0].pageX
@@ -924,6 +925,7 @@ ontouchstart = (e) => {
 }
 
 ontouchmove = (e) => {
+    e.preventDefault()
     if(is_paused) { return }
 
     let new_swipe_x = e.touches[0].pageX
