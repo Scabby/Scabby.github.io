@@ -61,7 +61,7 @@ var fading_out = []
 
 function fade_out(element, duration = fade_delay, delay = 0) {
     let fade_animation = element.animate([
-        {},
+        { opacitys 1 },
         { opacity: 0 }
     ], { duration: duration, delay: delay })
 
@@ -80,8 +80,8 @@ function fade_out(element, duration = fade_delay, delay = 0) {
 
 function fade_in(element, duration = fade_delay, delay = 0) {
     let fade_animation = element.animate([
-        {},
-        { opacity: 100 }
+        { opacity: 0 },
+        { opacity: 1 }
     ], { duration: duration, delay: delay })
 
     if(fading_out.includes(element)) {
@@ -159,7 +159,7 @@ function toggle_help_panel() {
         fade_in(help_panel)
 
         text_box_container.animate([
-            {},
+            { top: text_box_container.offsetTop },
             { top: box_top }
         ], { duration:fade_delay })
 
@@ -182,7 +182,7 @@ function toggle_help_panel() {
 
         text_box_container.animate([
             { top: box_top },
-            {}
+            { top: text_box_container.offsetTop }
         ], { duration:fade_delay })
 
         help_panel_container.animate([
@@ -255,9 +255,9 @@ class Movable {
                 add_class(this.element, "dead")
 
                 this.element.animate([
-                    {},
+                    { window.getComputedStyle(this.element).background_color },
                     { background_color: "var(--grey)" }
-                ], { duration: 500 })
+                ], { duration: fade_delay })
             }
         } else {
             if(!this.is_alive) {
@@ -267,8 +267,8 @@ class Movable {
 
                 this.element.animate([
                     { background_color: "var(--grey)" },
-                    {}
-                ], { duration: 500 })
+                    { window.getComputedStyle(this.element).background_color }
+                ], { duration: fade_delay })
             }
         }
 
@@ -278,7 +278,7 @@ class Movable {
             this.element.animate([
                 { filter: "saturate(" + this.last_health + "%)" },
                 { filter: "saturate(" + this.health + "%)" }
-            ], { duration: 500 })
+            ], { duration: fade_delay })
         }
 
         this.x_velocity -= this.friction * this.x_velocity
