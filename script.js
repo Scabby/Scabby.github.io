@@ -61,7 +61,7 @@ var fading_out = []
 
 function fade_out(element, duration = fade_delay, delay = 0) {
     let fade_animation = element.animate([
-        { opacitys 1 },
+        { opacity: 1 },
         { opacity: 0 }
     ], { duration: duration, delay: delay })
 
