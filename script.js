@@ -70,7 +70,7 @@ function fade_out(element, duration = fade_delay, delay = 0) {
 
     setTimeout(() => {
         if(!fading_out.includes(element)) {
-            fade_animation.finish()
+            fade_animation.cancel()
             return
         }
 
@@ -93,7 +93,7 @@ function fade_in(element, duration = fade_delay, delay = 0) {
 
     setTimeout(() => {
         if(fading_out.includes(element)) {
-            fade_animation.finish()
+            fade_animation.cancel()
             return
         }
 
