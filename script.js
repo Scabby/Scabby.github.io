@@ -255,7 +255,7 @@ class Movable {
                 add_class(this.element, "dead")
 
                 this.element.animate([
-                    { window.getComputedStyle(this.element).background_color },
+                    { background_color: window.getComputedStyle(this.element).background_color },
                     { background_color: "var(--grey)" }
                 ], { duration: fade_delay })
             }
@@ -267,7 +267,7 @@ class Movable {
 
                 this.element.animate([
                     { background_color: "var(--grey)" },
-                    { window.getComputedStyle(this.element).background_color }
+                    { background_color: window.getComputedStyle(this.element).background_color }
                 ], { duration: fade_delay })
             }
         }
