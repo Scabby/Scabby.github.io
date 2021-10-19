@@ -873,8 +873,7 @@ onkeydown = (e) => {
     let is_k_pause_trigger = k == " " || k == "Enter"
 
     if(k == "Escape") {
-        if(help_panel_is_hidden)    { toggle_pause() }
-        else                        { toggle_help_panel() }
+        toggle_pause()
         return
     }
 
