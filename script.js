@@ -60,10 +60,10 @@ function remove_class(element, name) {
 var fading_out = []
 
 function fade_out(element, duration = fade_delay, delay = 0) {
-    let fade_animation = element.animate(
-        [{ opacity: 0}],
-        { duration: duration, delay: delay }
-    )
+    let fade_animation = element.animate([
+        {},
+        { opacity: 0 }
+    ], { duration: duration, delay: delay })
 
     if(fading_out.includes(element))    { return }
     else                                { fading_out.push(element) }
@@ -79,10 +79,10 @@ function fade_out(element, duration = fade_delay, delay = 0) {
 }
 
 function fade_in(element, duration = fade_delay, delay = 0) {
-    let fade_animation = element.animate(
-        [{ opacity: 100 }],
-        { duration: duration, delay: delay }
-    )
+    let fade_animation = element.animate([
+        {},
+        { opacity: 100 }
+    ], { duration: duration, delay: delay })
 
     if(fading_out.includes(element)) {
         fading_out.splice(
