@@ -393,7 +393,7 @@ function update_all() {
             new_y_move_force += y
         }
 
-        if(current.element.id == "enemy" && current.is_alive) {
+        if(current.element.id == "enemy" && current.is_alive && player.is_alive) {
             enemy_count++
             add_force(current.get_force_toward(player))
         }
@@ -501,25 +501,23 @@ function physics_loop() {
         current_enemy_spawn_timer++
     }
 
-    function parse_diagonals() {
-        let x = player.move_speed
-        let y = player.move_speed
+    if(player.is_alive) {
+        if((move_up || move_down) && (move_left || move_right)) {
+            let x = player.move_speed
+            let y = player.move_speed
 
-        let angle = Math.atan2(y, x)
+            let angle = Math.atan2(y, x)
 
-        if(move_up)     { y = -y }
-        if(move_left)   { x = -x }
+            if(move_up)     { y = -y }
+            if(move_left)   { x = -x }
 
-        player.move(Math.cos(angle) * x, Math.sin(angle) * y)
-    }
-
-    if((move_up || move_down) && (move_left || move_right)) {
-        parse_diagonals()
-    } else {
-        if(move_up)     { player.move(0, -player.move_speed) }
-        if(move_down)   { player.move(0, player.move_speed) }
-        if(move_left)   { player.move(-player.move_speed, 0) }
-        if(move_right)  { player.move(player.move_speed, 0) }
+            player.move(Math.cos(angle) * x, Math.sin(angle) * y)
+        } else {
+            if(move_up)     { player.move(0, -player.move_speed) }
+            if(move_down)   { player.move(0, player.move_speed) }
+            if(move_left)   { player.move(-player.move_speed, 0) }
+            if(move_right)  { player.move(player.move_speed, 0) }
+        }
     }
 
     update_all()
