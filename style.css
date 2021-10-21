@@ -253,7 +253,7 @@ body {
 }
 
 #toggle-pause {}
-#toggle-info { right: calc(var(--size) * 3.5 }
+#toggle-info { right: calc(var(--size) * 3.5); }
 
 .red        { color: var(--red) !important; }
 .orange     { color: var(--orange) !important; }
