@@ -596,6 +596,8 @@ window.onload = () => {
     let loading_bar     = get("spinning")
     let loading_message = get("message")
 
+    board = get("board")
+
     fade_out(loading_bar, fade_delay)
     fade_out(loading_message, fade_delay)
     fade_out(loading_screen, fade_delay, fade_delay)
