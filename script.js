@@ -110,7 +110,11 @@ function toggle_pause() {
 
         if(!info_panel_is_hidden) { fade_out(info_panel) }
 
+        info_button.disabled = true
+
         fade_in(pause_screen)
+        fade_out(info_button)
+
         setTimeout(() => {
             text_box.disabled           = false
             text_box_button.disabled    = false
@@ -124,11 +128,15 @@ function toggle_pause() {
         if(!info_panel_is_hidden) { fade_in(info_panel) }
 
         fade_out(pause_screen)
+        fade_in(info_button)
+
         text_box.disabled           = true
         text_box_button.disabled    = true
         text_box.blur()
 
         setTimeout(() => {
+            info_button.disabled = false
+
             text_box.className = ""
             is_paused = false
         }, fade_delay)
