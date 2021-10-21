@@ -615,8 +615,6 @@ window.onload = () => {
         render_loop()
     }, fade_delay)
 
-    board = get("board")
-
     pause_screen            = get("pause-screen")
     text_box_container      = get("text-box-container")
     text_box                = get("text-box")
@@ -633,6 +631,8 @@ window.onload = () => {
     text_box_button.disabled    = true
 
     info_panel      = get("info-panel")
+    pause_button    = get("toggle-pause")
+    info_button     = get("toggle-info")
     health_counter  = get("health-counter")
     ammo_counter    = get("ammo-counter")
     class_counter   = get("class-counter")
