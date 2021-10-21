@@ -155,10 +155,11 @@ function toggle_help_panel() {
     let help_height = help_panel.offsetHeight
     let box_height = text_box_container.offsetHeight
 
+    let menu_bar_space = "(var(--size) * 3.5)"
     let margin = "((100% - " + help_height + "px - " + box_height + "px) / 3)"
 
-    let min_box_top     = "var(--size)"
-    let min_help_top    = "calc(var(--size) * 2 + " + box_height + "px)"
+    let min_box_top     = "(var(--size) + " + menu_bar_space + ")"
+    let min_help_top    = "calc(var(--size) + " + min_box_top + " + " + box_height + "px)"
 
     let box_top     = "max(" + min_box_top + ", calc(" + margin + "))"
     let help_top    = "max(" + min_help_top + ", calc((" + margin + " * 2) + var(--size) * 2.5))"
