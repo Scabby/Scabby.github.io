@@ -158,11 +158,13 @@ body {
 
 #text-box-container {
     position: absolute;
-    left: 20%;
+    left: 50%;
+    transform: translateX(-50%);
     top: calc(50% - var(--size) * 1.25);
     z-index: 101 !important;
 
-    width: 60%;
+    width: 80%;
+    max-width: 500px;
     height: calc(var(--size) * 2.5);
     border-radius: calc(var(--size) / 2);
 
@@ -208,9 +210,13 @@ body {
     position: absolute;
 
     top: 100%;
-    left: 20%;
-    width: 60%;
+    left:50%;
+    transform: translateX(-50%);
+
+    width: 80%;
+    max-width: 500px;
     z-index: 100 !important;
+    overflow-x: auto;
 }
 
 #help-panel {
@@ -218,7 +224,6 @@ body {
     position: relative;
 
     white-space: nowrap;
-    overflow: auto;
 
     padding: calc(var(--size) / 1.75);
     padding-left: calc(var(--size) * 0.75);
