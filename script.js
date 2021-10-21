@@ -632,9 +632,13 @@ window.onload = () => {
     text_box.disabled           = true
     text_box_button.disabled    = true
 
-    info_panel      = get("info-panel")
     pause_button    = get("toggle-pause")
+    pause_button.onclick = () => toggle_pause()
+
     info_button     = get("toggle-info")
+    info_button.onclick = () => toggle_info_panel()
+
+    info_panel      = get("info-panel")
     health_counter  = get("health-counter")
     ammo_counter    = get("ammo-counter")
     class_counter   = get("class-counter")
