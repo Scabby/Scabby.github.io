@@ -216,14 +216,11 @@ body {
     width: 80%;
     max-width: 500px;
     z-index: 100 !important;
-    overflow-x: auto;
 }
 
 #help-panel {
     box-sizing: border-box;
     position: relative;
-
-    white-space: nowrap;
 
     padding: calc(var(--size) / 1.75);
     padding-left: calc(var(--size) * 0.75);
@@ -259,6 +256,11 @@ body {
 
 #toggle-pause {}
 #toggle-info { right: calc(var(--size) * 3.5); }
+
+tab {
+    display: block;
+    margin-left: 4ch;
+}
 
 .red        { color: var(--red) !important; }
 .orange     { color: var(--orange) !important; }
