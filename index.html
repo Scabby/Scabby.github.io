@@ -14,7 +14,10 @@
 
     <div id="loading-screen">
       <div id="loading-container">
-        <div id="spinning"></div>
+        <div id="slide_x">
+            <div id=slide_y></div>
+        </div>
+
         <p id="message" class="light-grey">
           Tip: Make sure JavaScript is enabled.
         </p>
@@ -23,8 +26,8 @@
 
     <div id="board"></div>
 
-    <div id="info-panel" class="hidden">
-      <pre id="health-counter"              class="green"></pre>
+    <div id="info-panel" style="display: none">
+      <pre id="health-counter"              class="pre-white"></pre>
       <pre id="ammo-counter"                class="pre-white"></pre>
       <br>
       <pre id="class-counter"               class="pre-white"></pre>
@@ -35,21 +38,26 @@
       <br>
       <pre id="enemy-counter"               class="pre-white"></pre>
       <pre id="element-counter"             class="pre-white"></pre>
+      <br>
+      <pre id="frames-per-second-counter"   class="pre-white"></pre>
       <pre id="ticks-per-second-counter"    class="pre-white"></pre>
+      <pre id="load-counter"                class="pre-white"></pre>
     </div>
 
-    <button id="toggle-pause" class="menu-button">/</button>
-    <button id="toggle-info" class="menu-button">i</button>
+    <div id="button-container">
+        <button id="toggle-pause"   class="menu-button" title="pause">  Esc </button>
+        <button id="toggle-info"    class="menu-button" title="info">   i   </button>
+    </div>
 
-    <div id=pause-screen class=hidden>
+    <div id=pause-screen style="display: none">
       <div id="text-box-container">
         <input id="text-box" type="text"></input>
-        <button id="text-box-button">?</button>
+        <button id="text-box-button" title="help">?</button>
       </div>
 
-      <div id="help-panel-container">
-        <div id="help-panel" class="hidden">
-          <p class="red">Note that the following list is neither correct nor complete.</p>
+      <div id="help-panel-container" style="display: none">
+        <div id="help-panel">
+          <p class="red">Commands are still in development and may have bugs.</p>
           <br>
           <p>spawn <span class="light-grey">&lt;selection&gt;</span></p>
           <p>kill <span class="light-grey">&lt;selection&gt;</span></p>
@@ -57,7 +65,7 @@
           <p>heal <span class="light-grey">&lt;amount&gt;</span> <span class="light-grey">&lt;selection&gt;</span></p>
           <p>harm <span class="light-grey">&lt;amount&gt;</span> <span class="light-grey">&lt;selection&gt;</span></p>
           <p>remove <span class="light-grey">&lt;selection&gt;</span></p>
-          <p>set <span class="light-grey">&lt;variable&gt;</span> <span class="light-grey">&lt;value&gt;</span> <span class="light-grey">&lt;selection&gt;</span></p>
+          <s><p>set <span class="light-grey">&lt;variable&gt;</span> <span class="light-grey">&lt;value&gt;</span></p></s>
           <br>
           <br>
           <p>Valid values for <span class="light-grey">amount</span>:</p>
@@ -68,9 +76,6 @@
           <tab>"self"</tab>
           <tab>"all"</tab>
           <br>
-          <p>Valid values for <span class="light-grey">variable</span>:</p>
-          <tab>n/a</tab>
-          <br>
           <p>Valid values for <span class="light-grey">count</span>:</p>
           <tab>Any integer value (e.g: 100)</tab>
           <tab>"all"</tab>
@@ -79,6 +84,11 @@
           <tab>"enemy"</tab>
           <tab>"dummy"</tab>
           <tab>"all"</tab>
+          <br>
+          <p>Valid <span class="light-grey">value<span> for <span class="light-grey">variable</span>:</p>
+          <tab>n/a</tab>
+          <br>
+          <p><span class="red">Note: Some commands will not accept all possible values for an argument. e.g.: "spawn self" will not execute, even though "self" is listed as a valid value for a selection.</span></p>
         </div>
         <div id="help-panel-spacer"></div>
       </div>
