@@ -166,6 +166,8 @@ s {
         rgba(43, 43, 43, 0%)    100%
     );
 
+    pointer-events: none;
+
     z-index: 102 !important;
 }
 
