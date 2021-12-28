@@ -149,7 +149,8 @@ s {
     height:         calc(var(--size) * 2.5);
     margin:         var(--size);
     margin-left:    0;
-    padding-inline: calc(var(--size) * 0.75);
+    padding-left:   calc(var(--size) * 0.75);
+    padding-right:  calc(var(--size) * 0.75);
     border-radius:  calc(var(--size) / 2);
 
     border: none;
@@ -172,7 +173,8 @@ s {
 
     margin:         var(--size);
     padding:        calc(var(--size) / 1.75);
-    padding-inline: calc(var(--size) * 0.75);
+    padding-left:   calc(var(--size) * 0.75);
+    padding-right:  calc(var(--size) * 0.75);
     border-radius:  calc(var(--size) / 2);
 
     background-color: var(--pre-black-transparent);
