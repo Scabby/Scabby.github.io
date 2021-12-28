@@ -109,12 +109,19 @@ function toggle_pause() {
         fade_in(pause_screen)
         fade_out(info_button)
 
+        // adds colored formatting
+        text_box.className = test_command(text_box.value.split(" "))
+
         setTimeout(() => {
             text_box.disabled           = false
             text_box_button.disabled    = false
             text_box.focus()
             info_button.style.display   = "none"
         }, 10)
+
+        setTimeout(() => {
+            button_container_background.style.display = "unset"
+        }, fade_delay)
 
         is_paused = true
     } else {
@@ -128,11 +135,12 @@ function toggle_pause() {
         text_box.disabled           = true
         text_box_button.disabled    = true
         text_box.blur()
+        button_container_background.style.display = "none"
 
         setTimeout(() => {
             is_paused                   = false
             info_button.disabled        = false
-            text_box.className          = ""
+            text_box.className          = "" // removes colored formatting
             info_button.style.display   = "unset"
         }, fade_delay)
     }
@@ -204,8 +212,17 @@ movable_instances = []
 class Movable {
     constructor(
         id,
-        x_position      = (Math.random() * get_x_screen_area(movable_helper)) - get_x_screen_area(movable_helper) / 2,
-        y_position      = (Math.random() * get_y_screen_area(movable_helper)) - get_y_screen_area(movable_helper) / 2,
+
+        x_position = (
+            Math.random() *
+            get_x_screen_area(movable_helper)
+        ) - get_x_screen_area(movable_helper) / 2,
+
+        y_position = (
+            Math.random() *
+            get_y_screen_area(movable_helper)
+        ) - get_y_screen_area(movable_helper) / 2,
+
         x_velocity      = 0,
         y_velocity      = 0,
         health          = 100,
@@ -309,7 +326,9 @@ class Movable {
         this.x_position += this.x_velocity
         this.y_position += this.y_velocity
 
-        this.element.style.transform = "translate(" + this.x_position + "px," + this.y_position + "px)"
+        this.element.style.transform = "translate(" +
+            this.x_position + "px," +
+            this.y_position + "px)"
 
         this.last_health = this.health
     }
@@ -614,26 +633,24 @@ window.onload = () => {
         render_loop()
     }, fade_delay)
 
-    pause_screen            = get("pause-screen")
-    text_box_container      = get("text-box-container")
-    text_box                = get("text-box")
-    text_box_button         = get("text-box-button")
-    help_panel              = get("help-panel")
-    help_panel_container    = get("help-panel-container")
+    pause_screen                = get("pause-screen")
+    text_box_container          = get("text-box-container")
+    text_box                    = get("text-box")
+    text_box_button             = get("text-box-button")
+    help_panel                  = get("help-panel")
+    help_panel_container        = get("help-panel-container")
 
-    text_box_button.onclick = () => {
-        text_box.focus()
-        toggle_help_panel()
-    }
+    text_box_button.onclick     = () => toggle_help_panel()
 
     text_box.disabled           = true
     text_box_button.disabled    = true
 
-    pause_button            = get("toggle-pause")
-    pause_button.onclick    = () => toggle_pause()
+    pause_button                = get("toggle-pause")
+    info_button                 = get("toggle-info")
+    button_container_background = get("button-container-background")
 
-    info_button         = get("toggle-info")
-    info_button.onclick = () => toggle_info_panel()
+    pause_button.onclick        = () => toggle_pause()
+    info_button.onclick         = () => toggle_info_panel()
 
     info_panel      = get("info-panel")
     health_counter  = get("health-counter")
@@ -667,6 +684,8 @@ function test_command(args) {
             args.splice(i, 1)
         }
     }
+
+    if(args[0] == "") { return "white" } // if text box is empty
 
     let arg_len = args.length
     let arg_count
@@ -928,13 +947,14 @@ onkeydown = (e) => {
                     return
                 }
 
-                command_score       = test_command(args)
+                let command_score   = test_command(args)
                 text_box.className  = command_score
 
                 if(k == "Enter") {
                     if(command_score == "green") {
                         parse_command(args)
-                        text_box.value = ""
+                        text_box.value      = ""
+                        text_box.className  = ""
                     }
                 }
             }, 10)
