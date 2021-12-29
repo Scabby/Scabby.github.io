@@ -32,7 +32,7 @@
 
     -ms-text-size-adjust:       100%;
     -webkit-text-size-adjust:   100%;
-    
+
     -webkit-tap-highlight-color: transparent;
 
     font-size:  var(--size);
@@ -87,13 +87,13 @@ s {
 
 @keyframes darkgreyback {
     0%      { background-color: var(--dark-grey); }
-    15%     { background-color: var(--grey); }
+    10%     { background-color: var(--grey); }
     100%    { background-color: var(--dark-grey); }
 }
 
 @keyframes greyback {
     0%      { background-color: var(--grey); }
-    15%     { background-color: var(--light-grey); }
+    10%     { background-color: var(--light-grey); }
     100%    { background-color: var(--grey); }
 }
 
@@ -203,7 +203,7 @@ s {
 }
 
 .menu-button:active {
-    animation: greyback 0.1s ease-out;
+    animation: greyback 0.15s ease-out;
 }
 
 
@@ -298,7 +298,7 @@ s {
 }
 
 #text-box-button:active {
-    animation: darkgreyback 0.1s ease-out;
+    animation: darkgreyback 0.15s ease-out;
 }
 
 #help-panel-container {
