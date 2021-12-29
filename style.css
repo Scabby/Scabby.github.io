@@ -145,7 +145,7 @@ s {
     position: absolute;
 
     width: 100%;
-    height: calc(var(--size) * 6);
+    height: calc(var(--size) * 8);
 
     background: linear-gradient(
         /* var(--pre-black) */
