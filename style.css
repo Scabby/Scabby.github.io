@@ -183,13 +183,13 @@ s {
 
     outline: none;
 
-    background-color: var(--dark-grey);
+    background-color: var(--grey);
 
     z-index: 999;
 }
 
 .menu-button:hover {
-    background-color: var(--grey);
+    background-color: var(--light-grey);
 }
 
 
