@@ -83,6 +83,18 @@ s {
     80% { opacity: 0; }
 }
 
+@keyframes darkgreyback {
+    0%      { background-color: var(--dark-grey); }
+    15%     { background-color: var(--grey); }
+    100%    { background-color: var(--dark-grey); }
+}
+
+@keyframes greyback {
+    0%      { background-color: var(--grey); }
+    15%     { background-color: var(--light-grey); }
+    100%    { background-color: var(--grey); }
+}
+
 #loading-screen {
     position: absolute;
 
@@ -188,8 +200,8 @@ s {
     z-index: 999;
 }
 
-.menu-button:hover {
-    background-color: var(--light-grey);
+.menu-button:active {
+    animation: greyback 0.1s ease-out;
 }
 
 
@@ -283,8 +295,8 @@ s {
     background-color: var(--dark-grey);
 }
 
-#text-box-button:hover {
-    background-color: var(--grey);
+#text-box-button:active {
+    animation: darkgreyback 0.1s ease-out;
 }
 
 #help-panel-container {
